@@ -1,11 +1,14 @@
 "use client";
 
 // component imports
+import * as React from "react";
+import Profile from "@/components/profile";
+import {NextUIProvider} from "@nextui-org/react";
 import { useState, useRef, useEffect } from "react";
 import AuthCheck from "@/components/AuthCheck";
 import Shelf from "@/components/shelf";
 import Add from "@/components/add";
-import { SignInButton, AddButton, SignOutButton } from "../components/buttons";
+import { AddButton } from "../components/buttons";
 
 // import styling
 import styles from "./page.module.css";
@@ -44,19 +47,12 @@ export default function Home() {
   }, []);
 
   return (
+    <NextUIProvider>
     <main className={styles.main}>
       <AuthCheck>
         <div
-          className={styles.signInContainer}
-          ref={signInButtonRef}
-          onClick={handleSignInClick}>
-          <SignInButton style={{ borderRadius: "50%" }} />
-          <div
-            className={`${styles.signOutContainer} ${
-              showSignOut ? styles.show : ""
-            }`}>
-            {showSignOut && <SignOutButton />}
-          </div>
+          className={styles.signInContainer}>
+          <Profile />
         </div>
 
         <Shelf refresh={refresh} />
@@ -69,5 +65,6 @@ export default function Home() {
         )}
       </AuthCheck>
     </main>
+    </NextUIProvider>
   );
 }
