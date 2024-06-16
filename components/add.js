@@ -1,3 +1,5 @@
+"use client";
+
 // import components
 import { useState } from "react";
 import Image from "next/image";
