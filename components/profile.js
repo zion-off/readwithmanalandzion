@@ -15,7 +15,7 @@ export default function Profile() {
   const copyProfileLink = () => {
     const user = session.user;
     const email = user.email;
-    console.log(`https://readwithmanaland.zzzzion.com/user/${email}`);
+    navigator.clipboard.writeText(`https://readwithmanaland.zzzzion.com/user/${email}`);
   };
 
   return (
