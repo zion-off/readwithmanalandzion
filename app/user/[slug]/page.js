@@ -32,7 +32,8 @@ export default function UserPage({ params }) {
       try {
         const q = query(
           collection(db, "essays"),
-          where("userEmail", "==", dynamicSlug)
+          where("userEmail", "==", dynamicSlug),
+          where("checked", "==", true)
         );
         const querySnapshot = await getDocs(q);
         const essayList = [];

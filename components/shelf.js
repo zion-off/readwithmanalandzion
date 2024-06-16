@@ -88,6 +88,7 @@ export default function Shelf({ refresh }) {
           author={selectedEssay.author}
           notes={selectedEssay.notes}
           link={selectedEssay.link}
+          checked={selectedEssay.checked}
           fileURL={selectedEssay.fileURL}
           closeModal={closeModal}
           onSaved={handleSaved}

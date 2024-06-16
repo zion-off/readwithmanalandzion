@@ -6,6 +6,7 @@ import Image from "next/image";
 import { db } from "@/firebase";
 import { doc, updateDoc, deleteDoc } from "firebase/firestore";
 import FilePicker from "@/components/filepicker";
+import Checkbox from "@/components/checkbox";
 
 // import styling
 import styles from "./essayDetail.module.css";
@@ -17,25 +18,33 @@ export default function EssayDetail({
   author,
   notes,
   link,
+  checked,
   fileURL,
   closeModal,
   onSaved,
   onDeleted,
   slug,
-  imageSource
+  imageSource,
 }) {
   const [editing, isEditing] = useState(false);
   const [newTitle, setNewTitle] = useState(title);
   const [newAuthor, setNewAuthor] = useState(author);
   const [newNotes, setNewNotes] = useState(notes);
   const [newLink, setNewLink] = useState(fileURL);
+  const [newChecked, setNewChecked] = useState(checked);
   const [newfileURL, setFileURL] = useState("");
   const [deleteDialog, setDeleteDialog] = useState(false);
+
+  const handleChange = () => {
+    console.log("changing");
+    setNewChecked(!newChecked);
+  };
 
   useEffect(() => {
     setNewTitle(title);
     setNewAuthor(author);
     setNewNotes(notes);
+    setNewChecked(checked);
     setNewLink(link);
     setFileURL(fileURL);
   }, [title, author, notes, link, fileURL]);
@@ -55,6 +64,7 @@ export default function EssayDetail({
       author == newAuthor &&
       notes == newNotes &&
       link == newLink &&
+      checked == newChecked &&
       fileURL == newfileURL
     ) {
       return;
@@ -67,6 +77,7 @@ export default function EssayDetail({
         author: newAuthor,
         notes: newNotes,
         link: newLink,
+        checked: newChecked,
         fileURL: newfileURL,
       });
       onSaved({
@@ -75,6 +86,7 @@ export default function EssayDetail({
         author: newAuthor,
         notes: newNotes,
         link: newLink,
+        checked: newChecked,
         fileURL: newfileURL,
       });
       toggleEditing();
@@ -189,6 +201,11 @@ export default function EssayDetail({
               onChange={(e) => setNewNotes(e.target.value)}
               className={`${Archivo.className} ${styles.input}`}
             />
+            <Checkbox
+              label="Visible to others"
+              value={newChecked}
+              onChange={handleChange}
+            />
             <input
               type="url"
               name="link"
@@ -217,12 +234,20 @@ export default function EssayDetail({
             <div className={`${Archivo.className} ${styles.link}`}>
               {newLink && <a href={newLink}>{newLink}</a>}
             </div>
+            {!slug && (
+              <p className={`${Archivo.className} ${styles.visibility}`}>
+                {checked ? "Publicly visible" : "Private"}
+              </p>
+            )}
+
+            {fileURL && (
+              <a href={fileURL}>
+                <p className={`${Archivo.className} ${styles.fileURL}`}>
+                  Download
+                </p>
+              </a>
+            )}
           </>
-        )}
-        {fileURL && (
-          <a href={fileURL}>
-            <p className={`${Archivo.className} ${styles.fileURL}`}>Download</p>
-          </a>
         )}
       </div>
       <div className={styles.modalOverlay} onClick={closeModal}></div>

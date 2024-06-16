@@ -7,6 +7,7 @@ import { db } from "@/firebase";
 import { collection, addDoc } from "firebase/firestore";
 import { useSession } from "next-auth/react";
 import FilePicker from "@/components/filepicker";
+import Checkbox from "@/components/checkbox";
 import Images from "@/components/randomCover";
 
 // import styling
@@ -21,6 +22,11 @@ export default function Add({ onClose, onRefresh }) {
   const [link, setLink] = useState("");
   const [fileURL, setFileURL] = useState("");
   const [randomImage, setRandomImage] = useState("");
+  const [checked, setChecked] = useState(true);
+
+  const handleChange = () => {
+    setChecked(!checked);
+  };
 
   useEffect(() => {
     const randomIndex = Math.floor(Math.random() * Images.length);
@@ -44,6 +50,7 @@ export default function Add({ onClose, onRefresh }) {
         author,
         notes,
         link,
+        checked,
         fileURL,
         userId: user.email,
         userEmail: user.email,
@@ -106,9 +113,19 @@ export default function Add({ onClose, onRefresh }) {
           onChange={(e) => setLink(e.target.value)}
           className={`${Archivo.className} ${styles.input}`}
         />
-        <FilePicker label="File" name="file" filePickerText="Upload a PDF or an EPUB" onFileUpload={setFileURL} />
+        <Checkbox label="Visible to others" value={checked} onChange={handleChange} />
+        <FilePicker
+          label="File"
+          name="file"
+          filePickerText="Upload a PDF or an EPUB"
+          onFileUpload={setFileURL}
+        />
         <div className={styles.buttonContainer}>
-          <button type="submit" className={`${Archivo.className} ${styles.button}`}>Add to shelf</button>
+          <button
+            type="submit"
+            className={`${Archivo.className} ${styles.button}`}>
+            Add to shelf
+          </button>
         </div>
       </form>
     </div>
