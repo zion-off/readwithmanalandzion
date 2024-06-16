@@ -57,6 +57,11 @@
   font-weight: 200;
 }
 
+.visibility {
+  font-size: 1rem;
+  color: gray;
+}
+
 .fileURL {
   font-size: 1rem;
   color: #003049;
