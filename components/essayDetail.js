@@ -21,6 +21,7 @@ export default function EssayDetail({
   closeModal,
   onSaved,
   onDeleted,
+  slug,
 }) {
   const [editing, isEditing] = useState(false);
   const [newTitle, setNewTitle] = useState(title);
@@ -114,28 +115,36 @@ export default function EssayDetail({
           <>
             <div className={styles.icons}>
               <div>
-                <div className={styles.edit} onClick={toggleEditing}>
-                  <Image
-                    src={"./edit.svg"}
-                    width={0}
-                    height={0}
-                    sizes="100vw"
-                    style={{ height: "100%", width: "auto" }}
-                    alt="Edit"
-                  />
-                </div>
+                {!slug && (
+                  <>
+                    <div className={styles.edit} onClick={toggleEditing}>
+                      <Image
+                        src={"./edit.svg"}
+                        width={0}
+                        height={0}
+                        sizes="100vw"
+                        style={{ height: "100%", width: "auto" }}
+                        alt="Edit"
+                      />
+                    </div>
+                  </>
+                )}
               </div>
               <div className={styles.rightSideIcons}>
-                <div className={styles.delete} onClick={toggleDelete}>
-                  <Image
-                    src={"./delete.svg"}
-                    width={0}
-                    height={0}
-                    sizes="100vw"
-                    style={{ height: "100%", width: "auto" }}
-                    alt="Edit"
-                  />
-                </div>
+                {!slug && (
+                  <>
+                    <div className={styles.delete} onClick={toggleDelete}>
+                      <Image
+                        src={"./delete.svg"}
+                        width={0}
+                        height={0}
+                        sizes="100vw"
+                        style={{ height: "100%", width: "auto" }}
+                        alt="Edit"
+                      />
+                    </div>
+                  </>
+                )}
 
                 <div className={styles.close} onClick={closeModal}>
                   <Image
