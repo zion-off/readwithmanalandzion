@@ -9,11 +9,11 @@ import styles from "./login.module.css";
 const getGreeting = () => {
   const currentHour = new Date().getHours();
   if (currentHour < 12) {
-    return "good morning!";
+    return "morning!";
   } else if (currentHour < 18) {
-    return "good afternoon.";
+    return "afternoon.";
   } else {
-    return "good evening.";
+    return "evening.";
   }
 };
 
@@ -28,10 +28,10 @@ export default function LoginPage() {
     <div className={styles.container}>
       <div className={styles.text}>
         <h1 className={`${ClashDisplay.className} ${styles.heading}`}>
-          manal and zion, {greeting}
+          manal and zion, good {greeting}
         </h1>
         <h1 className={`${Archivo.className} ${styles.subheading}`}>
-          keep reading!
+          everyone else {greeting.slice(0, -1)} 😒
         </h1>
       </div>
       <div className={styles.button}>
