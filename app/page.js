@@ -7,8 +7,7 @@ import {NextUIProvider} from "@nextui-org/react";
 import { useState, useRef, useEffect } from "react";
 import AuthCheck from "@/components/AuthCheck";
 import Shelf from "@/components/shelf";
-import Add from "@/components/add";
-import { AddButton } from "../components/buttons";
+import AddEssay from "@/components/addEssay";
 
 // import styling
 import styles from "./page.module.css";
@@ -56,7 +55,7 @@ export default function Home() {
         </div>
 
         <Shelf refresh={refresh} />
-        <AddButton toggleModal={toggleModal} />
+        <AddEssay onRefresh={handleRefresh} />
         {showModal && (
           <div>
             <div onClick={toggleModal} className={styles.modalOverlay}></div>

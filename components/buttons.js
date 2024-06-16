@@ -58,11 +58,9 @@ export function SignOutButton() {
   );
 }
 
-export function AddButton({ toggleModal }) {
+export function AddButton() {
   return (
-    <button
-      className={`${styles.button} ${styles.add}`}
-      onClick={() => toggleModal()}>
+    <button className={`${styles.button} ${styles.add}`}>
       <Image
         src={"./add.svg"}
         width={0}
