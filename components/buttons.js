@@ -10,7 +10,7 @@ import Loader from "@/components/loader";
 import { Archivo } from "@/assets/fonts/fonts";
 import styles from "./buttons.module.css";
 
-export function SignInButton( { style } ) {
+export function SignInButton({ style }) {
   const { data: session, status } = useSession();
   console.log(session, status);
 
@@ -49,9 +49,13 @@ export function SignInButton( { style } ) {
 }
 
 export function SignOutButton() {
-  return <div onClick={() => signOut()} className={`${styles.signOut} ${Archivo.className}`}>
-    Sign out
-  </div>;
+  return (
+    <div
+      onClick={() => signOut()}
+      className={`${styles.signOut} ${Archivo.className}`}>
+      Sign out
+    </div>
+  );
 }
 
 export function AddButton({ toggleModal }) {
