@@ -3,8 +3,9 @@
 // import components
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { db } from "@/firebase";
+import { db, storage } from "@/firebase";
 import { collection, addDoc } from "firebase/firestore";
+import { ref, listAll, getDownloadURL } from "firebase/storage";
 import { useSession } from "next-auth/react";
 import FilePicker from "@/components/filepicker";
 import Checkbox from "@/components/checkbox";
@@ -21,17 +22,32 @@ export default function Add({ onClose, onRefresh }) {
   const [notes, setNotes] = useState("");
   const [link, setLink] = useState("");
   const [fileURL, setFileURL] = useState("");
-  const [randomImage, setRandomImage] = useState("");
   const [checked, setChecked] = useState(true);
 
-  const handleChange = () => {
+  const handleChange = async () => {
     setChecked(!checked);
   };
 
-  useEffect(() => {
-    const randomIndex = Math.floor(Math.random() * Images.length);
-    setRandomImage(Images[randomIndex]);
-  }, []);
+  const getRandomCover = async () => {
+    const storageRef = ref(storage, 'covers');
+    try {
+      const res = await listAll(storageRef);
+      const items = res.items;
+  
+      if (items.length === 0) {
+        throw new Error('No images found in the "covers" folder.');
+      }
+  
+      const randomItem = items[Math.floor(Math.random() * items.length)];
+  
+      const url = await getDownloadURL(randomItem);
+      return url;
+      
+    } catch (error) {
+      console.error('Error fetching images from Firebase Storage:', error);
+    }
+
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -45,7 +61,7 @@ export default function Add({ onClose, onRefresh }) {
 
     try {
       await addDoc(collection(db, "essays"), {
-        cover: randomImage,
+        cover: `url(${await getRandomCover()})`,
         title,
         author,
         notes,
