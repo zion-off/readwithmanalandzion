@@ -1,12 +1,13 @@
 "use client";
 
 // import components
+import React from "react";
+import { Checkbox } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { db } from "@/firebase";
 import { doc, updateDoc, deleteDoc } from "firebase/firestore";
 import FilePicker from "@/components/filepicker";
-import Checkbox from "@/components/checkbox";
 
 // import styling
 import styles from "./essayDetail.module.css";
@@ -34,11 +35,6 @@ export default function EssayDetail({
   const [newChecked, setNewChecked] = useState(checked);
   const [newfileURL, setFileURL] = useState("");
   const [deleteDialog, setDeleteDialog] = useState(false);
-
-  const handleChange = () => {
-    console.log("changing");
-    setNewChecked(!newChecked);
-  };
 
   useEffect(() => {
     setNewTitle(title);
@@ -202,10 +198,11 @@ export default function EssayDetail({
               className={`${Archivo.className} ${styles.input}`}
             />
             <Checkbox
-              label="Visible to others"
-              value={newChecked}
-              onChange={handleChange}
-            />
+              color="default"
+              isSelected={newChecked}
+              onValueChange={setNewChecked}>
+              Visible to others
+            </Checkbox>
             <input
               type="url"
               name="link"

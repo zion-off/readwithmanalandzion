@@ -1,6 +1,8 @@
 "use client";
 
 // import components
+import React from "react";
+import { Checkbox } from "@nextui-org/react";
 import { useState } from "react";
 import Image from "next/image";
 import { db, storage } from "@/firebase";
@@ -8,7 +10,6 @@ import { collection, addDoc } from "firebase/firestore";
 import { ref, listAll, getDownloadURL } from "firebase/storage";
 import { useSession } from "next-auth/react";
 import FilePicker from "@/components/filepicker";
-import Checkbox from "@/components/checkbox";
 
 // import styling
 import styles from "./add.module.css";
@@ -23,30 +24,24 @@ export default function Add({ onClose, onRefresh }) {
   const [fileURL, setFileURL] = useState("");
   const [checked, setChecked] = useState(true);
 
-  const handleChange = async () => {
-    setChecked(!checked);
-  };
-
   const getRandomCover = async () => {
-    const storageRef = ref(storage, 'covers');
+    const storageRef = ref(storage, "covers");
     try {
       const res = await listAll(storageRef);
       const items = res.items;
-  
+
       if (items.length === 0) {
         throw new Error('No images found in the "covers" folder.');
       }
-  
+
       const randomItem = items[Math.floor(Math.random() * items.length)];
-  
+
       const url = await getDownloadURL(randomItem);
       return url;
-      
     } catch (error) {
-      console.error('Error fetching images from Firebase Storage:', error);
+      console.error("Error fetching images from Firebase Storage:", error);
     }
-
-  }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -128,7 +123,9 @@ export default function Add({ onClose, onRefresh }) {
           onChange={(e) => setLink(e.target.value)}
           className={`${Archivo.className} ${styles.input}`}
         />
-        <Checkbox label="Visible to others" value={checked} onChange={handleChange} />
+        <Checkbox defaultSelected color="default" isSelected={checked} onValueChange={setChecked}>
+          Visible to others
+        </Checkbox>
         <FilePicker
           label="File"
           name="file"
