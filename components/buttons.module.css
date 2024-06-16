@@ -1,0 +1,48 @@
+.button {
+  background: none;
+  border: none;
+  outline: none;
+  box-shadow: none;
+  transition: 0.1s;
+  max-width: 70px;
+  max-height: 70px;
+}
+
+.button:active {
+  transform: scale(0.98);
+}
+
+.add {
+  position: absolute;
+  bottom: 2rem;
+  right: 2rem;
+  width: 10vw;
+  height: 10vw;
+  border-radius: 50%;
+  background-color: black;
+}
+
+.signin {
+  width: 10vw;
+  height: 10vw;
+  border-radius: 50%;
+  background-color: black;
+  animation: rotate 5s infinite;
+  cursor: pointer;
+}
+
+.signOut {
+  border-radius: 0.5rem;
+  background-color: white;
+  padding: 0.5rem 1rem;
+  width: fit-content;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

@@ -1,0 +1,28 @@
+.button {
+  width: 100%;
+  background-color: #e0e1dd;
+  border-radius: 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  cursor: pointer;
+  transition: 0.5s ease;
+}
+
+.button:active {
+  transform: scale(0.98);
+}
+
+.normal {
+  background-color: #e0e1dd;
+  border: 1px dashed #0d1b2a;
+}
+
+.green {
+  background-color: #4caf50;
+}
+
+.buttonText {
+  font-weight: 400;
+}
