@@ -1,0 +1,14 @@
+.main {
+  width: 100vw;
+  height: 100vh;
+  padding: 6vh 6vw;
+}
+
+.essayContainer {
+  height: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3rem;
+  justify-content: center;
+  align-items: center;
+}
