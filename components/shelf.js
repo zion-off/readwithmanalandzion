@@ -70,7 +70,7 @@ export default function Shelf({ refresh }) {
   };
 
   return (
-    <main className={styles.main}>
+    <div className={styles.main}>
       {essays.map((essay) => (
         <Essay
           key={essay.id}
@@ -95,6 +95,6 @@ export default function Shelf({ refresh }) {
         />
       )}
 
-    </main>
+    </div>
   );
 }
