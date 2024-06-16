@@ -66,6 +66,7 @@ export default function UserPage({ params }) {
       </div>
       {showModal && selectedEssay && (
         <EssayDetail
+          key={selectedEssay.id}
           id={selectedEssay.id}
           title={selectedEssay.title}
           author={selectedEssay.author}
@@ -74,6 +75,7 @@ export default function UserPage({ params }) {
           fileURL={selectedEssay.fileURL}
           closeModal={closeModal}
           slug={true}
+          imageSource="./close.svg"
         />
       )}
     </div>

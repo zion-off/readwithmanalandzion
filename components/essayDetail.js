@@ -22,6 +22,7 @@ export default function EssayDetail({
   onSaved,
   onDeleted,
   slug,
+  imageSource
 }) {
   const [editing, isEditing] = useState(false);
   const [newTitle, setNewTitle] = useState(title);
@@ -148,7 +149,7 @@ export default function EssayDetail({
 
                 <div className={styles.close} onClick={closeModal}>
                   <Image
-                    src={"./close.svg"}
+                    src={imageSource ? "../close.svg" : "./close.svg"}
                     width={0}
                     height={0}
                     sizes="100vw"
