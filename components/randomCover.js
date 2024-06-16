@@ -13,6 +13,12 @@ const Images = [
   "url(https://firebasestorage.googleapis.com/v0/b/essays-b32fd.appspot.com/o/covers%2Fantique7.jpg?alt=media&token=45b652e4-ced1-44b4-a53a-ae5ca6d70275)",
   "url(https://firebasestorage.googleapis.com/v0/b/essays-b32fd.appspot.com/o/covers%2Fantique8.jpg?alt=media&token=8201e2da-76ff-48a8-b895-f6b8617cc6dc)",
   "url(https://firebasestorage.googleapis.com/v0/b/essays-b32fd.appspot.com/o/covers%2Fantique9.jpg?alt=media&token=c5c43868-ec3c-4b86-a714-4be97c66dd92)",
+  "url(https://firebasestorage.googleapis.com/v0/b/essays-b32fd.appspot.com/o/covers%2Fantique19.jpg?alt=media&token=cf0c1e5b-3eee-4377-9a6a-f58ca3bb48fd)",
+  "url(https://firebasestorage.googleapis.com/v0/b/essays-b32fd.appspot.com/o/covers%2Fantique20.jpg?alt=media&token=b703bd2f-3b74-41a1-aac7-fc9bd0063b4f)",
+  "url(https://firebasestorage.googleapis.com/v0/b/essays-b32fd.appspot.com/o/covers%2Fantique17.jpg?alt=media&token=ad7771f9-d05f-487e-b3bb-b928ff569750)",
+  "url(https://firebasestorage.googleapis.com/v0/b/essays-b32fd.appspot.com/o/covers%2Fantique15.jpg?alt=media&token=6c6e6498-0a20-4f36-b8f7-685414b05f2f)",
+  "url(https://firebasestorage.googleapis.com/v0/b/essays-b32fd.appspot.com/o/covers%2Fantique16.jpg?alt=media&token=4e71a1dd-b1cf-43d6-a798-d16aa358472b)",
+  "url(https://firebasestorage.googleapis.com/v0/b/essays-b32fd.appspot.com/o/covers%2Fantique18.jpg?alt=media&token=3a1b7b67-25ef-4b56-912d-e6da9f11f845)"
 ];
 
 export default Images;
