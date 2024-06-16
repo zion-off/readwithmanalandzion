@@ -1,7 +1,5 @@
-"use client";
-
 // import components
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import { db, storage } from "@/firebase";
 import { collection, addDoc } from "firebase/firestore";
@@ -9,7 +7,6 @@ import { ref, listAll, getDownloadURL } from "firebase/storage";
 import { useSession } from "next-auth/react";
 import FilePicker from "@/components/filepicker";
 import Checkbox from "@/components/checkbox";
-import Images from "@/components/randomCover";
 
 // import styling
 import styles from "./add.module.css";
