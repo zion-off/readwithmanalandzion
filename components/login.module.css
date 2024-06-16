@@ -1,0 +1,40 @@
+.container {
+  width: 100vw;
+  height: 100vh;
+  padding: 6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 60vh;
+  color: rgb(0, 0, 0);
+  background: linear-gradient(to bottom, transparent, rgb(255, 255, 255)),
+    rgb(214, 219, 220);
+}
+
+/* .text {
+  animation: fadeIn 2s ease-in-out;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+} */
+
+.heading {
+  font-weight: 600;
+  font-size: 3rem;
+}
+
+.subheading {
+  font-weight: 260;
+  font-size: 2rem;
+}
+
+.button {
+  width: 100%;
+  display: flex;
+  justify-content: right;
+}
