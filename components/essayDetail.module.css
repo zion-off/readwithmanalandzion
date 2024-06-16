@@ -167,3 +167,9 @@
   border-radius: 2rem;
   cursor: pointer;
 }
+
+@media (max-width: 768px) {
+  .modalContent {
+    width: 80vw;
+  }
+}
