@@ -3,7 +3,7 @@
 // component imports
 import * as React from "react";
 import Profile from "@/components/profile";
-import {NextUIProvider} from "@nextui-org/react";
+import { NextUIProvider } from "@nextui-org/react";
 import { useState, useRef, useEffect } from "react";
 import AuthCheck from "@/components/AuthCheck";
 import Shelf from "@/components/shelf";
@@ -47,23 +47,21 @@ export default function Home() {
 
   return (
     <NextUIProvider>
-    <main className={styles.main}>
-      <AuthCheck>
-        <div
-          className={styles.signInContainer}>
-          <Profile />
-        </div>
-
-        <Shelf refresh={refresh} />
-        <AddEssay onRefresh={handleRefresh} />
-        {showModal && (
-          <div>
-            <div onClick={toggleModal} className={styles.modalOverlay}></div>
-            <Add onClose={toggleModal} onRefresh={handleRefresh} />
+      <main className={styles.main}>
+        <AuthCheck>
+          <div className={styles.signInContainer}>
+            <Profile />
           </div>
-        )}
-      </AuthCheck>
-    </main>
+          <Shelf refresh={refresh} />
+          <AddEssay onRefresh={handleRefresh} />
+          {showModal && (
+            <div>
+              <div onClick={toggleModal} className={styles.modalOverlay}></div>
+              <Add onClose={toggleModal} onRefresh={handleRefresh} />
+            </div>
+          )}
+        </AuthCheck>
+      </main>
     </NextUIProvider>
   );
 }
