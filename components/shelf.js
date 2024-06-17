@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { db } from "@/firebase";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { useSession } from "next-auth/react";
+import { useDisclosure } from "@nextui-org/react";
 
 // import styling
 import styles from "./shelf.module.css";
@@ -15,9 +16,10 @@ export default function Shelf({ refresh }) {
   const { data: session, status } = useSession();
   const [essays, setEssays] = useState([]);
   const [selectedEssay, setSelectedEssay] = useState(null);
-  const [showModal, setShowModal] = useState(false);
   const [saved, setSaved] = useState(false);
   const [itemDeleted, setItemDeleted] = useState(false);
+
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   useEffect(() => {
     const fetchEssays = async () => {
@@ -46,13 +48,10 @@ export default function Shelf({ refresh }) {
   }, [status, session, refresh, saved, itemDeleted]);
 
   const handleEssayClick = (essay) => {
+    console.log("got here");
     setSelectedEssay(essay);
-    setShowModal(true);
-  };
-
-  const closeModal = () => {
-    setShowModal(false);
-    setSelectedEssay(null);
+    console.log(selectedEssay);
+    onOpen();
   };
 
   const handleSaved = (updatedEssay) => {
@@ -70,32 +69,31 @@ export default function Shelf({ refresh }) {
   };
 
   return (
-    <div className={styles.main}>
-      {essays.map((essay) => (
-        <Essay
-          key={essay.id}
-          title={essay.title}
-          author={essay.author}
-          cover={essay.cover}
-          onClick={() => handleEssayClick(essay)}
-        />
-      ))}
-
-      {showModal && selectedEssay && (
-        <EssayDetail
-          id={selectedEssay.id}
-          title={selectedEssay.title}
-          author={selectedEssay.author}
-          notes={selectedEssay.notes}
-          link={selectedEssay.link}
-          checked={selectedEssay.checked}
-          fileURL={selectedEssay.fileURL}
-          closeModal={closeModal}
-          onSaved={handleSaved}
-          onDeleted={handleDeleted}
-        />
-      )}
-
+    <div>
+      <div className={styles.main}>
+        {essays.map((essay) => (
+          <Essay
+            key={essay.id}
+            title={essay.title}
+            author={essay.author}
+            cover={essay.cover}
+            onClick={() => handleEssayClick(essay)}
+          />
+        ))}
+      </div>
+      <EssayDetail
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        id={selectedEssay?.id}
+        title={selectedEssay?.title}
+        author={selectedEssay?.author}
+        notes={selectedEssay?.notes}
+        link={selectedEssay?.link}
+        checked={selectedEssay?.checked}
+        fileURL={selectedEssay?.fileURL}
+        onSaved={handleSaved}
+        onDeleted={handleDeleted}
+      />
     </div>
   );
 }
