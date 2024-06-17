@@ -111,6 +111,7 @@ export default function EssayDetail({
       setDeleteDialog(false);
       toggleEditing();
       onDeleted();
+      isEditing(false);
     } catch (error) {
       console.error("Error deleting essay: ", error);
     }
@@ -127,6 +128,7 @@ export default function EssayDetail({
           if (deleteDialog) {
             setDeleteDialog(false);
           }
+          isEditing(false);
         }}
         closeButton={
           <Image
@@ -296,7 +298,7 @@ export default function EssayDetail({
                         <div className={styles.deleteButton}>
                           <p
                             className={`${Archivo.className} ${styles.save}`}
-                            onClick={() => handleDelete(id)}>
+                            onClick={() => {handleDelete(id); onClose();}}>
                             Delete
                           </p>
                         </div>
