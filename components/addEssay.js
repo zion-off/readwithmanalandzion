@@ -90,21 +90,18 @@ export default function AddEssay({ onRefresh }) {
 
   return (
     <>
-      <div style={{ borderRadius: "50%" }}>
-        <Button
-          onPress={onOpen}
-          class="absolute bottom-8 right-8 w-[10vw] h-[10vw] rounded-full bg-black focus:outline-none active:scale-95 transition duration-200">
-          <Image
-            src={"./add.svg"}
-            width={0}
-            height={0}
-            sizes="100vw"
-            style={{ width: "100%", height: "auto", padding: "10%" }}
-            alt="Add"
-          />
-        </Button>
-      </div>
-
+      <Button
+        onPress={onOpen}
+        class="absolute bottom-8 right-8 max-w-[70px] max-h-[70px] rounded-full bg-black focus:outline-none active:scale-95 transition duration-200">
+        <Image
+          src={"./add.svg"}
+          width={0}
+          height={0}
+          sizes="100vw"
+          style={{ width: "100%", height: "auto", padding: "10%" }}
+          alt="Add"
+        />
+      </Button>
       <Modal
         isOpen={isOpen}
         onOpenChange={onOpenChange}
@@ -122,8 +119,8 @@ export default function AddEssay({ onRefresh }) {
         <ModalContent className="px-2 py-5">
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1">
-                <div className={styles.headingContainer}>
+              <ModalHeader>
+                <div>
                   <h1 className={`${ClashDisplay.className} ${styles.heading}`}>
                     Add Essay
                   </h1>
@@ -180,7 +177,17 @@ export default function AddEssay({ onRefresh }) {
                         type="submit"
                         className={`${Archivo.className} ${styles.button}`}
                         disabled={loading}>
-                        {loading ? <Loader circleStyle={{maxHeight: "10px", maxWidth: "10px"}} containerStyle={{ padding: 0.5, gap: 1.5}} /> : "Add to shelf"}
+                        {loading ? (
+                          <Loader
+                            circleStyle={{
+                              maxHeight: "10px",
+                              maxWidth: "10px",
+                            }}
+                            containerStyle={{ padding: 0.5, gap: 1.5 }}
+                          />
+                        ) : (
+                          "Add to shelf"
+                        )}
                       </button>
                     </div>
                   </ModalFooter>
