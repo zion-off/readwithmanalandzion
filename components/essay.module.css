@@ -36,19 +36,45 @@
   overflow: hidden;
 }
 
-@media (max-width: 768px) {
-  .book {
-    width: 30vw;
-  }
-  .textContainer {
-    width: 30vw;
-  }
-}
-
 .author {
   font-size: 0.8rem;
   font-weight: 300;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+}
+
+@media (max-width: 768px) {
+  .main {
+    flex-direction: row;
+    gap: 10vw;
+    max-height: 15vh;
+  }
+  .book {
+    flex: 1;
+    height: 12vh;
+    width: calc(12vh * 2 / 3); /* 2:3 aspect ratio */
+  }
+  .textContainer {
+    flex: 3;
+    height: 12vh;
+  }
+  .title {
+    font-size: 1rem;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    white-space: normal;
+  }
+  .author {
+    font-size: 0.8rem;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    white-space: normal;
+  }
 }
