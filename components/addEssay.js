@@ -32,6 +32,7 @@ export default function AddEssay({ onRefresh }) {
   const [fileURL, setFileURL] = useState("");
   const [checked, setChecked] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [scrollBehavior, setScrollBehavior] = React.useState("outside");
 
   const getRandomCover = async () => {
     const storageRef = ref(storage, "covers");
@@ -107,6 +108,7 @@ export default function AddEssay({ onRefresh }) {
       <Modal
         isOpen={isOpen}
         onOpenChange={onOpenChange}
+        scrollBehavior={scrollBehavior}
         closeButton={
           <Image
             src={"./close.svg"}
@@ -127,7 +129,7 @@ export default function AddEssay({ onRefresh }) {
                   </h1>
                 </div>
               </ModalHeader>
-              <ModalBody>
+              <ModalBody className="overflow-y-auto">
                 <form className={styles.form} onSubmit={handleSubmit}>
                   <input
                     type="text"
