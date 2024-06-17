@@ -2,6 +2,15 @@
 
 // import components
 import React from "react";
+import {
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Button,
+  useDisclosure,
+} from "@nextui-org/react";
 import { Checkbox } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import Image from "next/image";
