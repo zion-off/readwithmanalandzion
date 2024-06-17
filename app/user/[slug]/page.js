@@ -1,6 +1,7 @@
 "use client";
 
 // import components
+import React from "react";
 import Essay from "@/components/essay";
 import { useEffect, useState } from "react";
 import { db } from "@/firebase";
@@ -16,12 +17,15 @@ export default function UserPage({ params }) {
   const [selectedEssay, setSelectedEssay] = useState(null);
   const dynamicSlug = decodeURIComponent(params.slug);
 
+
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const handleEssayClick = (essay) => {
     setSelectedEssay(essay);
     onOpen();
   };
+
+
 
   useEffect(() => {
     const fetchEssays = async () => {

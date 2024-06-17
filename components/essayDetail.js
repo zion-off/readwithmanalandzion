@@ -41,6 +41,13 @@ export default function EssayDetail({
   const [newChecked, setNewChecked] = useState(checked);
   const [newfileURL, setFileURL] = useState("");
   const [deleteDialog, setDeleteDialog] = useState(false);
+  const [size, setSize] = React.useState("md");
+
+  useEffect(() => {
+    if (window.innerWidth < 600) {
+      setSize('full');
+    }
+  }, []);
 
   useEffect(() => {
     setNewTitle(title);
@@ -112,6 +119,7 @@ export default function EssayDetail({
   return (
     <>
       <Modal
+      size={size}
         className="pb-5"
         isOpen={isOpen}
         onOpenChange={() => {
@@ -126,7 +134,7 @@ export default function EssayDetail({
             width={0}
             height={0}
             sizes="100vw"
-            style={{ width: "10%", height: "auto", rotate: "45deg" }}
+            style={{ width: "10%", minWidth: "50px", height: "auto", rotate: "45deg" }}
             alt="Add"
           />
         }
