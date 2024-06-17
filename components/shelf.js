@@ -3,12 +3,19 @@
 // import components
 import Essay from "./essay";
 import EssayDetail from "./essayDetail";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { db } from "@/firebase";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { useSession } from "next-auth/react";
 import { useDisclosure } from "@nextui-org/react";
 import { Input } from "@nextui-org/input";
+import {
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownItem,
+  Button,
+} from "@nextui-org/react";
 
 // import styling
 import styles from "./shelf.module.css";
@@ -21,8 +28,14 @@ export default function Shelf({ refresh }) {
   const [saved, setSaved] = useState(false);
   const [itemDeleted, setItemDeleted] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedKeys, setSelectedKeys] = useState(new Set(["text"]));
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
+  const selectedValue = useMemo(
+    () => Array.from(selectedKeys).join(", ").replaceAll("_", " "),
+    [selectedKeys]
+  );
 
   useEffect(() => {
     const fetchEssays = async () => {
@@ -87,17 +100,61 @@ export default function Shelf({ refresh }) {
     }
   }, [searchQuery, essays]);
 
+  useEffect(() => {
+    sortEssays(filteredEssays);
+  }, [selectedValue]);
+
+  const sortEssays = (essaysToSort) => {
+    console.log(selectedValue);
+    switch (selectedValue) {
+      case "title":
+        essaysToSort.sort((a, b) => a.title.localeCompare(b.title));
+        break;
+      case "author":
+        essaysToSort.sort((a, b) => a.author.localeCompare(b.author));
+        break;
+      case "newest":
+        essaysToSort.sort((a, b) => b.createdAt - a.createdAt);
+        break;
+      case "oldest":
+        essaysToSort.sort((a, b) => a.createdAt - b.createdAt);
+        break;
+      default:
+        break;
+    }
+  };
+
   return (
     <div className={styles.container}>
-      <div className="w-100 flex justify-center">
+      <div className="w-100 flex justify-center gap-2">
         <Input
           isClearable
           radius="full"
           type="text"
           placeholder="Search..."
-          className="mb-10 w-100 sm:w-2/4 max-w-[400px]"
+          className="mb-10 object-fill sm:w-2/4 sm:max-w-[400px]"
           onChange={(e) => setSearchQuery(e.target.value)}
         />
+        <Dropdown>
+          <DropdownTrigger>
+            <Button variant="ghost" className="capitalize">
+              Sort
+            </Button>
+          </DropdownTrigger>
+          <DropdownMenu
+            aria-label="Single selection example"
+            variant="flat"
+            disallowEmptySelection
+            selectionMode="single"
+            selectedKeys={selectedKeys}
+            defaultSelectedKeys={"title"}
+            onSelectionChange={setSelectedKeys}>
+            <DropdownItem key="title">Title</DropdownItem>
+            <DropdownItem key="author">Author</DropdownItem>
+            <DropdownItem key="newest">Newest</DropdownItem>
+            <DropdownItem key="oldest">Oldest</DropdownItem>
+          </DropdownMenu>
+        </Dropdown>
       </div>
 
       <div className={styles.main}>
