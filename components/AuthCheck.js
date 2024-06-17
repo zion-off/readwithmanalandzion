@@ -11,8 +11,6 @@ import styles from "./AuthCheck.module.css";
 export default function AuthCheck({ children }) {
   const { data: session, status } = useSession();
 
-  console.log(session, status);
-
   if (status === "authenticated") {
     return <>{children}</>;
   } else if (status === "loading") {

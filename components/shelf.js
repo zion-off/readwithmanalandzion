@@ -8,6 +8,7 @@ import { db } from "@/firebase";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { useSession } from "next-auth/react";
 import { useDisclosure } from "@nextui-org/react";
+import { Input } from "@nextui-org/input";
 
 // import styling
 import styles from "./shelf.module.css";
@@ -15,9 +16,11 @@ import styles from "./shelf.module.css";
 export default function Shelf({ refresh }) {
   const { data: session, status } = useSession();
   const [essays, setEssays] = useState([]);
+  const [filteredEssays, setFilteredEssays] = useState([]);
   const [selectedEssay, setSelectedEssay] = useState(null);
   const [saved, setSaved] = useState(false);
   const [itemDeleted, setItemDeleted] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
@@ -37,6 +40,7 @@ export default function Shelf({ refresh }) {
           // sort essays by createdAt date
           essayList.sort((b, a) => b.createdAt - a.createdAt);
           setEssays(essayList);
+          setFilteredEssays(essayList);
         } catch (error) {
           console.error("Error fetching essays: ", error);
         }
@@ -44,7 +48,6 @@ export default function Shelf({ refresh }) {
     };
 
     fetchEssays();
-    console.log(essays);
   }, [status, session, refresh, saved, itemDeleted]);
 
   const handleEssayClick = (essay) => {
@@ -68,10 +71,37 @@ export default function Shelf({ refresh }) {
     setItemDeleted(!itemDeleted);
   };
 
+  useEffect(() => {
+    if (searchQuery === "") {
+      setFilteredEssays(essays);
+    } else {
+      const lowerCaseQuery = searchQuery.toLowerCase();
+      setFilteredEssays(
+        essays.filter(
+          (essay) =>
+            essay.title.toLowerCase().includes(lowerCaseQuery) ||
+            essay.author.toLowerCase().includes(lowerCaseQuery) ||
+            essay.notes.toLowerCase().includes(lowerCaseQuery)
+        )
+      );
+    }
+  }, [searchQuery, essays]);
+
   return (
-    <div>
+    <div className={styles.container}>
+      <div className="w-100 flex justify-center">
+        <Input
+          isClearable
+          radius="full"
+          type="text"
+          placeholder="Search..."
+          className="mb-10 w-100 sm:w-2/4 max-w-[400px]"
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+      </div>
+
       <div className={styles.main}>
-        {essays.map((essay) => (
+        {filteredEssays.map((essay) => (
           <Essay
             key={essay.id}
             title={essay.title}
