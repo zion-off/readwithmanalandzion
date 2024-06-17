@@ -1,7 +1,15 @@
 .main {
-  padding:  6vh 6vw;
+  padding: 6vh 6vw;
   display: flex;
   flex-wrap: wrap;
   gap: 3rem;
   justify-content: center;
+}
+
+@media (max-width: 768px) {
+  .main {
+    padding: 5vh 8vw;
+    flex-direction: column;
+    gap: 5vh;
+  }
 }

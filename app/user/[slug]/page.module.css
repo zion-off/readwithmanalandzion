@@ -5,10 +5,15 @@
 }
 
 .essayContainer {
-  height: 100%;
   display: flex;
-  flex-wrap: wrap;
   gap: 3rem;
-  justify-content: center;
-  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .essayContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+  
 }
