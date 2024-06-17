@@ -99,7 +99,7 @@ export default function AddEssay({ onRefresh }) {
     <>
       <Button
         onPress={onOpen}
-        class="absolute bottom-8 right-8 max-w-[70px] max-h-[70px] rounded-full bg-black focus:outline-none active:scale-95 transition duration-200 sm:hover:rotate-90 hover:duration-500 hover:ease">
+        class="fixed bottom-8 right-8 max-w-[70px] max-h-[70px] rounded-full bg-black focus:outline-none active:scale-95 transition duration-200 sm:hover:rotate-90 hover:duration-500 hover:ease">
         <Image
           src={"./add.svg"}
           width={0}

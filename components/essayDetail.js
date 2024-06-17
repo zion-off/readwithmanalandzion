@@ -266,7 +266,7 @@ export default function EssayDetail({
                       {newNotes}
                     </p>
                     <div className={`${Archivo.className} ${styles.link}`}>
-                      {newLink && <a href={newLink}>{newLink}</a>}
+                    {newLink && <a href={newLink}>Link &nbsp; ↗️</a>}
                     </div>
                     {!slug && (
                       <p
