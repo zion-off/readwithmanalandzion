@@ -1,4 +1,5 @@
-import React from "react";
+// import components
+import React, { useEffect } from "react";
 import {
   Modal,
   ModalContent,
@@ -32,7 +33,13 @@ export default function AddEssay({ onRefresh }) {
   const [fileURL, setFileURL] = useState("");
   const [checked, setChecked] = useState(true);
   const [loading, setLoading] = useState(false);
-  const [scrollBehavior, setScrollBehavior] = React.useState("outside");
+  const [size, setSize] = React.useState("md");
+
+  useEffect(() => {
+    if (window.innerWidth < 600) {
+      setSize('full');
+    }
+  }, []);
 
   const getRandomCover = async () => {
     const storageRef = ref(storage, "covers");
@@ -92,7 +99,7 @@ export default function AddEssay({ onRefresh }) {
     <>
       <Button
         onPress={onOpen}
-        class="absolute bottom-8 right-8 max-w-[70px] max-h-[70px] rounded-full bg-black focus:outline-none active:scale-95 transition duration-200">
+        class="absolute bottom-8 right-8 max-w-[70px] max-h-[70px] rounded-full bg-black focus:outline-none active:scale-95 transition duration-200 sm:hover:rotate-90 hover:duration-500 hover:ease">
         <Image
           src={"./add.svg"}
           width={0}
@@ -103,9 +110,10 @@ export default function AddEssay({ onRefresh }) {
         />
       </Button>
       <Modal
+        size={size}
         isOpen={isOpen}
         onOpenChange={onOpenChange}
-        scrollBehavior={scrollBehavior}
+        scrollBehavior="inside"
         closeButton={
           <Image
             src={"./close.svg"}
