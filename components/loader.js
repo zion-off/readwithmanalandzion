@@ -1,12 +1,12 @@
 // import styling
 import styles from "./loader.module.css";
 
-export default function Loader({ style }) {
+export default function Loader({ containerStyle, circleStyle }) {
   return (
-    <div style={style}>
-      <div className={styles.loader}>
-        <div className={styles.circle}></div>
-        <div className={styles.circle}></div>
+    <div>
+      <div className={styles.loader} style={containerStyle}>
+        <div className={styles.circle} style={circleStyle}></div>
+        <div className={styles.circle} style={circleStyle}></div>
       </div>
     </div>
   );
