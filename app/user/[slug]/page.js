@@ -2,10 +2,11 @@
 
 // import components
 import Essay from "@/components/essay";
-import EssayDetail from "@/components/essayDetail";
 import { useEffect, useState } from "react";
 import { db } from "@/firebase";
 import { collection, query, where, getDocs } from "firebase/firestore";
+import EssayDetail from "@/components/essayDetail";
+import { useDisclosure } from "@nextui-org/react";
 
 // import styles
 import styles from "./page.module.css";
@@ -13,17 +14,13 @@ import styles from "./page.module.css";
 export default function UserPage({ params }) {
   const [essays, setEssays] = useState([]);
   const [selectedEssay, setSelectedEssay] = useState(null);
-  const [showModal, setShowModal] = useState(false);
   const dynamicSlug = decodeURIComponent(params.slug);
+
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const handleEssayClick = (essay) => {
     setSelectedEssay(essay);
-    setShowModal(true);
-  };
-
-  const closeModal = () => {
-    setShowModal(false);
-    setSelectedEssay(null);
+    onOpen();
   };
 
   useEffect(() => {
@@ -65,16 +62,17 @@ export default function UserPage({ params }) {
           </div>
         ))}
       </div>
-      {showModal && selectedEssay && (
+
+      {selectedEssay && (
         <EssayDetail
-          key={selectedEssay.id}
+          isOpen={isOpen}
+          onOpenChange={onOpenChange}
           id={selectedEssay.id}
           title={selectedEssay.title}
           author={selectedEssay.author}
           notes={selectedEssay.notes}
           link={selectedEssay.link}
           fileURL={selectedEssay.fileURL}
-          closeModal={closeModal}
           slug={true}
           imageSource="./close.svg"
         />
