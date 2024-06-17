@@ -64,7 +64,6 @@ export default function Shelf({ refresh }) {
   }, [status, session, refresh, saved, itemDeleted]);
 
   const handleEssayClick = (essay) => {
-    console.log("got here");
     setSelectedEssay(essay);
     console.log(selectedEssay);
     onOpen();
