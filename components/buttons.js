@@ -12,7 +12,6 @@ import styles from "./buttons.module.css";
 
 export function SignInButton({ style }) {
   const { data: session, status } = useSession();
-  console.log(session, status);
 
   if (status === "loading") {
     return <Loader />;

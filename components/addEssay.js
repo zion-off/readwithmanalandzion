@@ -98,14 +98,15 @@ export default function AddEssay({ onRefresh }) {
   return (
     <>
       <Button
+      isIconOnly
         onPress={onOpen}
-        class="fixed bottom-8 right-8 max-w-[70px] max-h-[70px] rounded-full bg-black focus:outline-none active:scale-95 transition duration-200 sm:hover:rotate-90 hover:duration-500 hover:ease">
+        className="fixed bottom-8 right-8 max-w-[100px] max-h-[100px] rounded-full bg-black focus:outline-none active:scale-95 transition duration-200 sm:hover:rotate-90 hover:duration-500 hover:ease">
         <Image
           src={"./add.svg"}
           width={0}
           height={0}
           sizes="100vw"
-          style={{ width: "100%", height: "auto", padding: "10%" }}
+          style={{ width: "100%", height: "100%", padding: "10%", borderRadius: "50%"}}
           alt="Add"
         />
       </Button>
