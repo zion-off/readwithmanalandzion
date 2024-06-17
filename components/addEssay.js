@@ -18,6 +18,7 @@ import { collection, addDoc } from "firebase/firestore";
 import { ref, listAll, getDownloadURL } from "firebase/storage";
 import FilePicker from "@/components/filepicker";
 import Loader from "@/components/loader";
+import FetchMetadata from "@/components/fetchMetadata";
 
 // import styling
 import styles from "./addEssay.module.css";
@@ -37,9 +38,31 @@ export default function AddEssay({ onRefresh }) {
 
   useEffect(() => {
     if (window.innerWidth < 600) {
-      setSize('full');
+      setSize("full");
     }
   }, []);
+
+  useEffect(() => {
+    if (isOpen) {
+      setTitle("");
+      setAuthor("");
+      setNotes("");
+      setLink("");
+      setFileURL("");
+      setChecked(true);
+    }
+  }, [isOpen]);
+
+  useEffect(() => {
+    const fetchMetadata = async () => {
+      const { title, author } = await FetchMetadata(link);
+      if (title === "" || author === "") return;
+      setTitle(title);
+      setAuthor(author);
+    };
+
+    fetchMetadata();
+  }, [link]);
 
   const getRandomCover = async () => {
     const storageRef = ref(storage, "covers");
@@ -64,7 +87,6 @@ export default function AddEssay({ onRefresh }) {
     e.preventDefault();
     setLoading(true);
 
-    console.log("got here");
     if (status !== "authenticated") {
       alert("You must be logged in to submit an essay");
       return;
@@ -98,7 +120,7 @@ export default function AddEssay({ onRefresh }) {
   return (
     <>
       <Button
-      isIconOnly
+        isIconOnly
         onPress={onOpen}
         className="fixed bottom-8 right-8 max-w-[100px] max-h-[100px] rounded-full bg-black focus:outline-none active:scale-95 transition duration-200 sm:hover:rotate-90 hover:duration-500 hover:ease">
         <Image
@@ -106,7 +128,12 @@ export default function AddEssay({ onRefresh }) {
           width={0}
           height={0}
           sizes="100vw"
-          style={{ width: "100%", height: "100%", padding: "10%", borderRadius: "50%"}}
+          style={{
+            width: "100%",
+            height: "100%",
+            padding: "10%",
+            borderRadius: "50%",
+          }}
           alt="Add"
         />
       </Button>
@@ -140,6 +167,7 @@ export default function AddEssay({ onRefresh }) {
                   <input
                     type="text"
                     name="title"
+                    value={title}
                     placeholder="Title"
                     required
                     onChange={(e) => setTitle(e.target.value)}
@@ -148,6 +176,7 @@ export default function AddEssay({ onRefresh }) {
                   <input
                     type="text"
                     name="author"
+                    value={author}
                     placeholder="Author"
                     required
                     onChange={(e) => setAuthor(e.target.value)}
