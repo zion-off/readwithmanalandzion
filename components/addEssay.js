@@ -16,6 +16,7 @@ import { db, storage } from "@/firebase";
 import { collection, addDoc } from "firebase/firestore";
 import { ref, listAll, getDownloadURL } from "firebase/storage";
 import FilePicker from "@/components/filepicker";
+import Loader from "@/components/loader";
 
 // import styling
 import styles from "./addEssay.module.css";
@@ -30,6 +31,7 @@ export default function AddEssay({ onRefresh }) {
   const [link, setLink] = useState("");
   const [fileURL, setFileURL] = useState("");
   const [checked, setChecked] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const getRandomCover = async () => {
     const storageRef = ref(storage, "covers");
@@ -52,6 +54,7 @@ export default function AddEssay({ onRefresh }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     console.log("got here");
     if (status !== "authenticated") {
@@ -79,6 +82,8 @@ export default function AddEssay({ onRefresh }) {
     } catch (error) {
       console.error("Error adding essay: ", error);
       alert("Failed to add essay");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -171,8 +176,9 @@ export default function AddEssay({ onRefresh }) {
                     <div className={styles.buttonContainer}>
                       <button
                         type="submit"
-                        className={`${Archivo.className} ${styles.button}`}>
-                        Add to shelf
+                        className={`${Archivo.className} ${styles.button}`}
+                        disabled={loading}>
+                        {loading ? <Loader circleStyle={{maxHeight: "10px", maxWidth: "10px"}} containerStyle={{ padding: 0.5, gap: 1.5}} /> : "Add to shelf"}
                       </button>
                     </div>
                   </ModalFooter>
