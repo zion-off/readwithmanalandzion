@@ -1,7 +1,10 @@
 const FetchMetadata = async (url) => {
   try {
-    const res = await fetch(url);
-    const html = await res.text();
+    const proxyUrl = `https://readwithmanaland.zzzzion.com/api/fetch-metadata?url=${encodeURIComponent(
+      url
+    )}`;
+    const res = await fetch(proxyUrl);
+    const { html } = await res.json();
 
     const parser = new DOMParser();
     const doc = parser.parseFromString(html, "text/html");
