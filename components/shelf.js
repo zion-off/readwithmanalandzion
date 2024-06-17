@@ -28,7 +28,7 @@ export default function Shelf({ refresh }) {
   const [saved, setSaved] = useState(false);
   const [itemDeleted, setItemDeleted] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedKeys, setSelectedKeys] = useState(new Set(["text"]));
+  const [selectedKeys, setSelectedKeys] = useState(new Set(["Title"]));
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
