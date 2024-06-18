@@ -75,15 +75,9 @@
   .icons {
     display: flex;
     gap: 1rem;
-    align-items: center;
+    align-items: left;
   }
-  
-  .rightSideIcons {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 1rem;
-  }
+
   
   .delete {
     height: 1.5rem;

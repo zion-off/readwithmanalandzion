@@ -2,7 +2,9 @@
 
 Kind of like Goodreads, but for scholarly essays/articles that are not available as books. A personal web app I made for me and my friend so we can organize the stuff we read  :  )
 
-(This turned out to be a more complex project that I had anticipated. I had to set up my own CORS proxy server for handling autofill on the add essay form...!)
+This turned out to be a more complex project that I had anticipated. I had to set up my own Node.js CORS proxy server for handling autofill on the form for adding essays. I later realized I could just set up an API route for that the client side component can hit, and the server would make a request to the target website, which avoidss the CORS issue altogether.
+
+I also spent a lot of time building custom UI components, such as modals, checkboxes, and dropdowns. Although robust and functional, I ended up not using the in the final version of the app, as I found better alternatives in the Next UI library. Only the loader is still in use — I think it fits the look of the overall app. I kept the custom components in the codebase for future reference, even if they are not being used in the app.
 
 ## Features
 
@@ -10,7 +12,7 @@ Kind of like Goodreads, but for scholarly essays/articles that are not available
 2. Essay Management: Add, edit, view, and delete essays (and upload files!) to create a personal library.
 3. Search and sort: Search for essays by title, author, or notes. Sort your shelf by title, author, newest, or olders.
 4. Firebase Integration: Essays are stored and retrieved from a Firebase Firestore database.
-5. Dynamic UI: Using Next UI and Framer Motion, for a smooth and responsive user experience.
+5. Dynamic UI: Using Next UI, Framer Motion, and custom UI components for a smooth and responsive user experience.
 6. Design details: Responsive and looks great on all devices, from desktop to mobile. Loading screens and small animations are added for a better user experience.
 7. Autofill feature: Autofill the add essay form with website metadata, fetched via a custom Node.js proxy server (also deployed on Vercel) to avoid CORS issues!
 
