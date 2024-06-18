@@ -6,7 +6,9 @@
 
 .essayContainer {
   display: flex;
+  flex-wrap: wrap;
   gap: 3rem;
+  justify-content: center;
 }
 
 @media (max-width: 768px) {
