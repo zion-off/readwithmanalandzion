@@ -18,7 +18,6 @@ import { collection, addDoc } from "firebase/firestore";
 import { ref, listAll, getDownloadURL } from "firebase/storage";
 import FilePicker from "@/components/filepicker";
 import Loader from "@/components/loader";
-import FetchMetadata from "@/components/fetchMetadata";
 
 // import styling
 import styles from "./addEssay.module.css";
@@ -55,11 +54,24 @@ export default function AddEssay({ onRefresh }) {
 
   useEffect(() => {
     const fetchMetadata = async () => {
-      const { title, author } = await FetchMetadata(link);
-      if (title === "" || author === "") return;
-      setTitle(title);
-      setAuthor(author);
+      const response = await fetch(`/api/metadata?url=${encodeURIComponent(link)}`);
+      const data = await response.json();
+      if (data.ogTitle === "" || data.ogAuthor === "") return;
+      // const { title, author } = await FetchMetadata(link);
+      // if (title === "" || author === "") return;
+      if (data.ogTitle === "Not found") {
+        setTitle("");
+      } else {
+        setTitle(data.ogTitle);
+      }
+      if (data.ogAuthor === "Not found") {
+        setAuthor("");
+      } else {
+        setAuthor(data.ogAuthor);
+      }
     };
+
+    
 
     fetchMetadata();
   }, [link]);

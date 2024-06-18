@@ -104,7 +104,6 @@ export default function Shelf({ refresh }) {
   }, [selectedValue]);
 
   const sortEssays = (essaysToSort) => {
-    console.log(selectedValue);
     switch (selectedValue) {
       case "title":
         essaysToSort.sort((a, b) => a.title.localeCompare(b.title));
