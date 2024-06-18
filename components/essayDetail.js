@@ -6,6 +6,7 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
+  Button,
 } from "@nextui-org/react";
 import { Checkbox } from "@nextui-org/react";
 import { useEffect, useState } from "react";
@@ -45,7 +46,7 @@ export default function EssayDetail({
 
   useEffect(() => {
     if (window.innerWidth < 600) {
-      setSize('full');
+      setSize("full");
     }
   }, []);
 
@@ -120,7 +121,7 @@ export default function EssayDetail({
   return (
     <>
       <Modal
-      size={size}
+        size={size}
         className="pb-5"
         isOpen={isOpen}
         onOpenChange={() => {
@@ -132,11 +133,18 @@ export default function EssayDetail({
         }}
         closeButton={
           <Image
-          src={imageSource ? "../close.svg" : "./close.svg"}
+            src={imageSource ? "../close.svg" : "./close.svg"}
             width={0}
             height={0}
             sizes="100vw"
-            style={{ width: "10%", minWidth: "50px", height: "auto", rotate: "45deg" }}
+            style={{
+              width: "10%",
+              minWidth: "30px",
+              height: "auto",
+              rotate: "45deg",
+              top: "10px",
+              right: "8px",
+            }}
             alt="Add"
           />
         }
@@ -144,7 +152,7 @@ export default function EssayDetail({
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1">
+              <ModalHeader className="flex flex-col gap-1 px-6 py-6">
                 {editing ? (
                   <>
                     <div className={styles.editingOptions}>
@@ -162,44 +170,42 @@ export default function EssayDetail({
                   </>
                 ) : (
                   <>
-                    <div className={styles.icons}>
-                      <div>
-                        {!slug && (
-                          <>
-                            <div
-                              className={styles.edit}
-                              onClick={toggleEditing}>
-                              <Image
-                                src={"./edit.svg"}
-                                width={0}
-                                height={0}
-                                sizes="100vw"
-                                style={{ height: "100%", width: "auto" }}
-                                alt="Edit"
-                              />
-                            </div>
-                          </>
-                        )}
+                    {!slug && (
+                      <div className={styles.icons}>
+                        <Button
+                          isIconOnly
+                          aria-label="Edit"
+                          onClick={toggleEditing}
+                          className="min-w-5 h-5 w-5 p-0"
+                          variant="light"
+                          radius="none">
+                          <Image
+                            src={"./edit.svg"}
+                            width={0}
+                            height={0}
+                            sizes="100vw"
+                            style={{ height: "100%", width: "auto" }}
+                            alt="Edit"
+                          />
+                        </Button>
+                        <Button
+                          isIconOnly
+                          aria-label="Edit"
+                          onClick={toggleDelete}
+                          className="min-w-5 h-5 w-5 p-0"
+                          variant="light"
+                          radius="none">
+                          <Image
+                            src={"./delete.svg"}
+                            width={0}
+                            height={0}
+                            sizes="100vw"
+                            style={{ height: "100%", width: "auto" }}
+                            alt="Edit"
+                          />
+                        </Button>
                       </div>
-                      <div className={styles.rightSideIcons}>
-                        {!slug && (
-                          <>
-                            <div
-                              className={styles.delete}
-                              onClick={toggleDelete}>
-                              <Image
-                                src={"./delete.svg"}
-                                width={0}
-                                height={0}
-                                sizes="100vw"
-                                style={{ height: "100%", width: "auto" }}
-                                alt="Edit"
-                              />
-                            </div>
-                          </>
-                        )}
-                      </div>
-                    </div>{" "}
+                    )}
                   </>
                 )}
               </ModalHeader>
@@ -266,7 +272,7 @@ export default function EssayDetail({
                       {newNotes}
                     </p>
                     <div className={`${Archivo.className} ${styles.link}`}>
-                    {newLink && <a href={newLink}>Link &nbsp; ↗️</a>}
+                      {newLink && <a href={newLink}>Link &nbsp; ↗️</a>}
                     </div>
                     {!slug && (
                       <p
@@ -290,7 +296,6 @@ export default function EssayDetail({
                   {deleteDialog && (
                     <div
                       className={`${Archivo.className} ${styles.deleteDialog}`}>
-                     
                       <div className={styles.deleteButtons}>
                         <div className={styles.cancel} onClick={toggleDelete}>
                           Cancel
@@ -298,7 +303,10 @@ export default function EssayDetail({
                         <div className={styles.deleteButton}>
                           <p
                             className={`${Archivo.className} ${styles.save}`}
-                            onClick={() => {handleDelete(id); onClose();}}>
+                            onClick={() => {
+                              handleDelete(id);
+                              onClose();
+                            }}>
                             Delete
                           </p>
                         </div>
