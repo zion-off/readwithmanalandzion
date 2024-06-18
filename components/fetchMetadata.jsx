@@ -1,6 +1,7 @@
 const FetchMetadata = async (url) => {
   try {
-    const proxyUrl = `https://cors-anywhere-mu-lyart.vercel.app/${url}`;
+    const cleanedUrl = url.replace(/(^\w+:|^)\/\//, '')
+    const proxyUrl = `https://cors-anywhere-mu-lyart.vercel.app/${cleanedUrl}`;
     const res = await fetch(proxyUrl);
     const html = await res.text();
 
