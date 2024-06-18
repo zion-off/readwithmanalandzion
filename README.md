@@ -2,12 +2,17 @@
 
 Kind of like Goodreads, but for scholarly essays/articles that are not available as books. A personal web app I made for me and my friend so we can organize the stuff we read  :  )
 
+(This turned out to be a more complex project that I had anticipated. I had to set up my own CORS proxy server for handling autofill on the add essay form...!)
+
 ## Features
 
-1. User Authentication: Users can sign in and sign out using Google oAuth.
+1. User Authentication: Users can sign up using their Google Account.
 2. Essay Management: Add, edit, view, and delete essays (and upload files!) to create a personal library.
-3. Firebase Integration: Essays are stored and retrieved from a Firebase Firestore database.
-3. Dynamic UI: Using Next UI and Framer Motion, for a smooth and responsive user experience.
+3. Search and sort: Search for essays by title, author, or notes. Sort your shelf by title, author, newest, or olders.
+4. Firebase Integration: Essays are stored and retrieved from a Firebase Firestore database.
+5. Dynamic UI: Using Next UI and Framer Motion, for a smooth and responsive user experience.
+6. Design details: Responsive and looks great on all devices, from desktop to mobile. Loading screens and small animations are added for a better user experience.
+7. Autofill feature: Autofill the add essay form with website metadata, fetched via a custom Node.js proxy server (also deployed on Vercel) to avoid CORS issues!
 
 ## Technologies Used
 
