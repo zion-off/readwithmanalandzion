@@ -5,7 +5,7 @@ import AuthProvider from "./AuthProvider";
 import "./globals.css";
 
 export const metadata = {
-  title: "Home",
+  title: "shelf",
   description: "",
 };
 
