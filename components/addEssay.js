@@ -1,5 +1,5 @@
 // import components
-import React, { useEffect } from "react";
+import React, { use, useEffect } from "react";
 import {
   Modal,
   ModalContent,
@@ -21,7 +21,13 @@ import Loader from "@/components/loader";
 
 // import styling
 import styles from "./addEssay.module.css";
-import { ClashDisplay, Archivo, SFProDisplayMedium, SFPro, SFProDisplayRegular } from "@/assets/fonts/fonts";
+import {
+  ClashDisplay,
+  Archivo,
+  SFProDisplayMedium,
+  SFPro,
+  SFProDisplayRegular,
+} from "@/assets/fonts/fonts";
 
 export default function AddEssay({ onRefresh }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -34,6 +40,9 @@ export default function AddEssay({ onRefresh }) {
   const [checked, setChecked] = useState(true);
   const [loading, setLoading] = useState(false);
   const [size, setSize] = React.useState("md");
+
+  // Loading indication for generating PDF
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (window.innerWidth < 600) {
@@ -54,7 +63,9 @@ export default function AddEssay({ onRefresh }) {
 
   useEffect(() => {
     const fetchMetadata = async () => {
-      const response = await fetch(`/api/metadata?url=${encodeURIComponent(link)}`);
+      const response = await fetch(
+        `/api/metadata?url=${encodeURIComponent(link)}`
+      );
       const data = await response.json();
       if (data.ogTitle === "" || data.ogAuthor === "") return;
       // const { title, author } = await FetchMetadata(link);
@@ -70,8 +81,47 @@ export default function AddEssay({ onRefresh }) {
         setAuthor(data.ogAuthor);
       }
     };
-
     fetchMetadata();
+  }, [link]);
+
+  useEffect(() => {
+    const generatePDF = async () => {
+      try {
+        // Show some loading indication
+        setIsLoading(true); // You'll need to define this state
+  
+        const response = await fetch(
+          `/api/generatePDF?url=${encodeURIComponent(link)}`,
+          {
+            method: "GET",
+          }
+        );
+  
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+  
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+  
+        const newWindow = window.open('', '_blank');
+        if (newWindow) {
+          newWindow.document.write('<html><body><h2>PDF is loading...</h2></body></html>');
+          newWindow.location.href = url;
+        } else {
+          console.log('Popup blocked. PDF URL:', url);
+        }
+        setTimeout(() => window.URL.revokeObjectURL(url), 100);
+      } catch (error) {
+        console.error("Error generating PDF:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+  
+    if (link) {
+      generatePDF();
+    }
   }, [link]);
 
   const getRandomCover = async () => {
@@ -148,8 +198,8 @@ export default function AddEssay({ onRefresh }) {
         />
       </Button>
       <Modal
-      className="backdrop-blur-lg bg-white/90"
-      backdrop="transparent"
+        className="backdrop-blur-lg bg-white/90"
+        backdrop="transparent"
         size={size}
         isOpen={isOpen}
         onOpenChange={onOpenChange}
@@ -169,7 +219,8 @@ export default function AddEssay({ onRefresh }) {
             <>
               <ModalHeader>
                 <div>
-                  <h1 className={`${SFProDisplayRegular.className} ${styles.heading}`}>
+                  <h1
+                    className={`${SFProDisplayRegular.className} ${styles.heading}`}>
                     Add essay
                   </h1>
                 </div>
