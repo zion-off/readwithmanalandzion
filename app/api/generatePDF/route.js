@@ -46,7 +46,6 @@ export async function GET(request) {
       timeoutPromise,
     ]);
     await Promise.race([page.click("#save_top"), timeoutPromise]);
-    await new Promise((resolve) => setTimeout(resolve, 2000));
 
     const optInUrl = `chrome-extension://${EXTENSION_ID}/options/optin/opt-in.html`;
     await Promise.race([
@@ -54,7 +53,6 @@ export async function GET(request) {
       timeoutPromise,
     ]);
     await Promise.race([page.click("#optin-enable"), timeoutPromise]);
-    await new Promise((resolve) => setTimeout(resolve, 2000));
     console.log("Extension configured");
 
     console.log(`Navigating to ${url}...`);

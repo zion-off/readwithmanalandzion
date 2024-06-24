@@ -158,6 +158,7 @@ export default function AddEssay({ onRefresh }) {
     const user = session.user;
 
     try {
+      console.log(fileURL)
       await addDoc(collection(db, "essays"), {
         cover: `url(${await getRandomCover()})`,
         title,
