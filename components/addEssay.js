@@ -21,7 +21,7 @@ import Loader from "@/components/loader";
 
 // import styling
 import styles from "./addEssay.module.css";
-import { ClashDisplay, Archivo } from "@/assets/fonts/fonts";
+import { ClashDisplay, Archivo, SFProDisplayMedium, SFPro, SFProDisplayRegular } from "@/assets/fonts/fonts";
 
 export default function AddEssay({ onRefresh }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -70,8 +70,6 @@ export default function AddEssay({ onRefresh }) {
         setAuthor(data.ogAuthor);
       }
     };
-
-    
 
     fetchMetadata();
   }, [link]);
@@ -134,7 +132,7 @@ export default function AddEssay({ onRefresh }) {
       <Button
         isIconOnly
         onPress={onOpen}
-        className="fixed bottom-8 right-8 max-w-[100px] max-h-[100px] rounded-full bg-black focus:outline-none active:scale-95 transition duration-200 sm:hover:rotate-90 hover:duration-500 hover:ease">
+        className="fixed bottom-8 right-8 max-w-[100px] max-h-[100px] rounded-full bg-zinc-900 focus:outline-none active:scale-95 transition duration-200 sm:hover:rotate-90 hover:duration-500 hover:ease">
         <Image
           src={"./add.svg"}
           width={0}
@@ -150,6 +148,8 @@ export default function AddEssay({ onRefresh }) {
         />
       </Button>
       <Modal
+      className="backdrop-blur-lg bg-white/90"
+      backdrop="transparent"
         size={size}
         isOpen={isOpen}
         onOpenChange={onOpenChange}
@@ -164,13 +164,13 @@ export default function AddEssay({ onRefresh }) {
             alt="Add"
           />
         }>
-        <ModalContent className="px-2 py-5">
+        <ModalContent className="px-2 py-5 rounded-2xl">
           {(onClose) => (
             <>
               <ModalHeader>
                 <div>
-                  <h1 className={`${ClashDisplay.className} ${styles.heading}`}>
-                    Add Essay
+                  <h1 className={`${SFProDisplayRegular.className} ${styles.heading}`}>
+                    Add essay
                   </h1>
                 </div>
               </ModalHeader>

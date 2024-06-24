@@ -17,7 +17,7 @@ import FilePicker from "@/components/filepicker";
 
 // import styling
 import styles from "./essayDetail.module.css";
-import { ClashDisplay, Archivo } from "@/assets/fonts/fonts";
+import { ClashDisplay, Archivo, SFPro } from "@/assets/fonts/fonts";
 
 export default function EssayDetail({
   isOpen,
@@ -121,8 +121,9 @@ export default function EssayDetail({
   return (
     <>
       <Modal
+        backdrop="transparent"
         size={size}
-        className="pb-5"
+        className="backdrop-blur-lg bg-white/90 pb-5"
         isOpen={isOpen}
         onOpenChange={() => {
           onOpenChange();
@@ -149,7 +150,7 @@ export default function EssayDetail({
           />
         }
         hideCloseButton={editing ? true : false}>
-        <ModalContent>
+        <ModalContent className="rounded-2xl">
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1 px-6 py-6">
@@ -219,7 +220,7 @@ export default function EssayDetail({
                         placeholder={title}
                         required
                         onChange={(e) => setNewTitle(e.target.value)}
-                        className={`${ClashDisplay.className} ${styles.titleInput}`}
+                        className={`${SFPro.className} ${styles.titleInput}`}
                       />
                       <input
                         type="text"
@@ -261,7 +262,7 @@ export default function EssayDetail({
                   <>
                     <div className={styles.headingContainer}>
                       <p
-                        className={`${ClashDisplay.className} ${styles.title}`}>
+                        className={`${SFPro.className} ${styles.title}`}>
                         {newTitle}
                       </p>
                       <p className={`${Archivo.className} ${styles.author}`}>
