@@ -293,7 +293,7 @@ export default function EssayDetail({
                 )}
               </ModalBody>
               <ModalFooter>
-                <div className={styles.deleteContainer}>
+                <div className={`${styles.deleteContainer}`}>
                   {deleteDialog && (
                     <div
                       className={`${Archivo.className} ${styles.deleteDialog}`}>

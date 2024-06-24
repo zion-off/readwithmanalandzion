@@ -45,6 +45,15 @@ export default function AddEssay({ onRefresh }) {
   // Loading indication for generating PDF
   const [isLoading, setIsLoading] = useState(false);
 
+  function isValidUrl(string) {
+    try {
+      new URL(string);
+      return true;
+    } catch (err) {
+      return false;
+    }
+  }
+
   useEffect(() => {
     if (window.innerWidth < 600) {
       setSize("full");
@@ -58,6 +67,7 @@ export default function AddEssay({ onRefresh }) {
       setNotes("");
       setLink("");
       setFileURL("");
+      setFileBlob(null);
       setChecked(true);
     }
   }, [isOpen]);
@@ -81,7 +91,7 @@ export default function AddEssay({ onRefresh }) {
       }
     };
 
-    if (link !== "") {
+    if (link !== "" && isValidUrl(link)) {
       fetchMetadata();
     }
   }, [link]);
@@ -112,7 +122,7 @@ export default function AddEssay({ onRefresh }) {
       }
     };
 
-    if (link) {
+    if (isValidUrl(link)) {
       generatePDF();
     }
   }, [link]);
@@ -262,9 +272,14 @@ export default function AddEssay({ onRefresh }) {
                   <FilePicker
                     label="File"
                     name="file"
-                    filePickerText="Upload a PDF or an EPUB"
+                    filePickerText={
+                      isLoading
+                        ? "Generating PDF..."
+                        : "Upload a PDF or an EPUB"
+                    }
                     onFileUpload={setFileURL}
                     fileBlob={fileBlob}
+                    isGenerating={isLoading}
                   />
                   <ModalFooter className="w-full px-0 py-0">
                     <div className={styles.buttonContainer}>
