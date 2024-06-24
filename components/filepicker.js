@@ -13,7 +13,13 @@ import { useRef, useState, useEffect } from "react";
 import { Archivo } from "@/assets/fonts/fonts";
 import styles from "./filepicker.module.css";
 
-export default function FilePicker({ name, onFileUpload, filePickerText, fileBlob }) {
+export default function FilePicker({
+  name,
+  onFileUpload,
+  filePickerText,
+  fileBlob,
+  isGenerating,
+}) {
   const [pickedFile, setPickedFile] = useState(null);
   const [progress, setProgress] = useState(0);
   const fileInput = useRef(null);
@@ -60,7 +66,9 @@ export default function FilePicker({ name, onFileUpload, filePickerText, fileBlo
 
   useEffect(() => {
     if (fileBlob) {
-      const file = new File([fileBlob], "PDF Uploaded!", { type: fileBlob.type });
+      const file = new File([fileBlob], "PDF Uploaded!", {
+        type: fileBlob.type,
+      });
       uploadFile(file);
     }
   }, [fileBlob]);
@@ -78,7 +86,12 @@ export default function FilePicker({ name, onFileUpload, filePickerText, fileBlo
           style={{ display: "none" }}
         />
 
-        <div className={`${styles.button} ${progress > 99 ? styles.green : styles.normal} `} type="button" onClick={handlePickClick}>
+        <div
+          className={`${styles.button} ${
+            progress > 99 ? styles.green : styles.normal
+          } ${isGenerating ? styles.generatingButton : ""} `}
+          type="button"
+          onClick={handlePickClick}>
           {progress > 0 ? (
             progress > 99 ? (
               <div className={`${Archivo.className} ${styles.buttonText}`}>
@@ -90,8 +103,11 @@ export default function FilePicker({ name, onFileUpload, filePickerText, fileBlo
               </div>
             )
           ) : (
-            <p className={`${Archivo.className} ${styles.buttonText}`}>
-              {filePickerText ? filePickerText : "Upload a file"}
+            <p
+              className={`${Archivo.className} ${styles.buttonText} ${
+                isGenerating ? styles.generatingText : ""
+              } `}>
+              {filePickerText ? filePickerText : "Upload a PDF or an EPUB"}
             </p>
           )}
         </div>
