@@ -7,13 +7,13 @@ import {
   uploadBytesResumable,
   getDownloadURL,
 } from "firebase/storage";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 
 // import styling
 import { Archivo } from "@/assets/fonts/fonts";
 import styles from "./filepicker.module.css";
 
-export default function FilePicker({ label, name, onFileUpload, filePickerText }) {
+export default function FilePicker({ name, onFileUpload, filePickerText, fileBlob }) {
   const [pickedFile, setPickedFile] = useState(null);
   const [progress, setProgress] = useState(0);
   const fileInput = useRef(null);
@@ -30,6 +30,10 @@ export default function FilePicker({ label, name, onFileUpload, filePickerText }
       return;
     }
 
+    uploadFile(file);
+  }
+
+  function uploadFile(file) {
     setPickedFile(file);
     const storage = getStorage();
     const storageRef = ref(storage, `essays/${file.name}`);
@@ -53,6 +57,13 @@ export default function FilePicker({ label, name, onFileUpload, filePickerText }
       }
     );
   }
+
+  useEffect(() => {
+    if (fileBlob) {
+      const file = new File([fileBlob], "PDF Uploaded!", { type: fileBlob.type });
+      uploadFile(file);
+    }
+  }, [fileBlob]);
 
   return (
     <div>
