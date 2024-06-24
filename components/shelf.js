@@ -124,35 +124,45 @@ export default function Shelf({ refresh }) {
 
   return (
     <div className={styles.container}>
-      <div className="w-100 flex justify-center gap-2">
-        <Input
-          isClearable
-          radius="full"
-          type="text"
-          placeholder="Search..."
-          className="mb-10 object-fill sm:w-2/4 sm:max-w-[400px]"
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
-        <Dropdown>
-          <DropdownTrigger>
-            <Button variant="ghost" className="capitalize">
-              Sort
-            </Button>
-          </DropdownTrigger>
-          <DropdownMenu
-            aria-label="Single selection example"
-            variant="flat"
-            disallowEmptySelection
-            selectionMode="single"
-            selectedKeys={selectedKeys}
-            defaultSelectedKeys={"title"}
-            onSelectionChange={setSelectedKeys}>
-            <DropdownItem key="title">Title</DropdownItem>
-            <DropdownItem key="author">Author</DropdownItem>
-            <DropdownItem key="newest">Newest</DropdownItem>
-            <DropdownItem key="oldest">Oldest</DropdownItem>
-          </DropdownMenu>
-        </Dropdown>
+      <div className="flex justify-center">
+        <div className="sm:w-3/4 w-full flex justify-center gap-2 backdrop-blur-xl bg-white/30 p-2 mb-10 rounded-2xl">
+          <Input
+            isClearable
+            radius="full"
+            type="text"
+            placeholder="Search..."
+            // className={{"object-fill w-full"}}
+            classNames={{
+              label: "object-fill w-full bg-transparent shadow-none",
+              input:
+                "object-fill w-full bg-transparent  shadow-none group-data-[focus=true]:bg-transparent",
+              innerWrapper: "object-fill w-full bg-transparent  shadow-none",
+              inputWrapper:
+                "object-fill w-full bg-transparent  shadow-none group-data-[hover=true]:bg-transparent group-data-[focus=true]:bg-transparent group-data-[focus=true]:shadow-none",
+            }}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          <Dropdown>
+            <DropdownTrigger>
+              <Button className="capitalize bg-zinc-900 col text-gray-100">
+                Sort
+              </Button>
+            </DropdownTrigger>
+            <DropdownMenu
+              aria-label="Single selection example"
+              variant="flat"
+              disallowEmptySelection
+              selectionMode="single"
+              selectedKeys={selectedKeys}
+              defaultSelectedKeys={"title"}
+              onSelectionChange={setSelectedKeys}>
+              <DropdownItem key="title">Title</DropdownItem>
+              <DropdownItem key="author">Author</DropdownItem>
+              <DropdownItem key="newest">Newest</DropdownItem>
+              <DropdownItem key="oldest">Oldest</DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
+        </div>
       </div>
 
       <div className={styles.main}>

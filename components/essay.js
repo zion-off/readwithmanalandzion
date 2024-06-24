@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import Images from "@/components/randomCover";
 
 // import styling
-import { Archivo } from "@/assets/fonts/fonts";
+import { Archivo, SFProDisplayRegular } from "@/assets/fonts/fonts";
 import styles from "./essay.module.css";
 
 export default function Essay({ title, author, cover, onClick }) {
@@ -38,7 +38,7 @@ export default function Essay({ title, author, cover, onClick }) {
           backgroundPosition: "center",
         }}></div>
       <div className={styles.textContainer}>
-        <h3 className={`${Archivo.className} ${styles.title}`}>{title}</h3>
+        <h3 className={`${SFProDisplayRegular.className} ${styles.title}`}>{title}</h3>
         <p className={`${Archivo.className} ${styles.author}`}>{author}</p>
       </div>
     </div>
