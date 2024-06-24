@@ -40,6 +40,7 @@ export default function AddEssay({ onRefresh }) {
   const [checked, setChecked] = useState(true);
   const [loading, setLoading] = useState(false);
   const [size, setSize] = React.useState("md");
+  const [fileBlob, setFileBlob] = useState(null);
 
   // Loading indication for generating PDF
   const [isLoading, setIsLoading] = useState(false);
@@ -68,8 +69,6 @@ export default function AddEssay({ onRefresh }) {
       );
       const data = await response.json();
       if (data.ogTitle === "" || data.ogAuthor === "") return;
-      // const { title, author } = await FetchMetadata(link);
-      // if (title === "" || author === "") return;
       if (data.ogTitle === "Not found") {
         setTitle("");
       } else {
@@ -81,7 +80,10 @@ export default function AddEssay({ onRefresh }) {
         setAuthor(data.ogAuthor);
       }
     };
-    fetchMetadata();
+
+    if (link !== "") {
+      fetchMetadata();
+    }
   }, [link]);
 
   useEffect(() => {
@@ -89,36 +91,27 @@ export default function AddEssay({ onRefresh }) {
       try {
         // Show some loading indication
         setIsLoading(true); // You'll need to define this state
-  
+
         const response = await fetch(
           `/api/generatePDF?url=${encodeURIComponent(link)}`,
           {
             method: "GET",
           }
         );
-  
+
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-  
+
         const blob = await response.blob();
-        const url = window.URL.createObjectURL(blob);
-  
-        const newWindow = window.open('', '_blank');
-        if (newWindow) {
-          newWindow.document.write('<html><body><h2>PDF is loading...</h2></body></html>');
-          newWindow.location.href = url;
-        } else {
-          console.log('Popup blocked. PDF URL:', url);
-        }
-        setTimeout(() => window.URL.revokeObjectURL(url), 100);
+        setFileBlob(blob);
       } catch (error) {
         console.error("Error generating PDF:", error);
       } finally {
         setIsLoading(false);
       }
     };
-  
+
     if (link) {
       generatePDF();
     }
@@ -271,6 +264,7 @@ export default function AddEssay({ onRefresh }) {
                     name="file"
                     filePickerText="Upload a PDF or an EPUB"
                     onFileUpload={setFileURL}
+                    fileBlob={fileBlob}
                   />
                   <ModalFooter className="w-full px-0 py-0">
                     <div className={styles.buttonContainer}>

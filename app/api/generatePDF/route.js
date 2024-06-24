@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
 import puppeteer from "puppeteer";
-import path from 'path';
+import path from "path";
 
-const EXTENSION_PATH = path.resolve('./public', 'extension');
+const EXTENSION_PATH = path.resolve("./public", "extension");
 const EXTENSION_ID = "lkbebcjgcmobigpeffafkodonchffocl";
-const TIMEOUT_DURATION = 30000; // 30 seconds
+const TIMEOUT_DURATION = 30000;
 
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
@@ -17,18 +17,11 @@ export async function GET(request) {
     );
   }
 
-  console.log("Current directory:", __dirname);
-  console.log("Extension path:", EXTENSION_PATH);
-
-  // Check if manifest.json file exists
-  const fs = require("fs");
-  console.log("Files in extension directory:", fs.readdirSync(EXTENSION_PATH));
-
   let browser;
   try {
     console.log("Launching browser...");
     browser = await puppeteer.launch({
-      headless: false, // Set to false for debugging
+      headless: true,
       args: [
         `--disable-extensions-except=${EXTENSION_PATH}`,
         `--load-extension=${EXTENSION_PATH}`,
@@ -46,7 +39,6 @@ export async function GET(request) {
       )
     );
 
-    // Navigate to extension options page and configure
     console.log("Configuring extension...");
     const optionsPageUrl = `chrome-extension://${EXTENSION_ID}/options/options.html`;
     await Promise.race([
@@ -56,7 +48,6 @@ export async function GET(request) {
     await Promise.race([page.click("#save_top"), timeoutPromise]);
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
-    // Optionally, navigate to opt-in page and enable opt-in
     const optInUrl = `chrome-extension://${EXTENSION_ID}/options/optin/opt-in.html`;
     await Promise.race([
       page.goto(optInUrl, { waitUntil: "networkidle2" }),
@@ -66,7 +57,6 @@ export async function GET(request) {
     await new Promise((resolve) => setTimeout(resolve, 2000));
     console.log("Extension configured");
 
-    // Visit the target URL provided in the query parameter
     console.log(`Navigating to ${url}...`);
     const targetUrl = decodeURIComponent(url);
     await Promise.race([
@@ -75,7 +65,6 @@ export async function GET(request) {
     ]);
     console.log("Navigation complete");
 
-    // Generate PDF
     console.log("Generating PDF...");
     const pdfBuffer = await Promise.race([
       page.pdf({
