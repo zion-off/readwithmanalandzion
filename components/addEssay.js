@@ -22,10 +22,7 @@ import Loader from "@/components/loader";
 // import styling
 import styles from "./addEssay.module.css";
 import {
-  ClashDisplay,
   Archivo,
-  SFProDisplayMedium,
-  SFPro,
   SFProDisplayRegular,
 } from "@/assets/fonts/fonts";
 
@@ -100,7 +97,7 @@ export default function AddEssay({ onRefresh }) {
     const generatePDF = async () => {
       try {
         // Show some loading indication
-        setIsLoading(true); // You'll need to define this state
+        setIsLoading(true);
 
         const response = await fetch(
           `https://generate-pdf-zc2q.onrender.com/generate-pdf?url=${encodeURIComponent(link)}`,
@@ -207,6 +204,7 @@ export default function AddEssay({ onRefresh }) {
         size={size}
         isOpen={isOpen}
         onOpenChange={onOpenChange}
+        onClose={() => {setFileBlob(null); setIsLoading(false); setFileURL("")}}
         scrollBehavior="inside"
         closeButton={
           <Image
@@ -281,6 +279,7 @@ export default function AddEssay({ onRefresh }) {
                     onFileUpload={setFileURL}
                     fileBlob={fileBlob}
                     isGenerating={isLoading}
+                    fetchedTitle={title}
                   />
                   <ModalFooter className="w-full px-0 py-0">
                     <div className={styles.buttonContainer}>

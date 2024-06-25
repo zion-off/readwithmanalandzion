@@ -8,7 +8,7 @@ import {
   getDownloadURL,
 } from "firebase/storage";
 import { useRef, useState, useEffect } from "react";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
 // import styling
 import { Archivo } from "@/assets/fonts/fonts";
@@ -19,6 +19,7 @@ export default function FilePicker({
   onFileUpload,
   filePickerText,
   fileBlob,
+  fetchedTitle,
   isGenerating,
 }) {
   const [pickedFile, setPickedFile] = useState(null);
@@ -62,19 +63,17 @@ export default function FilePicker({
           onFileUpload(downloadURL);
           console.log("File available at", downloadURL);
         });
-
       }
     );
   }
 
   useEffect(() => {
     if (fileBlob) {
-      const file = new File([fileBlob], `${uuidv4()}${".pdf"}`, {
+      const file = new File([fileBlob], `${fetchedTitle} ${uuidv4()}${".pdf"}`, {
         type: fileBlob.type,
       });
       uploadFile(file);
     }
-    
   }, [fileBlob]);
 
   return (
