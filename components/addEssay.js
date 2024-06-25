@@ -100,7 +100,7 @@ export default function AddEssay({ onRefresh }) {
         setIsLoading(true);
 
         const response = await fetch(
-          `https://generate-pdf-zc2q.onrender.com/generate-pdf?url=${encodeURIComponent(link)}`,
+          `https://generate-pdf-image-s2q26wjzmq-uc.a.run.app/generate-pdf?url=${encodeURIComponent(link)}`,
           {
             method: "GET",
           }
