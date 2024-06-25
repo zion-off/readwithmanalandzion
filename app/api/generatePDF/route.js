@@ -1,10 +1,38 @@
 import { NextResponse } from "next/server";
+import puppeteerCore from "puppeteer-core";
 import puppeteer from "puppeteer";
+import chromium from "@sparticuz/chromium";
 import path from "path";
 
 const EXTENSION_PATH = path.resolve("./public", "extension");
 const EXTENSION_ID = "lkbebcjgcmobigpeffafkodonchffocl";
 const TIMEOUT_DURATION = 30000;
+
+async function getBrowser() {
+  if (process.env.VERCEL_ENV === "production") {
+    const executablePath = await chromium.executablePath();
+
+    const browser = await puppeteerCore.launch({
+      args: [
+        chromium.args,
+        `--disable-extensions-except=${EXTENSION_PATH}`,
+        `--load-extension=${EXTENSION_PATH}`,
+      ],
+      defaultViewport: chromium.defaultViewport,
+      executablePath,
+      headless: chromium.headless,
+    });
+    return browser;
+  } else {
+    const browser = await puppeteer.launch({
+      args: [
+        `--disable-extensions-except=${EXTENSION_PATH}`,
+        `--load-extension=${EXTENSION_PATH}`,
+      ],
+    });
+    return browser;
+  }
+}
 
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
@@ -20,13 +48,7 @@ export async function GET(request) {
   let browser;
   try {
     console.log("Launching browser...");
-    browser = await puppeteer.launch({
-      headless: true,
-      args: [
-        `--disable-extensions-except=${EXTENSION_PATH}`,
-        `--load-extension=${EXTENSION_PATH}`,
-      ],
-    });
+    browser = await getBrowser();
     console.log("Browser launched");
 
     const page = await browser.newPage();
