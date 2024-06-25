@@ -103,7 +103,7 @@ export default function AddEssay({ onRefresh }) {
         setIsLoading(true); // You'll need to define this state
 
         const response = await fetch(
-          `/api/generatePDF?url=${encodeURIComponent(link)}`,
+          `https://generate-pdf-zc2q.onrender.com/generate-pdf?url=${encodeURIComponent(link)}`,
           {
             method: "GET",
           }
