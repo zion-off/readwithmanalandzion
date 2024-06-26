@@ -25,6 +25,7 @@ export default function FilePicker({
   pickedFileChanger,
   modalIsOpen,
   onUploadComplete,
+  generatePDFClicked
 }) {
   const [progress, setProgress] = useState(0);
   const fileInput = useRef(null);
@@ -97,7 +98,7 @@ export default function FilePicker({
   }
 
   useEffect(() => {
-    if (fileBlob && modalIsOpen) {
+    if (generatePDFClicked && fileBlob && modalIsOpen) {
       const file = new File(
         [fileBlob],
         `${fetchedTitle} ${uuidv4()}${".pdf"}`,

@@ -7,6 +7,7 @@ import {
   ModalBody,
   ModalFooter,
   Button,
+  Input
 } from "@nextui-org/react";
 import { Checkbox } from "@nextui-org/react";
 import { useEffect, useState } from "react";
@@ -40,7 +41,7 @@ export default function EssayDetail({
   const [newNotes, setNewNotes] = useState(notes);
   const [newLink, setNewLink] = useState(fileURL);
   const [newChecked, setNewChecked] = useState(checked);
-  const [newfileURL, setFileURL] = useState("");
+  const [newfileURL, setNewFileURL] = useState(fileURL);
   const [deleteDialog, setDeleteDialog] = useState(false);
   const [size, setSize] = React.useState("md");
 
@@ -56,7 +57,7 @@ export default function EssayDetail({
     setNewNotes(notes);
     setNewLink(link);
     setNewChecked(checked);
-    setFileURL(fileURL);
+    setNewFileURL(fileURL);
   }, [title, author, notes, link, checked, fileURL]);
 
   const toggleEditing = () => {
@@ -88,7 +89,7 @@ export default function EssayDetail({
         notes: newNotes,
         link: newLink,
         checked: newChecked,
-        fileURL: newfileURL,
+        fileURL: newfileURL !== "" ? newfileURL : fileURL,
       });
       onSaved({
         id,
@@ -97,7 +98,7 @@ export default function EssayDetail({
         notes: newNotes,
         link: newLink,
         checked: newChecked,
-        fileURL: newfileURL,
+        fileURL: newfileURL !== "" ? newfileURL : fileURL,
       });
       toggleEditing();
       console.log("Document successfully updated!");
@@ -214,48 +215,77 @@ export default function EssayDetail({
                 {editing ? (
                   <>
                     <div className={styles.headingContainer}>
-                      <input
+                      <Input
                         type="text"
                         name="title"
                         placeholder={title}
                         required
                         onChange={(e) => setNewTitle(e.target.value)}
-                        className={`${SFPro.className} ${styles.titleInput}`}
+                        classNames={{
+                          label: `bg-transparent shadow-none ${SFPro.className} ${styles.input}`,
+                          input:
+                            "bg-transparent shadow-none group-data-[focus=true]:bg-transparent",
+                          innerWrapper: "bg-transparent shadow-none",
+                          inputWrapper:
+                            "bg-transparent shadow-none group-data-[hover=true]:bg-transparent group-data-[focus=true]:bg-transparent group-data-[focus=true]:shadow-none",
+                        }}
                       />
-                      <input
+                      <Input
                         type="text"
                         name="author"
                         placeholder={author}
                         required
                         onChange={(e) => setNewAuthor(e.target.value)}
-                        className={`${Archivo.className} ${styles.input}`}
+                        classNames={{
+                          label: `bg-transparent shadow-none ${SFPro.className} ${styles.input}`,
+                          input:
+                            "bg-transparent shadow-none group-data-[focus=true]:bg-transparent",
+                          innerWrapper: "bg-transparent shadow-none",
+                          inputWrapper:
+                            "bg-transparent shadow-none group-data-[hover=true]:bg-transparent group-data-[focus=true]:bg-transparent group-data-[focus=true]:shadow-none",
+                        }}
                       />
                     </div>
-                    <input
+                    <Input
                       type="text"
                       name="notes"
                       placeholder={notes || "Notes"}
                       onChange={(e) => setNewNotes(e.target.value)}
-                      className={`${Archivo.className} ${styles.input}`}
+                      classNames={{
+                        label: `bg-transparent shadow-none ${SFPro.className} ${styles.input}`,
+                        input:
+                          "bg-transparent shadow-none group-data-[focus=true]:bg-transparent",
+                        innerWrapper: "bg-transparent shadow-none",
+                        inputWrapper:
+                          "bg-transparent shadow-none group-data-[hover=true]:bg-transparent group-data-[focus=true]:bg-transparent group-data-[focus=true]:shadow-none",
+                      }}
                     />
                     <Checkbox
                       color="default"
                       isSelected={newChecked}
-                      onValueChange={setNewChecked}>
+                      onValueChange={setNewChecked}
+                      className="px-5">
                       Visible to others
                     </Checkbox>
-                    <input
+                    <Input
                       type="url"
                       name="link"
                       placeholder={link || "Enter a link here"}
                       onChange={(e) => setNewLink(e.target.value)}
-                      className={`${Archivo.className} ${styles.input}`}
+                      classNames={{
+                        label: `bg-transparent shadow-none ${SFPro.className} ${styles.input}`,
+                        input:
+                          "bg-transparent shadow-none group-data-[focus=true]:bg-transparent",
+                        innerWrapper: "bg-transparent shadow-none",
+                        inputWrapper:
+                          "bg-transparent shadow-none group-data-[hover=true]:bg-transparent group-data-[focus=true]:bg-transparent group-data-[focus=true]:shadow-none",
+                      }}
                     />
                     <FilePicker
                       label="File"
                       name="file"
                       filePickerText="Upload a different file"
-                      onFileUpload={setFileURL}
+                      onFileUpload={setNewFileURL}
                     />
                   </>
                 ) : (

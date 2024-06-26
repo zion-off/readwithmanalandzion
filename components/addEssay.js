@@ -137,13 +137,6 @@ export default function AddEssay({ onRefresh }) {
     }
   }
 
-  useEffect(() => {
-    if (link !== "" && isValidUrl(link)) {
-      console.log("Valid link detected, generating PDF");
-      generatePDF();
-    }
-  }, [link]);
-
   // fetch a random cover image from Firebase Storage
   const getRandomCover = async () => {
     const storageRef = ref(storage, "covers");
@@ -265,9 +258,11 @@ export default function AddEssay({ onRefresh }) {
                     onChange={(e) => setTitle(e.target.value)}
                     classNames={{
                       label: `bg-transparent shadow-none ${Archivo.className} ${styles.input}`,
-                      input: "bg-transparent shadow-none group-data-[focus=true]:bg-transparent",
+                      input:
+                        "bg-transparent shadow-none group-data-[focus=true]:bg-transparent",
                       innerWrapper: "bg-transparent shadow-none",
-                      inputWrapper: "w-full bg-transparent shadow-none group-data-[hover=true]:bg-transparent group-data-[focus=true]:bg-transparent group-data-[focus=true]:shadow-none",
+                      inputWrapper:
+                        "bg-transparent shadow-none group-data-[hover=true]:bg-transparent group-data-[focus=true]:bg-transparent group-data-[focus=true]:shadow-none",
                     }}
                   />
                   <Input
@@ -279,11 +274,12 @@ export default function AddEssay({ onRefresh }) {
                     onChange={(e) => setAuthor(e.target.value)}
                     classNames={{
                       label: `bg-transparent shadow-none ${Archivo.className} ${styles.input}`,
-                      input: "bg-transparent shadow-none group-data-[focus=true]:bg-transparent",
+                      input:
+                        "bg-transparent shadow-none group-data-[focus=true]:bg-transparent",
                       innerWrapper: "bg-transparent shadow-none",
-                      inputWrapper: "w-full bg-transparent shadow-none group-data-[hover=true]:bg-transparent group-data-[focus=true]:bg-transparent group-data-[focus=true]:shadow-none",
+                      inputWrapper:
+                        "bg-transparent shadow-none group-data-[hover=true]:bg-transparent group-data-[focus=true]:bg-transparent group-data-[focus=true]:shadow-none",
                     }}
-                    
                   />
                   <Input
                     type="text"
@@ -292,9 +288,11 @@ export default function AddEssay({ onRefresh }) {
                     onChange={(e) => setNotes(e.target.value)}
                     classNames={{
                       label: `bg-transparent shadow-none ${Archivo.className} ${styles.input}`,
-                      input: "bg-transparent shadow-none group-data-[focus=true]:bg-transparent",
+                      input:
+                        "bg-transparent shadow-none group-data-[focus=true]:bg-transparent",
                       innerWrapper: "bg-transparent shadow-none",
-                      inputWrapper: "w-full bg-transparent shadow-none group-data-[hover=true]:bg-transparent group-data-[focus=true]:bg-transparent group-data-[focus=true]:shadow-none",
+                      inputWrapper:
+                        "bg-transparent shadow-none group-data-[hover=true]:bg-transparent group-data-[focus=true]:bg-transparent group-data-[focus=true]:shadow-none",
                     }}
                   />
                   <Input
@@ -304,10 +302,17 @@ export default function AddEssay({ onRefresh }) {
                     onChange={(e) => setLink(e.target.value)}
                     classNames={{
                       label: `bg-transparent shadow-none ${Archivo.className} ${styles.input}`,
-                      input: "bg-transparent shadow-none group-data-[focus=true]:bg-transparent",
+                      input:
+                        "bg-transparent shadow-none group-data-[focus=true]:bg-transparent",
                       innerWrapper: "bg-transparent shadow-none",
-                      inputWrapper: "w-full bg-transparent shadow-none group-data-[hover=true]:bg-transparent group-data-[focus=true]:bg-transparent group-data-[focus=true]:shadow-none",
+                      inputWrapper:
+                        "bg-transparent shadow-none group-data-[hover=true]:bg-transparent group-data-[focus=true]:bg-transparent group-data-[focus=true]:shadow-none",
                     }}
+                    endContent={
+                      link ? (generatePDFClicked ? null : <Button onPress={generatePDFLinkClicked} size="sm" color="primary" className="px-5" variant="ghost">
+                        Generate PDF
+                      </Button>  ) : null
+                    }
                   />
                   <Checkbox
                     defaultSelected
@@ -332,6 +337,7 @@ export default function AddEssay({ onRefresh }) {
                     pickedFile={pickedFile}
                     modalIsOpen={isOpen}
                     onUploadComplete={setIsUploadComplete}
+                    generatePDFClicked={generatePDFClicked}
                   />
                   <ModalFooter className="w-full px-0 py-0">
                     <div className={styles.buttonContainer}>
