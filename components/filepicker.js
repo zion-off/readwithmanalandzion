@@ -24,17 +24,24 @@ export default function FilePicker({
   pickedFile,
   setPickedFile,
   modalIsOpen,
+  onUploadComplete,
 }) {
   const [progress, setProgress] = useState(0);
   const fileInput = useRef(null);
   const [uploadTask, setUploadTask] = useState(null);
+  const [uploadComplete, setUploadComplete] = useState(false);
+  
 
   useEffect(() => {
-    if (!modalIsOpen && uploadTask) {
-      uploadTask.cancel();
+    if (!modalIsOpen) {
+      if (uploadTask) {
+        uploadTask.cancel();
+        setUploadTask(null);
+      }
       setProgress(0);
       console.log("Upload cancelled");
       setPickedFile(null);
+      onFileUpload("");
     }
   }, [modalIsOpen]);
 
@@ -54,6 +61,7 @@ export default function FilePicker({
   }
 
   function uploadFile(file) {
+    setUploadComplete(false);
     setPickedFile(file);
     const storage = getStorage();
     const storageRef = ref(storage, `essays/${file.name}`);
@@ -63,17 +71,27 @@ export default function FilePicker({
     newUploadTask.on(
       "state_changed",
       (snapshot) => {
+        if (!modalIsOpen) {
+          newUploadTask.cancel();
+          setProgress(0);
+          setUploadTask(null);
+          console.log("Upload cancelled due to modal closure");
+          return;
+        }
         const progress =
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         setProgress(progress);
       },
       (error) => {
         console.error("Upload failed: ", error);
+        onFileUpload(null, error);
+        setUploadComplete(false);
       },
       () => {
         console.log("Upload complete");
         getDownloadURL(newUploadTask.snapshot.ref).then((downloadURL) => {
           onFileUpload(downloadURL);
+          setUploadComplete(true);
           console.log("File available at", downloadURL);
         });
       }
@@ -81,7 +99,7 @@ export default function FilePicker({
   }
 
   useEffect(() => {
-    if (fileBlob) {
+    if (fileBlob && modalIsOpen) {
       const file = new File(
         [fileBlob],
         `${fetchedTitle} ${uuidv4()}${".pdf"}`,
@@ -113,9 +131,9 @@ export default function FilePicker({
           type="button"
           onClick={handlePickClick}>
           {progress > 0 ? (
-            progress > 99 ? (
+            uploadComplete ? (
               <div className={`${Archivo.className} ${styles.buttonText}`}>
-                {pickedFile ? pickedFile.name : <p>Upload error</p>}
+                {pickedFile ? pickedFile.name : <p>Upload complete</p>}
               </div>
             ) : (
               <div className={`${Archivo.className} ${styles.buttonText}`}>

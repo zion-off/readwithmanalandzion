@@ -38,17 +38,11 @@ export default function AddEssay({ onRefresh }) {
   const [isLoading, setIsLoading] = useState(false); // loading indication for generating PDF
   const [pickedFile, setPickedFile] = useState(null);
   const [size, setSize] = useState("md");
+  const [isUploadComplete, setIsUploadComplete] = useState(false);
 
-  function fileURLChanged(downloadURL) {
-    // if (!isOpen) {
-    //   setFileURL("");
-    //   setPickedFile(null);
-    //   return;
-    // } else if (isOpen) {
-    console.log("File URL changed:", downloadURL);
-    setFileURL(downloadURL);
-    // }
-  }
+  useEffect(() => {
+    console.log("File URL set to", fileURL);
+  }, [fileURL]);
 
   // set modal size to full screen on mobile
   useEffect(() => {
@@ -67,7 +61,6 @@ export default function AddEssay({ onRefresh }) {
     }
   }
 
-  // refresh form fields when modal is opened
   useEffect(() => {
     if (!isOpen) {
       setTitle("");
@@ -77,13 +70,10 @@ export default function AddEssay({ onRefresh }) {
       setFileURL("");
       setFileBlob(null);
       setChecked(true);
+      setPickedFile(null);
+      setIsUploadComplete(false);
     }
   }, [isOpen]);
-
-  // log file URL changes for debugging
-  useEffect(() => {
-    console.log("File URL changed:", fileURL);
-  }, [fileURL]);
 
   // fetch metadata when link is entered
   const fetchMetadata = async () => {
@@ -137,7 +127,6 @@ export default function AddEssay({ onRefresh }) {
   };
 
   useEffect(() => {
-    console.log("Current link:", link);
     if (link !== "" && isValidUrl(link)) {
       console.log("Valid link detected, generating PDF");
       generatePDF();
@@ -174,7 +163,9 @@ export default function AddEssay({ onRefresh }) {
     const user = session.user;
 
     try {
-      console.log(fileURL);
+      console.log(
+        `Adding essay: ${title} by ${author}, available at ${fileURL}`
+      );
       await addDoc(collection(db, "essays"), {
         cover: `url(${await getRandomCover()})`,
         title,
@@ -182,7 +173,7 @@ export default function AddEssay({ onRefresh }) {
         notes,
         link,
         checked,
-        fileURL,
+        fileURL: fileURL,
         userId: user.email,
         userEmail: user.email,
         createdAt: new Date(),
@@ -301,13 +292,14 @@ export default function AddEssay({ onRefresh }) {
                         ? "Generating PDF..."
                         : "Upload a PDF or an EPUB"
                     }
-                    onFileUpload={fileURLChanged}
+                    onFileUpload={setFileURL}
                     fileBlob={fileBlob}
                     isGenerating={isLoading}
                     fetchedTitle={title}
                     pickedFile={pickedFile}
                     setPickedFile={setPickedFile}
                     modalIsOpen={isOpen}
+                    onUploadComplete={setIsUploadComplete}
                   />
                   <ModalFooter className="w-full px-0 py-0">
                     <div className={styles.buttonContainer}>
