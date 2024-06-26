@@ -1,5 +1,6 @@
-// import components
-import React, { use, useEffect } from "react";
+// import dependencies
+import React, { useState, useEffect } from "react";
+import Image from "next/image";
 import {
   Modal,
   ModalContent,
@@ -8,27 +9,24 @@ import {
   ModalFooter,
   Button,
   useDisclosure,
+  Checkbox,
 } from "@nextui-org/react";
-import Image from "next/image";
+// firebase imports
 import { useSession } from "next-auth/react";
-import { useState } from "react";
-import { Checkbox } from "@nextui-org/react";
 import { db, storage } from "@/firebase";
 import { collection, addDoc } from "firebase/firestore";
 import { ref, listAll, getDownloadURL } from "firebase/storage";
+// import components
 import FilePicker from "@/components/filepicker";
 import Loader from "@/components/loader";
-
 // import styling
 import styles from "./addEssay.module.css";
-import {
-  Archivo,
-  SFProDisplayRegular,
-} from "@/assets/fonts/fonts";
+import { Archivo, SFProDisplayRegular } from "@/assets/fonts/fonts";
 
 export default function AddEssay({ onRefresh }) {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const { data: session, status } = useSession();
+  const { isOpen, onOpen, onOpenChange } = useDisclosure(); // for modal
+  const { data: session, status } = useSession(); // for authentication
+  // state variables
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [notes, setNotes] = useState("");
@@ -36,12 +34,30 @@ export default function AddEssay({ onRefresh }) {
   const [fileURL, setFileURL] = useState("");
   const [checked, setChecked] = useState(true);
   const [loading, setLoading] = useState(false);
-  const [size, setSize] = React.useState("md");
   const [fileBlob, setFileBlob] = useState(null);
+  const [isLoading, setIsLoading] = useState(false); // loading indication for generating PDF
+  const [pickedFile, setPickedFile] = useState(null);
+  const [size, setSize] = useState("md");
 
-  // Loading indication for generating PDF
-  const [isLoading, setIsLoading] = useState(false);
+  function fileURLChanged(downloadURL) {
+    // if (!isOpen) {
+    //   setFileURL("");
+    //   setPickedFile(null);
+    //   return;
+    // } else if (isOpen) {
+    console.log("File URL changed:", downloadURL);
+    setFileURL(downloadURL);
+    // }
+  }
 
+  // set modal size to full screen on mobile
+  useEffect(() => {
+    if (window.innerWidth < 600) {
+      setSize("full");
+    }
+  }, []);
+
+  // helper function to check if entered URL is valid
   function isValidUrl(string) {
     try {
       new URL(string);
@@ -51,14 +67,9 @@ export default function AddEssay({ onRefresh }) {
     }
   }
 
+  // refresh form fields when modal is opened
   useEffect(() => {
-    if (window.innerWidth < 600) {
-      setSize("full");
-    }
-  }, []);
-
-  useEffect(() => {
-    if (isOpen) {
+    if (!isOpen) {
       setTitle("");
       setAuthor("");
       setNotes("");
@@ -69,73 +80,80 @@ export default function AddEssay({ onRefresh }) {
     }
   }, [isOpen]);
 
+  // log file URL changes for debugging
   useEffect(() => {
-    const fetchMetadata = async () => {
-      const response = await fetch(
-        `/api/metadata?url=${encodeURIComponent(link)}`
-      );
-      const data = await response.json();
-      if (data.ogTitle === "" || data.ogAuthor === "") return;
-      if (data.ogTitle === "Not found") {
-        setTitle("");
-      } else {
-        setTitle(data.ogTitle);
-      }
-      if (data.ogAuthor === "Not found") {
-        setAuthor("");
-      } else {
-        setAuthor(data.ogAuthor);
-      }
-    };
+    console.log("File URL changed:", fileURL);
+  }, [fileURL]);
 
+  // fetch metadata when link is entered
+  const fetchMetadata = async () => {
+    const response = await fetch(
+      `/api/metadata?url=${encodeURIComponent(link)}`
+    );
+    const data = await response.json();
+    if (data.ogTitle === "" || data.ogAuthor === "") return;
+    if (data.ogTitle === "Not found") {
+      setTitle("");
+    } else {
+      setTitle(data.ogTitle);
+    }
+    if (data.ogAuthor === "Not found") {
+      setAuthor("");
+    } else {
+      setAuthor(data.ogAuthor);
+    }
+  };
+
+  useEffect(() => {
     if (link !== "" && isValidUrl(link)) {
       fetchMetadata();
     }
   }, [link]);
 
-  useEffect(() => {
-    const generatePDF = async () => {
-      try {
-        // Show some loading indication
-        setIsLoading(true);
-
-        const response = await fetch(
-          `https://generate-pdf-image-s2q26wjzmq-uc.a.run.app/generate-pdf?url=${encodeURIComponent(link)}`,
-          {
-            method: "GET",
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+  // generate PDF from URL
+  const generatePDF = async () => {
+    try {
+      setIsLoading(true);
+      console.log("Fetching PDF...");
+      const encodedUrl = encodeURIComponent(link);
+      const response = await fetch(
+        `http://localhost:8000/generate-pdf?url=${encodedUrl}`,
+        {
+          method: "GET",
         }
-
-        const blob = await response.blob();
-        setFileBlob(blob);
-      } catch (error) {
-        console.error("Error generating PDF:", error);
-      } finally {
-        setIsLoading(false);
+      );
+      console.log("Response received:", response);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
-    };
+      const blob = await response.blob();
+      console.log("Blob created:", blob);
+      setFileBlob(blob);
+    } catch (error) {
+      console.error("Error generating PDF:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-    if (isValidUrl(link)) {
+  useEffect(() => {
+    console.log("Current link:", link);
+    if (link !== "" && isValidUrl(link)) {
+      console.log("Valid link detected, generating PDF");
       generatePDF();
     }
   }, [link]);
 
+  // fetch a random cover image from Firebase Storage
   const getRandomCover = async () => {
     const storageRef = ref(storage, "covers");
     try {
       const res = await listAll(storageRef);
       const items = res.items;
-
       if (items.length === 0) {
         throw new Error('No images found in the "covers" folder.');
       }
-
       const randomItem = items[Math.floor(Math.random() * items.length)];
-
       const url = await getDownloadURL(randomItem);
       return url;
     } catch (error) {
@@ -143,6 +161,7 @@ export default function AddEssay({ onRefresh }) {
     }
   };
 
+  // handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -155,7 +174,7 @@ export default function AddEssay({ onRefresh }) {
     const user = session.user;
 
     try {
-      console.log(fileURL)
+      console.log(fileURL);
       await addDoc(collection(db, "essays"), {
         cover: `url(${await getRandomCover()})`,
         title,
@@ -204,7 +223,13 @@ export default function AddEssay({ onRefresh }) {
         size={size}
         isOpen={isOpen}
         onOpenChange={onOpenChange}
-        onClose={() => {setFileBlob(null); setIsLoading(false); setFileURL("")}}
+        onClose={() => {
+          setFileBlob(null);
+          setIsLoading(false);
+          setLoading(false);
+          setFileURL("");
+          setPickedFile(null);
+        }}
         scrollBehavior="inside"
         closeButton={
           <Image
@@ -276,10 +301,13 @@ export default function AddEssay({ onRefresh }) {
                         ? "Generating PDF..."
                         : "Upload a PDF or an EPUB"
                     }
-                    onFileUpload={setFileURL}
+                    onFileUpload={fileURLChanged}
                     fileBlob={fileBlob}
                     isGenerating={isLoading}
                     fetchedTitle={title}
+                    pickedFile={pickedFile}
+                    setPickedFile={setPickedFile}
+                    modalIsOpen={isOpen}
                   />
                   <ModalFooter className="w-full px-0 py-0">
                     <div className={styles.buttonContainer}>

@@ -21,10 +21,22 @@ export default function FilePicker({
   fileBlob,
   fetchedTitle,
   isGenerating,
+  pickedFile,
+  setPickedFile,
+  modalIsOpen,
 }) {
-  const [pickedFile, setPickedFile] = useState(null);
   const [progress, setProgress] = useState(0);
   const fileInput = useRef(null);
+  const [uploadTask, setUploadTask] = useState(null);
+
+  useEffect(() => {
+    if (!modalIsOpen && uploadTask) {
+      uploadTask.cancel();
+      setProgress(0);
+      console.log("Upload cancelled");
+      setPickedFile(null);
+    }
+  }, [modalIsOpen]);
 
   function handlePickClick() {
     fileInput.current.click();
@@ -45,9 +57,10 @@ export default function FilePicker({
     setPickedFile(file);
     const storage = getStorage();
     const storageRef = ref(storage, `essays/${file.name}`);
-    const uploadTask = uploadBytesResumable(storageRef, file);
+    const newUploadTask = uploadBytesResumable(storageRef, file);
+    setUploadTask(newUploadTask);
 
-    uploadTask.on(
+    newUploadTask.on(
       "state_changed",
       (snapshot) => {
         const progress =
@@ -59,7 +72,7 @@ export default function FilePicker({
       },
       () => {
         console.log("Upload complete");
-        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+        getDownloadURL(newUploadTask.snapshot.ref).then((downloadURL) => {
           onFileUpload(downloadURL);
           console.log("File available at", downloadURL);
         });
@@ -69,9 +82,13 @@ export default function FilePicker({
 
   useEffect(() => {
     if (fileBlob) {
-      const file = new File([fileBlob], `${fetchedTitle} ${uuidv4()}${".pdf"}`, {
-        type: fileBlob.type,
-      });
+      const file = new File(
+        [fileBlob],
+        `${fetchedTitle} ${uuidv4()}${".pdf"}`,
+        {
+          type: fileBlob.type,
+        }
+      );
       uploadFile(file);
     }
   }, [fileBlob]);
