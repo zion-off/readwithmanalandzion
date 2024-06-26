@@ -256,37 +256,58 @@ export default function AddEssay({ onRefresh }) {
               </ModalHeader>
               <ModalBody className="overflow-y-auto">
                 <form className={styles.form} onSubmit={handleSubmit}>
-                  <input
+                  <Input
                     type="text"
                     name="title"
                     value={title}
                     placeholder="Title"
                     required
                     onChange={(e) => setTitle(e.target.value)}
-                    className={`${Archivo.className} ${styles.input}`}
+                    classNames={{
+                      label: `bg-transparent shadow-none ${Archivo.className} ${styles.input}`,
+                      input: "bg-transparent shadow-none group-data-[focus=true]:bg-transparent",
+                      innerWrapper: "bg-transparent shadow-none",
+                      inputWrapper: "w-full bg-transparent shadow-none group-data-[hover=true]:bg-transparent group-data-[focus=true]:bg-transparent group-data-[focus=true]:shadow-none",
+                    }}
                   />
-                  <input
+                  <Input
                     type="text"
                     name="author"
                     value={author}
                     placeholder="Author"
                     required
                     onChange={(e) => setAuthor(e.target.value)}
-                    className={`${Archivo.className} ${styles.input}`}
+                    classNames={{
+                      label: `bg-transparent shadow-none ${Archivo.className} ${styles.input}`,
+                      input: "bg-transparent shadow-none group-data-[focus=true]:bg-transparent",
+                      innerWrapper: "bg-transparent shadow-none",
+                      inputWrapper: "w-full bg-transparent shadow-none group-data-[hover=true]:bg-transparent group-data-[focus=true]:bg-transparent group-data-[focus=true]:shadow-none",
+                    }}
+                    
                   />
-                  <input
+                  <Input
                     type="text"
                     name="notes"
                     placeholder="Notes"
                     onChange={(e) => setNotes(e.target.value)}
-                    className={`${Archivo.className} ${styles.input}`}
+                    classNames={{
+                      label: `bg-transparent shadow-none ${Archivo.className} ${styles.input}`,
+                      input: "bg-transparent shadow-none group-data-[focus=true]:bg-transparent",
+                      innerWrapper: "bg-transparent shadow-none",
+                      inputWrapper: "w-full bg-transparent shadow-none group-data-[hover=true]:bg-transparent group-data-[focus=true]:bg-transparent group-data-[focus=true]:shadow-none",
+                    }}
                   />
                   <Input
                     type="text"
                     name="links"
                     placeholder="Link"
                     onChange={(e) => setLink(e.target.value)}
-                    className={`${Archivo.className} ${styles.input}`}
+                    classNames={{
+                      label: `bg-transparent shadow-none ${Archivo.className} ${styles.input}`,
+                      input: "bg-transparent shadow-none group-data-[focus=true]:bg-transparent",
+                      innerWrapper: "bg-transparent shadow-none",
+                      inputWrapper: "w-full bg-transparent shadow-none group-data-[hover=true]:bg-transparent group-data-[focus=true]:bg-transparent group-data-[focus=true]:shadow-none",
+                    }}
                   />
                   <Checkbox
                     defaultSelected
