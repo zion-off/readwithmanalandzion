@@ -31,7 +31,6 @@ export default function FilePicker({
   const [uploadTask, setUploadTask] = useState(null);
   const [uploadComplete, setUploadComplete] = useState(false);
   
-
   useEffect(() => {
     if (!modalIsOpen) {
       if (uploadTask) {
@@ -126,7 +125,7 @@ export default function FilePicker({
 
         <div
           className={`${styles.button} ${
-            progress > 99 ? styles.green : styles.normal
+            progress == 100 ? styles.green : styles.normal
           } ${isGenerating ? styles.generatingButton : ""} `}
           type="button"
           onClick={handlePickClick}>
@@ -137,7 +136,7 @@ export default function FilePicker({
               </div>
             ) : (
               <div className={`${Archivo.className} ${styles.buttonText}`}>
-                Uploading {Math.round(progress)}%
+                {progress === 100 ? "Processing..." : `Uploading ${Math.round(progress)}%`}
               </div>
             )
           ) : (
