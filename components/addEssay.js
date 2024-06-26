@@ -117,7 +117,7 @@ export default function AddEssay({ onRefresh }) {
       console.log("Fetching PDF...");
       const encodedUrl = encodeURIComponent(link);
       const response = await fetch(
-        `http://localhost:8000/generate-pdf?url=${encodedUrl}`,
+        `https://generate-pdf-zc2q.onrender.com/generate-pdf?url=${encodedUrl}`,
         {
           method: "GET",
         }
