@@ -22,7 +22,7 @@ export default function FilePicker({
   fetchedTitle,
   isGenerating,
   pickedFile,
-  setPickedFile,
+  pickedFileChanger,
   modalIsOpen,
   onUploadComplete,
 }) {
@@ -39,7 +39,6 @@ export default function FilePicker({
       }
       setProgress(0);
       console.log("Upload cancelled");
-      setPickedFile(null);
       onFileUpload("");
     }
   }, [modalIsOpen]);
@@ -52,7 +51,7 @@ export default function FilePicker({
     const file = event.target.files[0];
 
     if (!file) {
-      setPickedFile(null);
+      pickedFileChanger(null);
       return;
     }
 
@@ -61,7 +60,7 @@ export default function FilePicker({
 
   function uploadFile(file) {
     setUploadComplete(false);
-    setPickedFile(file);
+    pickedFileChanger(file);
     const storage = getStorage();
     const storageRef = ref(storage, `essays/${file.name}`);
     const newUploadTask = uploadBytesResumable(storageRef, file);

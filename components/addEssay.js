@@ -10,6 +10,7 @@ import {
   Button,
   useDisclosure,
   Checkbox,
+  Input,
 } from "@nextui-org/react";
 // firebase imports
 import { useSession } from "next-auth/react";
@@ -39,6 +40,7 @@ export default function AddEssay({ onRefresh }) {
   const [pickedFile, setPickedFile] = useState(null);
   const [size, setSize] = useState("md");
   const [isUploadComplete, setIsUploadComplete] = useState(false);
+  const [generatePDFClicked, setGeneratePDFClicked] = useState(false);
 
   useEffect(() => {
     console.log("File URL set to", fileURL);
@@ -72,6 +74,7 @@ export default function AddEssay({ onRefresh }) {
       setChecked(true);
       setPickedFile(null);
       setIsUploadComplete(false);
+      setGeneratePDFClicked(false);
     }
   }, [isOpen]);
 
@@ -125,6 +128,14 @@ export default function AddEssay({ onRefresh }) {
       setIsLoading(false);
     }
   };
+
+  function generatePDFLinkClicked() {
+    setGeneratePDFClicked(true);
+    if (link !== "" && isValidUrl(link)) {
+      console.log("Valid link detected, generating PDF");
+      generatePDF();
+    }
+  }
 
   useEffect(() => {
     if (link !== "" && isValidUrl(link)) {
@@ -270,7 +281,7 @@ export default function AddEssay({ onRefresh }) {
                     onChange={(e) => setNotes(e.target.value)}
                     className={`${Archivo.className} ${styles.input}`}
                   />
-                  <input
+                  <Input
                     type="text"
                     name="links"
                     placeholder="Link"
@@ -285,6 +296,7 @@ export default function AddEssay({ onRefresh }) {
                     Visible to others
                   </Checkbox>
                   <FilePicker
+                    pickedFileChanger={setPickedFile}
                     label="File"
                     name="file"
                     filePickerText={
@@ -297,7 +309,6 @@ export default function AddEssay({ onRefresh }) {
                     isGenerating={isLoading}
                     fetchedTitle={title}
                     pickedFile={pickedFile}
-                    setPickedFile={setPickedFile}
                     modalIsOpen={isOpen}
                     onUploadComplete={setIsUploadComplete}
                   />
