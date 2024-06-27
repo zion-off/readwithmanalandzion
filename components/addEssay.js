@@ -32,6 +32,7 @@ export default function AddEssay({ onRefresh }) {
   const [author, setAuthor] = useState("");
   const [notes, setNotes] = useState("");
   const [link, setLink] = useState("");
+  const [favicon, setFavicon] = useState("");
   const [fileURL, setFileURL] = useState("");
   const [checked, setChecked] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -69,6 +70,7 @@ export default function AddEssay({ onRefresh }) {
       setAuthor("");
       setNotes("");
       setLink("");
+      setFavicon("");
       setFileURL("");
       setFileBlob(null);
       setChecked(true);
@@ -84,7 +86,7 @@ export default function AddEssay({ onRefresh }) {
       `/api/metadata?url=${encodeURIComponent(link)}`
     );
     const data = await response.json();
-    if (data.ogTitle === "" || data.ogAuthor === "") return;
+    if (data.ogTitle === "" || data.ogAuthor === "" || data.favicon === "") return;
     if (data.ogTitle === "Not found") {
       setTitle("");
     } else {
@@ -94,6 +96,11 @@ export default function AddEssay({ onRefresh }) {
       setAuthor("");
     } else {
       setAuthor(data.ogAuthor);
+    }
+    if (data.favicon === "Not found") {
+      setFavicon("");
+    } else {
+      setFavicon(data.favicon);
     }
   };
 
@@ -176,6 +183,7 @@ export default function AddEssay({ onRefresh }) {
         author,
         notes,
         link,
+        favicon,
         checked,
         fileURL: fileURL,
         userId: user.email,
@@ -264,6 +272,7 @@ export default function AddEssay({ onRefresh }) {
                       inputWrapper:
                         "bg-transparent shadow-none group-data-[hover=true]:bg-transparent group-data-[focus=true]:bg-transparent group-data-[focus=true]:shadow-none",
                     }}
+                    endContent={ favicon !== "" ? <Image src={favicon} width={20} height={20} alt="favicon" /> : null}
                   />
                   <Input
                     type="text"

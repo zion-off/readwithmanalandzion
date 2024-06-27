@@ -5,6 +5,7 @@
 }
 
 .book {
+  position: relative;
   width: 10vw;
   aspect-ratio: 2/3;
   background-size: cover;

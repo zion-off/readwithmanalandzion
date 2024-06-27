@@ -7,7 +7,8 @@ import {
   ModalBody,
   ModalFooter,
   Button,
-  Input
+  Input,
+  Link,
 } from "@nextui-org/react";
 import { Checkbox } from "@nextui-org/react";
 import { useEffect, useState } from "react";
@@ -15,11 +16,11 @@ import Image from "next/image";
 import { db } from "@/firebase";
 import { doc, updateDoc, deleteDoc } from "firebase/firestore";
 import FilePicker from "@/components/filepicker";
-import { getStorage, ref, deleteObject } from "firebase/storage"
+import { getStorage, ref, deleteObject } from "firebase/storage";
 
 // import styling
 import styles from "./essayDetail.module.css";
-import { ClashDisplay, Archivo, SFPro } from "@/assets/fonts/fonts";
+import { Archivo, SFPro } from "@/assets/fonts/fonts";
 
 export default function EssayDetail({
   isOpen,
@@ -29,6 +30,7 @@ export default function EssayDetail({
   author,
   notes,
   link,
+  favicon,
   checked,
   fileURL,
   slug,
@@ -45,6 +47,7 @@ export default function EssayDetail({
   const [newfileURL, setNewFileURL] = useState(fileURL);
   const [deleteDialog, setDeleteDialog] = useState(false);
   const [size, setSize] = React.useState("md");
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (window.innerWidth < 600) {
@@ -124,6 +127,33 @@ export default function EssayDetail({
     }
   };
 
+  // generate PDF from URL
+  const generatePDF = async () => {
+    try {
+      setIsLoading(true);
+      console.log("Fetching PDF...");
+      const encodedUrl = encodeURIComponent(newLink);
+      const response = await fetch(
+        `https://generate-pdf-zc2q.onrender.com/generate-pdf?url=${encodedUrl}`,
+        {
+          method: "GET",
+        }
+      );
+      console.log("Response received:", response);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const blob = await response.blob();
+      console.log("Blob created:", blob);
+      const url = URL.createObjectURL(blob);
+      window.open(url, "_blank");
+    } catch (error) {
+      console.error("Error generating PDF:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <>
       <Modal
@@ -155,7 +185,8 @@ export default function EssayDetail({
             alt="Add"
           />
         }
-        hideCloseButton={editing ? true : false}>
+        hideCloseButton={editing ? true : false}
+      >
         <ModalContent className="rounded-2xl">
           {(onClose) => (
             <>
@@ -165,7 +196,8 @@ export default function EssayDetail({
                     <div className={styles.editingOptions}>
                       <p
                         onClick={toggleEditing}
-                        className={`${Archivo.className} ${styles.cancel}`}>
+                        className={`${Archivo.className} ${styles.cancel}`}
+                      >
                         Cancel
                       </p>
                       <div onClick={handleSave} className={styles.saveButton}>
@@ -185,7 +217,8 @@ export default function EssayDetail({
                           onClick={toggleEditing}
                           className="min-w-5 h-5 w-5 p-0"
                           variant="light"
-                          radius="none">
+                          radius="none"
+                        >
                           <Image
                             src={"./edit.svg"}
                             width={0}
@@ -201,7 +234,8 @@ export default function EssayDetail({
                           onClick={toggleDelete}
                           className="min-w-5 h-5 w-5 p-0"
                           variant="light"
-                          radius="none">
+                          radius="none"
+                        >
                           <Image
                             src={"./delete.svg"}
                             width={0}
@@ -251,6 +285,7 @@ export default function EssayDetail({
                         }}
                       />
                     </div>
+
                     <Input
                       type="text"
                       name="notes"
@@ -269,7 +304,8 @@ export default function EssayDetail({
                       color="default"
                       isSelected={newChecked}
                       onValueChange={setNewChecked}
-                      className="px-5">
+                      className="px-5"
+                    >
                       Visible to others
                     </Checkbox>
                     <Input
@@ -296,8 +332,16 @@ export default function EssayDetail({
                 ) : (
                   <>
                     <div className={styles.headingContainer}>
-                      <p
-                        className={`${SFPro.className} ${styles.title}`}>
+                      {favicon !== undefined && (
+                        <Image
+                          src={favicon}
+                          width={30}
+                          height={30}
+                          alt="favicon"
+                          className="mb-3"
+                        />
+                      )}
+                      <p className={`${SFPro.className} ${styles.title}`}>
                         {newTitle}
                       </p>
                       <p className={`${Archivo.className} ${styles.author}`}>
@@ -308,15 +352,37 @@ export default function EssayDetail({
                       {newNotes}
                     </p>
                     <div className={`${Archivo.className} ${styles.link}`}>
-                      {newLink && <a href={newLink}>Link &nbsp; ↗️</a>}
+                      {newLink && (
+                        <Link isExternal href={newLink} showAnchorIcon>Link</Link>
+                      )}
                     </div>
+
                     {!slug && (
                       <p
-                        className={`${Archivo.className} ${styles.visibility}`}>
+                        className={`${Archivo.className} ${styles.visibility}`}
+                      >
                         {checked ? "Publicly visible" : "Private"}
                       </p>
                     )}
-
+                    {!fileURL &&
+                      newLink &&
+                      (isLoading ? (
+                        <Button
+                          size="sm"
+                          color="primary"
+                          className="w-1/5"
+                          isLoading
+                        ></Button>
+                      ) : (
+                        <Button
+                          onPress={generatePDF}
+                          size="sm"
+                          color="primary"
+                          className="w-1/5"
+                        >
+                          Open PDF
+                        </Button>
+                      ))}
                     {fileURL && (
                       <a href={fileURL}>
                         <p className={`${Archivo.className} ${styles.fileURL}`}>
@@ -331,18 +397,20 @@ export default function EssayDetail({
                 <div className={`${styles.deleteContainer}`}>
                   {deleteDialog && (
                     <div
-                      className={`${Archivo.className} ${styles.deleteDialog}`}>
+                      className={`${Archivo.className} ${styles.deleteDialog}`}
+                    >
                       <div className={styles.deleteButtons}>
                         <div className={styles.cancel} onClick={toggleDelete}>
                           Cancel
                         </div>
-                        <div className={styles.deleteButton}>
-                          <p
-                            className={`${Archivo.className} ${styles.save}`}
-                            onClick={() => {
-                              handleDelete(id);
-                              onClose();
-                            }}>
+                        <div
+                          className={styles.deleteButton}
+                          onClick={() => {
+                            handleDelete(id);
+                            onClose();
+                          }}
+                        >
+                          <p className={`${Archivo.className} ${styles.save}`}>
                             Delete
                           </p>
                         </div>

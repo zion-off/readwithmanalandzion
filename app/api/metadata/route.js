@@ -22,6 +22,7 @@ export async function GET(request) {
 
     let ogTitle = $('meta[property="og:title"]').attr('content');
     let ogAuthor = $('meta[name="author"]').attr('content');
+    let favicon = $('link[rel="icon"]').attr('href') || $('link[rel="shortcut icon"]').attr('href');
 
     // If og:title is not found, fallback to <title> tag content
     if (!ogTitle) {
@@ -38,7 +39,18 @@ export async function GET(request) {
       ogAuthor = 'Not found';
     }
 
-    return new Response(JSON.stringify({ ogTitle, ogAuthor }), {
+    // If favicon is not found, set to 'Not found'
+    if (!favicon) {
+      favicon = 'Not found';
+    } else {
+      // Make the favicon URL absolute if it is relative
+      if (!favicon.startsWith('http')) {
+        const urlObj = new URL(url);
+        favicon = `${urlObj.origin}${favicon}`;
+      }
+    }
+
+    return new Response(JSON.stringify({ ogTitle, ogAuthor, favicon }), {
       status: 200,
       headers: { "Content-Type": "application/json" },
     });

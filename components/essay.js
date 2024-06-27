@@ -2,13 +2,14 @@
 
 // import components
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import Images from "@/components/randomCover";
 
 // import styling
 import { Archivo, SFProDisplayRegular } from "@/assets/fonts/fonts";
 import styles from "./essay.module.css";
 
-export default function Essay({ title, author, cover, onClick }) {
+export default function Essay({ title, author, cover, favicon, onClick }) {
   const [randomImage, setRandomImage] = useState("");
 
   useEffect(() => {
@@ -36,9 +37,26 @@ export default function Essay({ title, author, cover, onClick }) {
           backgroundSize: "cover",
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center",
-        }}></div>
+        }}
+      >
+        {favicon !== undefined && (
+          <div className="absolute right-2 bottom-0 md:bg-black w-5 h-5">
+            <Image
+              src={favicon}
+              width={30}
+              height={30}
+              alt="favicon"
+              style={{
+                boxShadow: `inset 0 0 10px rgba(0, 0, 0, 1)`,
+              }}
+            />
+          </div>
+        )}
+      </div>
       <div className={styles.textContainer}>
-        <h3 className={`${SFProDisplayRegular.className} ${styles.title}`}>{title}</h3>
+        <h3 className={`${SFProDisplayRegular.className} ${styles.title}`}>
+          {title}
+        </h3>
         <p className={`${Archivo.className} ${styles.author}`}>{author}</p>
       </div>
     </div>

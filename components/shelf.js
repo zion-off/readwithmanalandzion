@@ -172,6 +172,7 @@ export default function Shelf({ refresh }) {
             title={essay.title}
             author={essay.author}
             cover={essay.cover}
+            favicon={essay.favicon}
             onClick={() => handleEssayClick(essay)}
           />
         ))}
@@ -184,6 +185,7 @@ export default function Shelf({ refresh }) {
         author={selectedEssay?.author}
         notes={selectedEssay?.notes}
         link={selectedEssay?.link}
+        favicon={selectedEssay?.favicon}
         checked={selectedEssay?.checked}
         fileURL={selectedEssay?.fileURL}
         onSaved={handleSaved}
