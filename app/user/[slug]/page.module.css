@@ -15,7 +15,8 @@
   .essayContainer {
     display: flex;
     flex-direction: column;
-    gap: 3rem;
+    gap: 5vh;
+    padding-bottom: 5vh;
   }
   
 }

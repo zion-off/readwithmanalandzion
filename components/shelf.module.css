@@ -6,7 +6,7 @@
 .main {
   display: flex;
   flex-wrap: wrap;
-  gap: 10vw;
+  gap: 3rem;
   justify-content: center;
 }
 

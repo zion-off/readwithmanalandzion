@@ -17,15 +17,12 @@ export default function UserPage({ params }) {
   const [selectedEssay, setSelectedEssay] = useState(null);
   const dynamicSlug = decodeURIComponent(params.slug);
 
-
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const handleEssayClick = (essay) => {
     setSelectedEssay(essay);
     onOpen();
   };
-
-
 
   useEffect(() => {
     const fetchEssays = async () => {
@@ -61,6 +58,7 @@ export default function UserPage({ params }) {
               title={essay.title}
               author={essay.author}
               cover={essay.cover}
+              favicon={essay.favicon}
               onClick={() => handleEssayClick(essay)}
             />
           </div>
