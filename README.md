@@ -35,14 +35,7 @@ I also spent a lot of time building custom UI components, such as modals, checkb
 1. Node.js (v14 or later)
 2. Firebase account with a Firestore database
 3. Firebase storage for storing essay cover images
-4. Create an .env file in the root directory with the following variables:
-
-```
-GOOGLE_CLIENT_ID
-GOOGLE_CLIENT_SECRET
-NEXTAUTH_SECRET
-NEXTAUTH_URL
-```
+4. Create an .env file in the root directory with the required variables
 
 First, run the development server:
 
