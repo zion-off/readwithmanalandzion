@@ -40,7 +40,7 @@ export default function Essay({ title, author, cover, favicon, onClick }) {
         }}
       >
         {favicon !== undefined && (
-          <div className="absolute right-2 bottom-0 md:bg-black w-5 h-5">
+          <div className="absolute right-2 bottom-0 w-5 h-5">
             <Image
               src={favicon}
               width={30}
