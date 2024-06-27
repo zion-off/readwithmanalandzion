@@ -15,6 +15,7 @@ import Image from "next/image";
 import { db } from "@/firebase";
 import { doc, updateDoc, deleteDoc } from "firebase/firestore";
 import FilePicker from "@/components/filepicker";
+import { getStorage, ref, deleteObject } from "firebase/storage"
 
 // import styling
 import styles from "./essayDetail.module.css";
@@ -109,7 +110,11 @@ export default function EssayDetail({
 
   const handleDelete = async (id) => {
     try {
+      const storage = getStorage();
       await deleteDoc(doc(db, "essays", id));
+      if (fileURL !== "") {
+        await deleteObject(ref(storage, fileURL));
+      }
       setDeleteDialog(false);
       toggleEditing();
       onDeleted();
