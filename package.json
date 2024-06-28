@@ -23,7 +23,8 @@
     "puppeteer": "^22.12.0",
     "puppeteer-core": "^22.12.0",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "react-infinite-scroller": "^1.2.6"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.19",

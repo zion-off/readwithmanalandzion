@@ -1,13 +1,24 @@
 "use client";
 
-// import components
-import Essay from "./essay";
-import EssayDetail from "./essayDetail";
-import { useEffect, useState, useMemo } from "react";
+// import dependencies
+import { useEffect, useState, useMemo, useRef } from "react";
 import { db } from "@/firebase";
-import { collection, query, where, getDocs } from "firebase/firestore";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  orderBy,
+  limit,
+} from "firebase/firestore";
 import { useSession } from "next-auth/react";
 import { useDisclosure } from "@nextui-org/react";
+import InfiniteScroll from "react-infinite-scroller";
+
+// import components
+import Loader from "./loader";
+import Essay from "./essay";
+import EssayDetail from "./essayDetail";
 import { Input } from "@nextui-org/input";
 import {
   Dropdown,
@@ -29,37 +40,54 @@ export default function Shelf({ refresh }) {
   const [itemDeleted, setItemDeleted] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedKeys, setSelectedKeys] = useState(new Set(["Title"]));
+  const [page, setPage] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
+  const itemsPerPage = 10;
+  const [isLoading, setIsLoading] = useState(false);
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
+  const scrollParentRef = useRef(null);
+
+  const loadMore = (page) => {
+    if (!isLoading) {
+      setIsLoading(true);
+      fetchEssays(page);
+    }
+  };
 
   const selectedValue = useMemo(
     () => Array.from(selectedKeys).join(", ").replaceAll("_", " "),
     [selectedKeys]
   );
 
-  useEffect(() => {
-    const fetchEssays = async () => {
-      if (status === "authenticated" && session?.user?.email) {
-        try {
-          const q = query(
-            collection(db, "essays"),
-            where("userEmail", "==", session.user.email)
-          );
-          const querySnapshot = await getDocs(q);
-          const essayList = [];
-          querySnapshot.forEach((doc) => {
-            essayList.push({ id: doc.id, ...doc.data() });
-          });
-          // sort essays by createdAt date
-          essayList.sort((b, a) => b.createdAt - a.createdAt);
-          setEssays(essayList);
-          setFilteredEssays(essayList);
-        } catch (error) {
-          console.error("Error fetching essays: ", error);
-        }
+  const fetchEssays = async (pageNum = 0) => {
+    if (status === "authenticated" && session?.user?.email) {
+      try {
+        const q = query(
+          collection(db, "essays"),
+          where("userEmail", "==", session.user.email),
+          orderBy("createdAt"),
+          limit(itemsPerPage * (pageNum + 1))
+        );
+        const querySnapshot = await getDocs(q);
+        const essayList = [];
+        querySnapshot.forEach((doc) => {
+          essayList.push({ id: doc.id, ...doc.data() });
+        });
+        setEssays(essayList);
+        setFilteredEssays(essayList);
+        setHasMore(essayList.length === itemsPerPage * (pageNum + 1));
+        setPage(pageNum);
+        setIsLoading(false);
+      } catch (error) {
+        console.error("Error fetching essays: ", error);
+        setIsLoading(false);
       }
-    };
+    }
+  };
 
+  useEffect(() => {
     fetchEssays();
   }, [status, session, refresh, saved, itemDeleted]);
 
@@ -123,15 +151,17 @@ export default function Shelf({ refresh }) {
   };
 
   return (
-    <div className={styles.container}>
+    <div
+      className={styles.container}
+      //  ref={scrollParentRef}
+    >
       <div className="flex justify-center">
-        <div className="sm:w-3/4 w-full flex justify-center gap-2 backdrop-blur-xl bg-white/30 p-2 mb-10 rounded-2xl">
+        <div className="z-10 sm:w-3/4 w-full flex justify-center gap-2 backdrop-blur-xl bg-white/30 p-2 mb-10 rounded-2xl">
           <Input
             isClearable
             radius="full"
             type="text"
             placeholder="Search..."
-            // className={{"object-fill w-full"}}
             classNames={{
               label: "object-fill w-full bg-transparent shadow-none",
               input:
@@ -155,7 +185,8 @@ export default function Shelf({ refresh }) {
               selectionMode="single"
               selectedKeys={selectedKeys}
               defaultSelectedKeys={"title"}
-              onSelectionChange={setSelectedKeys}>
+              onSelectionChange={setSelectedKeys}
+            >
               <DropdownItem key="title">Title</DropdownItem>
               <DropdownItem key="author">Author</DropdownItem>
               <DropdownItem key="newest">Newest</DropdownItem>
@@ -165,18 +196,52 @@ export default function Shelf({ refresh }) {
         </div>
       </div>
 
-      <div className={styles.main}>
-        {filteredEssays.map((essay) => (
-          <Essay
-            key={essay.id}
-            title={essay.title}
-            author={essay.author}
-            cover={essay.cover}
-            favicon={essay.favicon}
-            onClick={() => handleEssayClick(essay)}
-          />
-        ))}
+      <div
+        ref={scrollParentRef}
+        style={{
+          position: "absolute",
+          height: "100vh",
+          overflow: "auto",
+          left: "50%",
+          transform: "translateX(-50%)",
+          bottom: "0",
+          width: "100%",
+          padding: "30vh 6vw 0 6vw",
+        }}
+      >
+        <InfiniteScroll
+          pageStart={0}
+          loadMore={loadMore}
+          hasMore={hasMore}
+          loader={
+            <div className="w-full flex justify-center" key={0}>
+              <Loader
+                circleStyle={{
+                  maxHeight: "10px",
+                  maxWidth: "10px",
+                }}
+              />
+            </div>
+          }
+          useWindow={false}
+          getScrollParent={() => scrollParentRef.current}
+          threshold={250}
+        >
+          <div className={styles.main}>
+            {filteredEssays.map((essay) => (
+              <Essay
+                key={essay.id}
+                title={essay.title}
+                author={essay.author}
+                cover={essay.cover}
+                favicon={essay.favicon}
+                onClick={() => handleEssayClick(essay)}
+              />
+            ))}
+          </div>
+        </InfiniteScroll>
       </div>
+
       <EssayDetail
         isOpen={isOpen}
         onOpenChange={onOpenChange}

@@ -8,6 +8,7 @@
   flex-wrap: wrap;
   gap: 3rem;
   justify-content: center;
+  overflow: auto;
 }
 
 @media (max-width: 768px) {
