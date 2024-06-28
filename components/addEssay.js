@@ -100,7 +100,13 @@ export default function AddEssay({ onRefresh }) {
     if (data.favicon === "Not found") {
       setFavicon("");
     } else {
-      setFavicon(data.favicon);
+      if (data.favicon === "jstor") {
+        setFavicon("/jstor.png");
+      }
+      else {
+        setFavicon(data.favicon);
+      }
+     
     }
   };
 

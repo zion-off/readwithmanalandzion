@@ -60,6 +60,13 @@ export async function GET(request) {
       favicon = 'Not found';
     }
 
+    if (url.includes('jstor.org')) {
+      ogTitle = 'Not found';
+      ogAuthor = 'Not found';
+      favicon = 'jstor';
+      console.log(ogTitle, ogAuthor, favicon)
+    }
+
     return new Response(JSON.stringify({ ogTitle, ogAuthor, favicon }), {
       status: 200,
       headers: { "Content-Type": "application/json" },
