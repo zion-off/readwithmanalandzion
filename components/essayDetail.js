@@ -53,6 +53,7 @@ export default function EssayDetail({
     if (window.innerWidth < 600) {
       setSize("full");
     }
+    console.log(favicon)
   }, []);
 
   useEffect(() => {
@@ -332,7 +333,7 @@ export default function EssayDetail({
                 ) : (
                   <>
                     <div className={styles.headingContainer}>
-                      {favicon !== undefined && (
+                      {favicon !== "" && favicon !== undefined && (
                         <Image
                           src={favicon}
                           width={30}

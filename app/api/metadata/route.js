@@ -39,15 +39,25 @@ export async function GET(request) {
       ogAuthor = 'Not found';
     }
 
-    // If favicon is not found, set to 'Not found'
-    if (!favicon) {
-      favicon = 'Not found';
-    } else {
-      // Make the favicon URL absolute if it is relative
+    // If favicon is found, make the favicon URL absolute if it is relative
+    if (favicon) {
       if (!favicon.startsWith('http')) {
         const urlObj = new URL(url);
         favicon = `${urlObj.origin}${favicon}`;
       }
+
+      // Verify if the favicon URL returns a valid image
+      try {
+        const faviconResponse = await fetch(favicon);
+        if (!faviconResponse.ok || !faviconResponse.headers.get('content-type').startsWith('image/')) {
+          favicon = 'Not found';
+        }
+      } catch (error) {
+        console.error('Failed to fetch the favicon', error);
+        favicon = 'Not found';
+      }
+    } else {
+      favicon = 'Not found';
     }
 
     return new Response(JSON.stringify({ ogTitle, ogAuthor, favicon }), {

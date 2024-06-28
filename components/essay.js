@@ -39,7 +39,7 @@ export default function Essay({ title, author, cover, favicon, onClick }) {
           backgroundPosition: "center",
         }}
       >
-        {favicon !== undefined && (
+        {favicon !== "" && favicon !== null && favicon !== undefined && (
           <div className="absolute right-2 bottom-0 w-5 h-5">
             <Image
               src={favicon}

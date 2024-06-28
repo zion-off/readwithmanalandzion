@@ -319,7 +319,7 @@ export default function AddEssay({ onRefresh }) {
                     }}
                     endContent={
                       link ? (generatePDFClicked ? null : <Button onPress={generatePDFLinkClicked} size="sm" color="primary" className="px-5" variant="ghost">
-                        Generate PDF
+                        Save PDF
                       </Button>  ) : null
                     }
                   />
