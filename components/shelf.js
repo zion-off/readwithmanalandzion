@@ -39,7 +39,7 @@ export default function Shelf({ refresh }) {
   const [saved, setSaved] = useState(false);
   const [itemDeleted, setItemDeleted] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedKeys, setSelectedKeys] = useState(new Set(["Title"]));
+  const [selectedKeys, setSelectedKeys] = useState(new Set(["newest"]));
   const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(true);
   const itemsPerPage = 10;
@@ -50,10 +50,7 @@ export default function Shelf({ refresh }) {
   const scrollParentRef = useRef(null);
 
   const loadMore = (page) => {
-    if (!isLoading) {
-      setIsLoading(true);
-      fetchEssays(page);
-    }
+    fetchEssays(page, selectedValue.toLowerCase());
   };
 
   const selectedValue = useMemo(
@@ -61,15 +58,35 @@ export default function Shelf({ refresh }) {
     [selectedKeys]
   );
 
-  const fetchEssays = async (pageNum = 0) => {
+  const fetchEssays = async (pageNum = 0, sortBy = "createdAt") => {
     if (status === "authenticated" && session?.user?.email) {
       try {
-        const q = query(
+        let q = query(
           collection(db, "essays"),
-          where("userEmail", "==", session.user.email),
-          orderBy("createdAt"),
-          limit(itemsPerPage * (pageNum + 1))
+          where("userEmail", "==", session.user.email)
         );
+  
+        // Apply sorting based on the sortBy parameter
+        switch (sortBy) {
+          case "title":
+            q = query(q, orderBy("title"));
+            break;
+          case "author":
+            q = query(q, orderBy("author"));
+            break;
+          case "newest":
+            q = query(q, orderBy("createdAt", "desc"));
+            break;
+          case "oldest":
+            q = query(q, orderBy("createdAt", "asc"));
+            break;
+          default:
+            q = query(q, orderBy("createdAt", "desc"));
+        }
+  
+        // Apply pagination
+        q = query(q, limit(itemsPerPage * (pageNum + 1)));
+  
         const querySnapshot = await getDocs(q);
         const essayList = [];
         querySnapshot.forEach((doc) => {
@@ -79,17 +96,15 @@ export default function Shelf({ refresh }) {
         setFilteredEssays(essayList);
         setHasMore(essayList.length === itemsPerPage * (pageNum + 1));
         setPage(pageNum);
-        setIsLoading(false);
       } catch (error) {
         console.error("Error fetching essays: ", error);
-        setIsLoading(false);
       }
     }
   };
 
   useEffect(() => {
-    fetchEssays();
-  }, [status, session, refresh, saved, itemDeleted]);
+    fetchEssays(0, selectedValue.toLowerCase());
+  }, [status, session, refresh, saved, itemDeleted, selectedValue]);
 
   const handleEssayClick = (essay) => {
     setSelectedEssay(essay);
@@ -127,29 +142,6 @@ export default function Shelf({ refresh }) {
     }
   }, [searchQuery, essays]);
 
-  useEffect(() => {
-    sortEssays(filteredEssays);
-  }, [selectedValue]);
-
-  const sortEssays = (essaysToSort) => {
-    switch (selectedValue) {
-      case "title":
-        essaysToSort.sort((a, b) => a.title.localeCompare(b.title));
-        break;
-      case "author":
-        essaysToSort.sort((a, b) => a.author.localeCompare(b.author));
-        break;
-      case "newest":
-        essaysToSort.sort((a, b) => b.createdAt - a.createdAt);
-        break;
-      case "oldest":
-        essaysToSort.sort((a, b) => a.createdAt - b.createdAt);
-        break;
-      default:
-        break;
-    }
-  };
-
   return (
     <div
       className={styles.container}
@@ -179,12 +171,10 @@ export default function Shelf({ refresh }) {
               </Button>
             </DropdownTrigger>
             <DropdownMenu
-              aria-label="Single selection example"
               variant="flat"
               disallowEmptySelection
               selectionMode="single"
               selectedKeys={selectedKeys}
-              defaultSelectedKeys={"title"}
               onSelectionChange={setSelectedKeys}
             >
               <DropdownItem key="title">Title</DropdownItem>

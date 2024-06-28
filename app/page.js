@@ -15,8 +15,6 @@ import styles from "./page.module.css";
 export default function Home() {
   const [showModal, setShowModal] = useState(false);
   const [refresh, setRefresh] = useState(false);
-  const [showSignOut, setShowSignOut] = useState(false);
-  const signInButtonRef = useRef(null);
 
   const toggleModal = () => {
     setShowModal(!showModal);
@@ -24,26 +22,6 @@ export default function Home() {
   const handleRefresh = () => {
     setRefresh(!refresh);
   };
-
-  const handleSignInClick = () => {
-    setShowSignOut(!showSignOut);
-  };
-
-  const handleClickOutside = (event) => {
-    if (
-      signInButtonRef.current &&
-      !signInButtonRef.current.contains(event.target)
-    ) {
-      setShowSignOut(false);
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener("click", handleClickOutside);
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, []);
 
   return (
     <NextUIProvider>
@@ -54,12 +32,6 @@ export default function Home() {
           </div>
           <Shelf refresh={refresh} />
           <AddEssay onRefresh={handleRefresh} />
-          {showModal && (
-            <div>
-              <div onClick={toggleModal} className={styles.modalOverlay}></div>
-              <Add onClose={toggleModal} onRefresh={handleRefresh} />
-            </div>
-          )}
         </AuthCheck>
       </main>
     </NextUIProvider>
