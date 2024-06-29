@@ -207,7 +207,7 @@ export default function Shelf() {
 
   return (
     <div
-      className={styles.container}
+      className="w-full px-6vw py:4vh"
       //  ref={scrollParentRef}
     >
       <div className="flex flex-col items-center min-h-screen w-full">
@@ -312,7 +312,7 @@ export default function Shelf() {
 
       <div
         ref={scrollParentRef}
-        className="absolute h-screen overflow-auto left-1/2 transform -translate-x-1/2 bottom-0 w-full sm:pt-[35vh] pt-[30vh] px-[6vw]"
+        className="absolute h-screen overflow-auto left-1/2 transform -translate-x-1/2 bottom-0 w-full md:pt-[35vh] pt-[30vh] px-[6vw]"
       >
         <InfiniteScroll
           pageStart={0}
