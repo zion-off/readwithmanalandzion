@@ -229,7 +229,7 @@ export default function Shelf() {
       className={styles.container}
       //  ref={scrollParentRef}
     >
-      <div className="flex flex-col items-center min-h-screen w-full">
+      <div className="flex flex-col items-center w-full">
         <div className="gap-1 px-5 z-10 sm:w-3/4 w-full flex justify-center backdrop-blur-xl bg-white/30 p-2 rounded-2xl">
           <Input
             value={searchQuery}
@@ -344,7 +344,7 @@ export default function Shelf() {
 
       <div
         ref={scrollParentRef}
-        className="absolute h-screen overflow-auto left-1/2 transform -translate-x-1/2 bottom-0 w-full sm:pt-[30vh] pt-[40vh] px-[6vw]"
+        className="absolute h-screen overflow-auto left-1/2 transform -translate-x-1/2 bottom-0 w-full sm:pt-[30vh] pt-[40vh] pb-10 px-[6vw]"
       >
         <InfiniteScroll
           pageStart={0}
