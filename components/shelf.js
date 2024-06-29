@@ -312,7 +312,7 @@ export default function Shelf() {
 
       <div
         ref={scrollParentRef}
-        className="absolute h-screen overflow-auto left-1/2 transform -translate-x-1/2 bottom-0 w-full md:pt-[35vh] pt-[30vh] px-[6vw]"
+        className="absolute h-screen overflow-auto left-1/2 transform -translate-x-1/2 bottom-0 w-full pt-[35vh] px-[6vw]"
       >
         <InfiniteScroll
           pageStart={0}
