@@ -2,6 +2,7 @@
 
 // import dependencies
 import { useEffect, useState, useMemo, useRef } from "react";
+import Image from "next/image";
 import { db } from "@/firebase";
 import {
   collection,
@@ -14,6 +15,8 @@ import {
 import { useSession } from "next-auth/react";
 import { useDisclosure } from "@nextui-org/react";
 import InfiniteScroll from "react-infinite-scroller";
+import { motion, AnimatePresence } from "framer-motion";
+import Markdown from "react-markdown";
 
 // import components
 import Loader from "./loader";
@@ -27,6 +30,7 @@ import {
   DropdownMenu,
   DropdownItem,
   Button,
+  Chip,
 } from "@nextui-org/react";
 
 // import styling
@@ -45,6 +49,10 @@ export default function Shelf() {
   const [hasMore, setHasMore] = useState(true);
   const itemsPerPage = 20;
   const [refresh, setRefresh] = useState(false);
+  const [usingAI, setUsingAI] = useState(false);
+  const [chipColor, setChipColor] = useState("primary");
+  const [response, setResponse] = useState("");
+  const [aiResponseGenerating, setAIResponseGenerating] = useState(false);
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
@@ -131,10 +139,60 @@ export default function Shelf() {
     setItemDeleted(!itemDeleted);
   };
 
+  const askAI = async () => {
+    setAIResponseGenerating(true);
+    const res = await fetch("/api/ai", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ data: searchQuery }),
+    });
+
+    const result = await res.json();
+    setResponse(result.message);
+    setAIResponseGenerating(false);
+    console.log(result.message);
+  };
+
+  const keyDown = (event) => {
+   
+    if (
+      searchQuery === "" &&
+      chipColor === "primary" &&
+      event.key === "Backspace" &&
+      usingAI
+    ) {
+      setChipColor("default");
+    } else if (
+      searchQuery === "" &&
+      chipColor === "default" &&
+      event.key === "Backspace" &&
+      usingAI
+    ) {
+      setUsingAI(false);
+      setChipColor("primary");
+      setResponse(null);
+    } else if (
+      searchQuery === "" &&
+      chipColor === "default" &&
+      event.key === "ArrowRight"
+    ) {
+      setChipColor("primary");
+    } else if (searchQuery !== "" && usingAI && chipColor === "default") {
+      setChipColor("primary");
+    } else if (event.key === "Enter") {
+      askAI();
+    }
+  };
+
   useEffect(() => {
-    if (searchQuery === "") {
+    if (searchQuery === "/ai") {
+      setSearchQuery("");
+      setUsingAI(true);
+    } else if (searchQuery === "") {
       setFilteredEssays(essays);
-    } else {
+    } else if (searchQuery !== "/" && searchQuery !== "/a" && !usingAI) {
       const lowerCaseQuery = searchQuery.toLowerCase();
       setFilteredEssays(
         essays.filter(
@@ -152,9 +210,11 @@ export default function Shelf() {
       className={styles.container}
       //  ref={scrollParentRef}
     >
-      <div className="flex justify-center w-full">
-        <div className="gap-1 px-5  z-10 sm:w-3/4 w-full flex justify-center backdrop-blur-xl bg-white/30 p-2 mb-10 rounded-2xl">
+      <div className="flex flex-col items-center min-h-screen w-full">
+        <div className="gap-1 px-5  z-10 sm:w-3/4 w-full flex justify-center backdrop-blur-xl bg-white/30 p-2 rounded-2xl">
           <Input
+            value={searchQuery}
+            onKeyDown={keyDown}
             type="text"
             placeholder="Search..."
             classNames={{
@@ -164,50 +224,95 @@ export default function Shelf() {
                 "place-self-center px-0 bg-transparent shadow-none group-data-[hover=true]:bg-transparent group-data-[focus=true]:bg-transparent group-data-[focus=true]:shadow-none",
             }}
             onChange={(e) => setSearchQuery(e.target.value)}
-            // startContent={<AddEssay onRefresh={handleRefresh} />}
-            endContent={<div className="flex flex-row gap-2">
-             <Dropdown>
-            <DropdownTrigger>
-              <Button
-                size="md"
-                className="sfProDisplay capitalize bg-zinc-900 col text-gray-100"
-              >
-                Sort
-              </Button>
-            </DropdownTrigger>
-            <DropdownMenu
-              variant="flat"
-              disallowEmptySelection
-              selectionMode="single"
-              selectedKeys={selectedKeys}
-              onSelectionChange={setSelectedKeys}
-            >
-              <DropdownItem key="title">Title</DropdownItem>
-              <DropdownItem key="author">Author</DropdownItem>
-              <DropdownItem key="newest">Newest</DropdownItem>
-              <DropdownItem key="oldest">Oldest</DropdownItem>
-            </DropdownMenu>
-          </Dropdown>
-          <AddEssay onRefresh={handleRefresh} />
-            </div>}
+            startContent={
+              <AnimatePresence>
+                {usingAI && (
+                  <motion.div
+                    initial={{ x: -200, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                  >
+                    <Chip color={chipColor}>ask manal and zion</Chip>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            }
+            endContent={
+              usingAI ? (
+                <Button
+                  size="md"
+                  isIconOnly
+                  onPress={askAI}
+                  className=" rounded-full bg-zinc-900 focus:outline-none active:scale-95 transition duration-200 sm:hover:rotate-90 hover:duration-500 hover:ease"
+                >
+                  <Image
+                    src={"./arrow.svg"}
+                    width={0}
+                    height={0}
+                    style={{
+                      width: "90%",
+                      height: "90%",
+                      padding: "10%",
+                    }}
+                    alt="Arrow"
+                  />
+                </Button>
+              ) : (
+                <div className="flex flex-row gap-2">
+                  <Dropdown>
+                    <DropdownTrigger>
+                      <Button
+                        size="md"
+                        className="sfProDisplay capitalize bg-zinc-900 col text-gray-100"
+                      >
+                        Sort
+                      </Button>
+                    </DropdownTrigger>
+                    <DropdownMenu
+                      variant="flat"
+                      disallowEmptySelection
+                      selectionMode="single"
+                      selectedKeys={selectedKeys}
+                      onSelectionChange={setSelectedKeys}
+                    >
+                      <DropdownItem key="title">Title</DropdownItem>
+                      <DropdownItem key="author">Author</DropdownItem>
+                      <DropdownItem key="newest">Newest</DropdownItem>
+                      <DropdownItem key="oldest">Oldest</DropdownItem>
+                    </DropdownMenu>
+                  </Dropdown>
+                  <AddEssay onRefresh={handleRefresh} />
+                </div>
+              )
+            }
           />
-
-         
         </div>
+        {(aiResponseGenerating || response) && (
+          <AnimatePresence>
+            <motion.div
+              initial={{ y: -10, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="sfProDisplay shadow-2xl z-10 sm:w-3/4 w-full flex justify-center backdrop-blur-xl bg-white/90 p-10 mt-5 rounded-2xl"
+            >
+              {aiResponseGenerating ? (
+                <Loader
+                  circleStyle={{
+                    maxHeight: "10px",
+                    maxWidth: "10px",
+                  }}
+                />
+              ) : (
+                <Markdown className="flex flex-col">{response.toLocaleLowerCase()}</Markdown>
+              )}
+            </motion.div>
+          </AnimatePresence>
+        )}
       </div>
 
       <div
         ref={scrollParentRef}
-        style={{
-          position: "absolute",
-          height: "100vh",
-          overflow: "auto",
-          left: "50%",
-          transform: "translateX(-50%)",
-          bottom: "0",
-          width: "100%",
-          padding: "30vh 6vw 0 6vw",
-        }}
+        className="absolute h-screen overflow-auto left-1/2 transform -translate-x-1/2 bottom-0 w-full sm:pt-[35vh] pt-[30vh] px-[6vw]"
       >
         <InfiniteScroll
           pageStart={0}
