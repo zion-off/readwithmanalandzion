@@ -365,6 +365,7 @@ export default function Shelf() {
           threshold={250}
         >
           <div className={styles.main}>
+            
             {filteredEssays.map((essay) => (
               <Essay
                 key={essay.id}
