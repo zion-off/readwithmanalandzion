@@ -216,7 +216,7 @@ export default function Shelf() {
             value={searchQuery}
             onKeyDown={keyDown}
             type="text"
-            placeholder="Search..."
+            placeholder="Search or type /ai to ask AI"
             classNames={{
               base: "sfProDisplay bg-transparent shadow-none group-data-[focus=true]:bg-transparent group-data-[focus=true]:shadow-none",
               label: "bg-transparent shadow-none",
