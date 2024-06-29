@@ -181,7 +181,7 @@ export default function Shelf() {
       setChipColor("primary");
     } else if (searchQuery !== "" && usingAI && chipColor === "default") {
       setChipColor("primary");
-    } else if (event.key === "Enter") {
+    } else if (event.key === "Enter" && usingAI) {
       askAI();
     }
   };
