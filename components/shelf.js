@@ -156,7 +156,6 @@ export default function Shelf() {
   };
 
   const keyDown = (event) => {
-   
     if (
       searchQuery === "" &&
       chipColor === "primary" &&
@@ -240,10 +239,10 @@ export default function Shelf() {
             endContent={
               usingAI ? (
                 <Button
-                  size="md"
+                  size="sm"
                   isIconOnly
                   onPress={askAI}
-                  className=" rounded-full bg-zinc-900 focus:outline-none active:scale-95 transition duration-200 sm:hover:rotate-90 hover:duration-500 hover:ease"
+                  className="place-self-center rounded-full bg-zinc-900 focus:outline-none active:scale-95 transition duration-200 sm:hover:rotate-90 hover:duration-500 hover:ease"
                 >
                   <Image
                     src={"./arrow.svg"}
@@ -262,10 +261,21 @@ export default function Shelf() {
                   <Dropdown>
                     <DropdownTrigger>
                       <Button
-                        size="md"
-                        className="sfProDisplay capitalize bg-zinc-900 col text-gray-100"
+                      isIconOnly
+                        size="sm"
+                        className="place-self-center bg-zinc-900 col text-gray-100 p-1"
                       >
-                        Sort
+                        <Image
+                          src={"./sort.svg"}
+                          width={0}
+                          height={0}
+                          style={{
+                            width: "90%",
+                            height: "90%",
+                            padding: "10%",
+                          }}
+                          alt="Arrow"
+                        />
                       </Button>
                     </DropdownTrigger>
                     <DropdownMenu
@@ -303,7 +313,9 @@ export default function Shelf() {
                   }}
                 />
               ) : (
-                <Markdown className="flex flex-col">{response.toLocaleLowerCase()}</Markdown>
+                <Markdown className="flex flex-col">
+                  {response.toLocaleLowerCase()}
+                </Markdown>
               )}
             </motion.div>
           </AnimatePresence>
@@ -312,7 +324,7 @@ export default function Shelf() {
 
       <div
         ref={scrollParentRef}
-        className="absolute h-screen overflow-auto left-1/2 transform -translate-x-1/2 bottom-0 w-full sm:pt-[30vh] pt-[35vh] px-[6vw]"
+        className="absolute h-screen overflow-auto left-1/2 transform -translate-x-1/2 bottom-0 w-full sm:pt-[30vh] pt-[40vh] px-[6vw]"
       >
         <InfiniteScroll
           pageStart={0}

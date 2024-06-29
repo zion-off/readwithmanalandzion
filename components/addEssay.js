@@ -208,10 +208,10 @@ export default function AddEssay({ onRefresh }) {
   return (
     <>
       <Button
-      size="md"
+      size="sm"
         isIconOnly
         onPress={onOpen}
-        className=" rounded-full bg-zinc-900 focus:outline-none active:scale-95 transition duration-200 sm:hover:rotate-90 hover:duration-500 hover:ease">
+        className="place-self-center rounded-full bg-zinc-900 focus:outline-none active:scale-95 transition duration-200 sm:hover:rotate-90 hover:duration-500 hover:ease">
         <Image
           src={"./add.svg"}
           width={0}
