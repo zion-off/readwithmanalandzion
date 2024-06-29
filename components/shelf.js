@@ -207,11 +207,11 @@ export default function Shelf() {
 
   return (
     <div
-      className="w-full px-6vw py:4vh"
+      className={styles.container}
       //  ref={scrollParentRef}
     >
       <div className="flex flex-col items-center min-h-screen w-full">
-        <div className="gap-1 px-5  z-10 sm:w-3/4 w-full flex justify-center backdrop-blur-xl bg-white/30 p-2 rounded-2xl">
+        <div className="gap-1 px-5 z-10 sm:w-3/4 w-full flex justify-center backdrop-blur-xl bg-white/30 p-2 rounded-2xl">
           <Input
             value={searchQuery}
             onKeyDown={keyDown}
