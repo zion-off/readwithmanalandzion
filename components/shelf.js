@@ -19,6 +19,7 @@ import InfiniteScroll from "react-infinite-scroller";
 import Loader from "./loader";
 import Essay from "./essay";
 import EssayDetail from "./essayDetail";
+import AddEssay from "@/components/addEssay";
 import { Input } from "@nextui-org/input";
 import {
   Dropdown,
@@ -31,7 +32,7 @@ import {
 // import styling
 import styles from "./shelf.module.css";
 
-export default function Shelf({ refresh }) {
+export default function Shelf() {
   const { data: session, status } = useSession();
   const [essays, setEssays] = useState([]);
   const [filteredEssays, setFilteredEssays] = useState([]);
@@ -42,12 +43,16 @@ export default function Shelf({ refresh }) {
   const [selectedKeys, setSelectedKeys] = useState(new Set(["newest"]));
   const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(true);
-  const itemsPerPage = 10;
-  const [isLoading, setIsLoading] = useState(false);
+  const itemsPerPage = 20;
+  const [refresh, setRefresh] = useState(false);
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const scrollParentRef = useRef(null);
+
+  const handleRefresh = () => {
+    setRefresh(!refresh);
+  };
 
   const loadMore = (page) => {
     fetchEssays(page, selectedValue.toLowerCase());
@@ -65,7 +70,7 @@ export default function Shelf({ refresh }) {
           collection(db, "essays"),
           where("userEmail", "==", session.user.email)
         );
-  
+
         // Apply sorting based on the sortBy parameter
         switch (sortBy) {
           case "title":
@@ -83,10 +88,10 @@ export default function Shelf({ refresh }) {
           default:
             q = query(q, orderBy("createdAt", "desc"));
         }
-  
+
         // Apply pagination
         q = query(q, limit(itemsPerPage * (pageNum + 1)));
-  
+
         const querySnapshot = await getDocs(q);
         const essayList = [];
         querySnapshot.forEach((doc) => {
@@ -147,26 +152,26 @@ export default function Shelf({ refresh }) {
       className={styles.container}
       //  ref={scrollParentRef}
     >
-      <div className="flex justify-center">
-        <div className="z-10 sm:w-3/4 w-full flex justify-center gap-2 backdrop-blur-xl bg-white/30 p-2 mb-10 rounded-2xl">
+      <div className="flex justify-center w-full">
+        <div className="gap-1 px-5  z-10 sm:w-3/4 w-full flex justify-center backdrop-blur-xl bg-white/30 p-2 mb-10 rounded-2xl">
           <Input
-            isClearable
-            radius="full"
             type="text"
             placeholder="Search..."
             classNames={{
-              label: "object-fill w-full bg-transparent shadow-none",
-              input:
-                "object-fill w-full bg-transparent  shadow-none group-data-[focus=true]:bg-transparent",
-              innerWrapper: "object-fill w-full bg-transparent  shadow-none",
+              base: "bg-transparent shadow-none group-data-[focus=true]:bg-transparent group-data-[focus=true]:shadow-none",
+              label: "bg-transparent shadow-none",
               inputWrapper:
-                "object-fill w-full bg-transparent  shadow-none group-data-[hover=true]:bg-transparent group-data-[focus=true]:bg-transparent group-data-[focus=true]:shadow-none",
+                "place-self-center px-0 bg-transparent shadow-none group-data-[hover=true]:bg-transparent group-data-[focus=true]:bg-transparent group-data-[focus=true]:shadow-none",
             }}
             onChange={(e) => setSearchQuery(e.target.value)}
-          />
-          <Dropdown>
+            // startContent={<AddEssay onRefresh={handleRefresh} />}
+            endContent={<div className="flex flex-row gap-2">
+             <Dropdown>
             <DropdownTrigger>
-              <Button className="capitalize bg-zinc-900 col text-gray-100">
+              <Button
+                size="md"
+                className=" capitalize bg-zinc-900 col text-gray-100"
+              >
                 Sort
               </Button>
             </DropdownTrigger>
@@ -183,6 +188,11 @@ export default function Shelf({ refresh }) {
               <DropdownItem key="oldest">Oldest</DropdownItem>
             </DropdownMenu>
           </Dropdown>
+          <AddEssay onRefresh={handleRefresh} />
+            </div>}
+          />
+
+         
         </div>
       </div>
 

@@ -1,3 +1,5 @@
+"use client";
+
 // import components
 import { SignInButton } from "../components/buttons";
 import { signOut } from "next-auth/react";
