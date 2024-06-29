@@ -1,7 +1,7 @@
 "use client";
 
 // import dependencies
-import { useEffect, useState, useMemo, useRef } from "react";
+import { useEffect, useState, useMemo, useRef, useCallback } from "react";
 import Image from "next/image";
 import { db } from "@/firebase";
 import {
@@ -53,6 +53,7 @@ export default function Shelf() {
   const [chipColor, setChipColor] = useState("primary");
   const [response, setResponse] = useState("");
   const [aiResponseGenerating, setAIResponseGenerating] = useState(false);
+  const [keywordSearch, setKeywordSearch] = useState("");
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
@@ -185,14 +186,26 @@ export default function Shelf() {
     }
   };
 
+  const debounce = useCallback((func, delay) => {
+    let timer;
+    return (...args) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => func(...args), delay);
+    };
+  }, []);
+
+  const debouncedSearch = useMemo(
+    () => debounce((query) => setKeywordSearch(query), 500),
+    [debounce]
+  );
+
   useEffect(() => {
-    if (searchQuery === "/ai") {
-      setSearchQuery("");
-      setUsingAI(true);
-    } else if (searchQuery === "") {
-      setFilteredEssays(essays);
-    } else if (searchQuery !== "/" && searchQuery !== "/a" && !usingAI) {
-      const lowerCaseQuery = searchQuery.toLowerCase();
+    debouncedSearch(searchQuery);
+  }, [searchQuery, debouncedSearch]);
+
+  useEffect(() => {
+    const lowerCaseQuery = keywordSearch.toLowerCase();
+    if (searchQuery !== "/" && searchQuery !== "/a" && !usingAI) {
       setFilteredEssays(
         essays.filter(
           (essay) =>
@@ -201,6 +214,13 @@ export default function Shelf() {
             essay.notes.toLowerCase().includes(lowerCaseQuery)
         )
       );
+    }
+  }, [keywordSearch, essays]);
+
+  useEffect(() => {
+    if (searchQuery === "/ai") {
+      setSearchQuery("");
+      setUsingAI(true);
     }
   }, [searchQuery, essays]);
 
@@ -261,7 +281,7 @@ export default function Shelf() {
                   <Dropdown>
                     <DropdownTrigger>
                       <Button
-                      isIconOnly
+                        isIconOnly
                         size="sm"
                         className="place-self-center bg-zinc-900 col text-gray-100 p-1"
                       >
