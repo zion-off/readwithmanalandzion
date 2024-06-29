@@ -158,7 +158,7 @@ export default function Shelf() {
             type="text"
             placeholder="Search..."
             classNames={{
-              base: "bg-transparent shadow-none group-data-[focus=true]:bg-transparent group-data-[focus=true]:shadow-none",
+              base: "sfProDisplay bg-transparent shadow-none group-data-[focus=true]:bg-transparent group-data-[focus=true]:shadow-none",
               label: "bg-transparent shadow-none",
               inputWrapper:
                 "place-self-center px-0 bg-transparent shadow-none group-data-[hover=true]:bg-transparent group-data-[focus=true]:bg-transparent group-data-[focus=true]:shadow-none",
@@ -170,7 +170,7 @@ export default function Shelf() {
             <DropdownTrigger>
               <Button
                 size="md"
-                className=" capitalize bg-zinc-900 col text-gray-100"
+                className="sfProDisplay capitalize bg-zinc-900 col text-gray-100"
               >
                 Sort
               </Button>

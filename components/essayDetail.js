@@ -20,7 +20,6 @@ import { getStorage, ref, deleteObject } from "firebase/storage";
 
 // import styling
 import styles from "./essayDetail.module.css";
-import { Archivo, SFPro } from "@/assets/fonts/fonts";
 
 export default function EssayDetail({
   isOpen,
@@ -197,12 +196,12 @@ export default function EssayDetail({
                     <div className={styles.editingOptions}>
                       <p
                         onClick={toggleEditing}
-                        className={`${Archivo.className} ${styles.cancel}`}
+                        className={`archivo ${styles.cancel}`}
                       >
                         Cancel
                       </p>
                       <div onClick={handleSave} className={styles.saveButton}>
-                        <p className={`${Archivo.className} ${styles.save}`}>
+                        <p className={`archivo ${styles.save}`}>
                           Save
                         </p>
                       </div>
@@ -262,7 +261,7 @@ export default function EssayDetail({
                         required
                         onChange={(e) => setNewTitle(e.target.value)}
                         classNames={{
-                          label: `bg-transparent shadow-none ${SFPro.className} ${styles.input}`,
+                          label: `bg-transparent shadow-none sfProDisplay ${styles.input}`,
                           input:
                             "bg-transparent shadow-none group-data-[focus=true]:bg-transparent",
                           innerWrapper: "bg-transparent shadow-none",
@@ -277,7 +276,7 @@ export default function EssayDetail({
                         required
                         onChange={(e) => setNewAuthor(e.target.value)}
                         classNames={{
-                          label: `bg-transparent shadow-none ${SFPro.className} ${styles.input}`,
+                          label: `bg-transparent shadow-none sfProDisplay ${styles.input}`,
                           input:
                             "bg-transparent shadow-none group-data-[focus=true]:bg-transparent",
                           innerWrapper: "bg-transparent shadow-none",
@@ -293,7 +292,7 @@ export default function EssayDetail({
                       placeholder={notes || "Notes"}
                       onChange={(e) => setNewNotes(e.target.value)}
                       classNames={{
-                        label: `bg-transparent shadow-none ${SFPro.className} ${styles.input}`,
+                        label: `bg-transparent shadow-none sfProDisplay ${styles.input}`,
                         input:
                           "bg-transparent shadow-none group-data-[focus=true]:bg-transparent",
                         innerWrapper: "bg-transparent shadow-none",
@@ -315,7 +314,7 @@ export default function EssayDetail({
                       placeholder={link || "Enter a link here"}
                       onChange={(e) => setNewLink(e.target.value)}
                       classNames={{
-                        label: `bg-transparent shadow-none ${SFPro.className} ${styles.input}`,
+                        label: `bg-transparent shadow-none sfProDisplay ${styles.input}`,
                         input:
                           "bg-transparent shadow-none group-data-[focus=true]:bg-transparent",
                         innerWrapper: "bg-transparent shadow-none",
@@ -342,17 +341,17 @@ export default function EssayDetail({
                           className="mb-3"
                         />
                       )}
-                      <p className={`${SFPro.className} ${styles.title}`}>
+                      <p className={`sfProDisplay ${styles.title}`}>
                         {newTitle}
                       </p>
-                      <p className={`${Archivo.className} ${styles.author}`}>
+                      <p className={`archivo ${styles.author}`}>
                         {newAuthor}
                       </p>
                     </div>
-                    <p className={`${Archivo.className} ${styles.notes}`}>
+                    <p className={`archivo ${styles.notes}`}>
                       {newNotes}
                     </p>
-                    <div className={`${Archivo.className} ${styles.link}`}>
+                    <div className={`archivo ${styles.link}`}>
                       {newLink && (
                         <Link isExternal href={newLink} showAnchorIcon>Link</Link>
                       )}
@@ -360,7 +359,7 @@ export default function EssayDetail({
 
                     {!slug && (
                       <p
-                        className={`${Archivo.className} ${styles.visibility}`}
+                        className={`archivo ${styles.visibility}`}
                       >
                         {checked ? "Publicly visible" : "Private"}
                       </p>
@@ -379,14 +378,14 @@ export default function EssayDetail({
                           onPress={generatePDF}
                           size="sm"
                           color="primary"
-                          className="w-1/5"
+                          className="w-1/5 sfProDisplay"
                         >
                           Open PDF
                         </Button>
                       ))}
                     {fileURL && (
                       <a href={fileURL}>
-                        <p className={`${Archivo.className} ${styles.fileURL}`}>
+                        <p className={`archivo ${styles.fileURL}`}>
                           Download
                         </p>
                       </a>
@@ -398,7 +397,7 @@ export default function EssayDetail({
                 <div className={`${styles.deleteContainer}`}>
                   {deleteDialog && (
                     <div
-                      className={`${Archivo.className} ${styles.deleteDialog}`}
+                      className={`archivo ${styles.deleteDialog}`}
                     >
                       <div className={styles.deleteButtons}>
                         <div className={styles.cancel} onClick={toggleDelete}>
@@ -411,7 +410,7 @@ export default function EssayDetail({
                             onClose();
                           }}
                         >
-                          <p className={`${Archivo.className} ${styles.save}`}>
+                          <p className={`archivo ${styles.save}`}>
                             Delete
                           </p>
                         </div>

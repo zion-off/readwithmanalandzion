@@ -22,7 +22,6 @@ import FilePicker from "@/components/filepicker";
 import Loader from "@/components/loader";
 // import styling
 import styles from "./addEssay.module.css";
-import { Archivo, SFProDisplayRegular } from "@/assets/fonts/fonts";
 
 export default function AddEssay({ onRefresh }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure(); // for modal
@@ -256,7 +255,7 @@ export default function AddEssay({ onRefresh }) {
               <ModalHeader>
                 <div>
                   <h1
-                    className={`${SFProDisplayRegular.className} ${styles.heading}`}>
+                    className={`sfProDisplay ${styles.heading}`}>
                     Add essay
                   </h1>
                 </div>
@@ -273,7 +272,7 @@ export default function AddEssay({ onRefresh }) {
                     classNames={{
                       label: `bg-transparent shadow-none  `,
                       input:
-                        `bg-transparent shadow-none group-data-[focus=true]:bg-transparent ${SFProDisplayRegular.className} ${styles.input}`,
+                        `bg-transparent shadow-none group-data-[focus=true]:bg-transparent sfProDisplay ${styles.input}`,
                       innerWrapper: "bg-transparent shadow-none",
                       inputWrapper:
                         "bg-transparent shadow-none group-data-[hover=true]:bg-transparent group-data-[focus=true]:bg-transparent group-data-[focus=true]:shadow-none",
@@ -290,7 +289,7 @@ export default function AddEssay({ onRefresh }) {
                     classNames={{
                       label: `bg-transparent shadow-none`,
                       input:
-                        `bg-transparent shadow-none group-data-[focus=true]:bg-transparent  ${SFProDisplayRegular.className} ${styles.input}`,
+                        `bg-transparent shadow-none group-data-[focus=true]:bg-transparent  sfProDisplay ${styles.input}`,
                       innerWrapper: "bg-transparent shadow-none",
                       inputWrapper:
                         "bg-transparent shadow-none group-data-[hover=true]:bg-transparent group-data-[focus=true]:bg-transparent group-data-[focus=true]:shadow-none",
@@ -304,7 +303,7 @@ export default function AddEssay({ onRefresh }) {
                     classNames={{
                       label: `bg-transparent shadow-none`,
                       input:
-                        `bg-transparent shadow-none group-data-[focus=true]:bg-transparent  ${SFProDisplayRegular.className} ${styles.input}`,
+                        `bg-transparent shadow-none group-data-[focus=true]:bg-transparent sfProDisplay ${styles.input}`,
                       innerWrapper: "bg-transparent shadow-none",
                       inputWrapper:
                         "bg-transparent shadow-none group-data-[hover=true]:bg-transparent group-data-[focus=true]:bg-transparent group-data-[focus=true]:shadow-none",
@@ -318,7 +317,7 @@ export default function AddEssay({ onRefresh }) {
                     classNames={{
                       label: `bg-transparent shadow-none`,
                       input:
-                        `bg-transparent shadow-none group-data-[focus=true]:bg-transparent  ${SFProDisplayRegular.className} ${styles.input}`,
+                        `bg-transparent shadow-none group-data-[focus=true]:bg-transparent  sfProDisplay ${styles.input}`,
                       innerWrapper: "bg-transparent shadow-none",
                       inputWrapper:
                         "bg-transparent shadow-none group-data-[hover=true]:bg-transparent group-data-[focus=true]:bg-transparent group-data-[focus=true]:shadow-none",
@@ -358,7 +357,7 @@ export default function AddEssay({ onRefresh }) {
                     <div className={styles.buttonContainer}>
                       <button
                         type="submit"
-                        className={`${Archivo.className} ${styles.button}`}
+                        className={`archivo ${styles.button}`}
                         disabled={loading}>
                         {loading ? (
                           <Loader

@@ -6,7 +6,6 @@ import Image from "next/image";
 import Images from "@/components/randomCover";
 
 // import styling
-import { Archivo, SFProDisplayRegular } from "@/assets/fonts/fonts";
 import styles from "./essay.module.css";
 
 export default function Essay({ title, author, cover, favicon, onClick }) {
@@ -54,10 +53,10 @@ export default function Essay({ title, author, cover, favicon, onClick }) {
         )}
       </div>
       <div className={styles.textContainer}>
-        <h3 className={`${SFProDisplayRegular.className} ${styles.title}`}>
+        <h3 className={`sfProDisplay ${styles.title}`}>
           {title}
         </h3>
-        <p className={`${Archivo.className} ${styles.author}`}>{author}</p>
+        <p className={`archivo ${styles.author}`}>{author}</p>
       </div>
     </div>
   );

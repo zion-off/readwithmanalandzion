@@ -7,7 +7,6 @@ import Link from "next/link";
 import Loader from "@/components/loader";
 
 // import styling
-import { Archivo } from "@/assets/fonts/fonts";
 import styles from "./buttons.module.css";
 
 export function SignInButton({ style }) {
@@ -51,7 +50,7 @@ export function SignOutButton() {
   return (
     <div
       onClick={() => signOut()}
-      className={`${styles.signOut} ${Archivo.className}`}>
+      className={`${styles.signOut} archivo`}>
       Sign out
     </div>
   );

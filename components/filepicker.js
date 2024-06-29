@@ -11,7 +11,6 @@ import { useRef, useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 // import styling
-import { Archivo } from "@/assets/fonts/fonts";
 import styles from "./filepicker.module.css";
 
 export default function FilePicker({
@@ -131,17 +130,17 @@ export default function FilePicker({
           onClick={handlePickClick}>
           {progress > 0 ? (
             uploadComplete ? (
-              <div className={`${Archivo.className} ${styles.buttonText}`}>
+              <div className={`archivo ${styles.buttonText}`}>
                 {pickedFile ? pickedFile.name : <p>Upload complete</p>}
               </div>
             ) : (
-              <div className={`${Archivo.className} ${styles.buttonText}`}>
+              <div className={`archivo ${styles.buttonText}`}>
                 {progress === 100 ? "Processing..." : `Uploading ${Math.round(progress)}%`}
               </div>
             )
           ) : (
             <p
-              className={`${Archivo.className} ${styles.buttonText} ${
+              className={`archivo ${styles.buttonText} ${
                 isGenerating ? styles.generatingText : ""
               } `}>
               {filePickerText ? filePickerText : "Upload a PDF or an EPUB"}
