@@ -39,10 +39,6 @@
   background-color: #4caf50;
 }
 
-.buttonText {
-  font-weight: 400;
-}
-
 .generatingText {
   animation: blinkingColor 2s infinite;
 }

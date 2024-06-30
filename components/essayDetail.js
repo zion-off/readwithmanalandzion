@@ -52,7 +52,7 @@ export default function EssayDetail({
     if (window.innerWidth < 600) {
       setSize("full");
     }
-    console.log(favicon)
+    console.log(favicon);
   }, []);
 
   useEffect(() => {
@@ -190,7 +190,7 @@ export default function EssayDetail({
         <ModalContent className="rounded-2xl">
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1 px-6 py-6">
+              <ModalHeader className="flex flex-col gap-1 px-6 pt-6">
                 {editing ? (
                   <>
                     <div className={styles.editingOptions}>
@@ -201,9 +201,7 @@ export default function EssayDetail({
                         Cancel
                       </p>
                       <div onClick={handleSave} className={styles.saveButton}>
-                        <p className={`archivo ${styles.save}`}>
-                          Save
-                        </p>
+                        <p className={`archivo ${styles.save}`}>Save</p>
                       </div>
                     </div>
                   </>
@@ -263,10 +261,10 @@ export default function EssayDetail({
                         classNames={{
                           label: `bg-transparent shadow-none sfProDisplay ${styles.input}`,
                           input:
-                            "bg-transparent shadow-none group-data-[focus=true]:bg-transparent",
+                            "text-base bg-transparent shadow-none group-data-[focus=true]:bg-transparent",
                           innerWrapper: "bg-transparent shadow-none",
                           inputWrapper:
-                            "bg-transparent shadow-none group-data-[hover=true]:bg-transparent group-data-[focus=true]:bg-transparent group-data-[focus=true]:shadow-none",
+                            "px-0 bg-transparent shadow-none group-data-[hover=true]:bg-transparent group-data-[focus=true]:bg-transparent group-data-[focus=true]:shadow-none",
                         }}
                       />
                       <Input
@@ -278,50 +276,52 @@ export default function EssayDetail({
                         classNames={{
                           label: `bg-transparent shadow-none sfProDisplay ${styles.input}`,
                           input:
-                            "bg-transparent shadow-none group-data-[focus=true]:bg-transparent",
+                            "text-base bg-transparent shadow-none group-data-[focus=true]:bg-transparent",
                           innerWrapper: "bg-transparent shadow-none",
                           inputWrapper:
-                            "bg-transparent shadow-none group-data-[hover=true]:bg-transparent group-data-[focus=true]:bg-transparent group-data-[focus=true]:shadow-none",
+                            "px-0 bg-transparent shadow-none group-data-[hover=true]:bg-transparent group-data-[focus=true]:bg-transparent group-data-[focus=true]:shadow-none",
                         }}
                       />
+                      <Input
+                        type="text"
+                        name="notes"
+                        placeholder={notes || "Notes"}
+                        onChange={(e) => setNewNotes(e.target.value)}
+                        classNames={{
+                          label: `bg-transparent shadow-none sfProDisplay ${styles.input}`,
+                          input:
+                            "text-base bg-transparent shadow-none group-data-[focus=true]:bg-transparent",
+                          innerWrapper: "bg-transparent shadow-none",
+                          inputWrapper:
+                            "px-0 bg-transparent shadow-none group-data-[hover=true]:bg-transparent group-data-[focus=true]:bg-transparent group-data-[focus=true]:shadow-none",
+                        }}
+                      />
+                      <Input
+                        type="url"
+                        name="link"
+                        placeholder={link || "Enter a link here"}
+                        onChange={(e) => setNewLink(e.target.value)}
+                        classNames={{
+                          label: ` bg-transparent shadow-none sfProDisplay ${styles.input}`,
+                          input:
+                            "text-base bg-transparent shadow-none group-data-[focus=true]:bg-transparent",
+                          innerWrapper: "bg-transparent shadow-none",
+                          inputWrapper:
+                            "px-0 bg-transparent shadow-none group-data-[hover=true]:bg-transparent group-data-[focus=true]:bg-transparent group-data-[focus=true]:shadow-none",
+                        }}
+                      />
+                      <Checkbox
+                        color="default"
+                        isSelected={newChecked}
+                        onValueChange={setNewChecked}
+                        className="sfProDisplay my-1"
+                      >
+                        <span className="font-normal">
+                        Visible to others
+                        </span>
+                        
+                      </Checkbox>
                     </div>
-
-                    <Input
-                      type="text"
-                      name="notes"
-                      placeholder={notes || "Notes"}
-                      onChange={(e) => setNewNotes(e.target.value)}
-                      classNames={{
-                        label: `bg-transparent shadow-none sfProDisplay ${styles.input}`,
-                        input:
-                          "bg-transparent shadow-none group-data-[focus=true]:bg-transparent",
-                        innerWrapper: "bg-transparent shadow-none",
-                        inputWrapper:
-                          "bg-transparent shadow-none group-data-[hover=true]:bg-transparent group-data-[focus=true]:bg-transparent group-data-[focus=true]:shadow-none",
-                      }}
-                    />
-                    <Checkbox
-                      color="default"
-                      isSelected={newChecked}
-                      onValueChange={setNewChecked}
-                      className="px-5"
-                    >
-                      Visible to others
-                    </Checkbox>
-                    <Input
-                      type="url"
-                      name="link"
-                      placeholder={link || "Enter a link here"}
-                      onChange={(e) => setNewLink(e.target.value)}
-                      classNames={{
-                        label: `bg-transparent shadow-none sfProDisplay ${styles.input}`,
-                        input:
-                          "bg-transparent shadow-none group-data-[focus=true]:bg-transparent",
-                        innerWrapper: "bg-transparent shadow-none",
-                        inputWrapper:
-                          "bg-transparent shadow-none group-data-[hover=true]:bg-transparent group-data-[focus=true]:bg-transparent group-data-[focus=true]:shadow-none",
-                      }}
-                    />
                     <FilePicker
                       label="File"
                       name="file"
@@ -344,23 +344,19 @@ export default function EssayDetail({
                       <p className={`sfProDisplay ${styles.title}`}>
                         {newTitle}
                       </p>
-                      <p className={`archivo ${styles.author}`}>
-                        {newAuthor}
-                      </p>
+                      <p className={`archivo ${styles.author}`}>{newAuthor}</p>
                     </div>
-                    <p className={`archivo ${styles.notes}`}>
-                      {newNotes}
-                    </p>
+                    <p className={`archivo ${styles.notes}`}>{newNotes}</p>
                     <div className={`archivo ${styles.link}`}>
                       {newLink && (
-                        <Link isExternal href={newLink} showAnchorIcon>Link</Link>
+                        <Link isExternal href={newLink} showAnchorIcon>
+                          Link
+                        </Link>
                       )}
                     </div>
 
                     {!slug && (
-                      <p
-                        className={`archivo ${styles.visibility}`}
-                      >
+                      <p className={`archivo ${styles.visibility}`}>
                         {checked ? "Publicly visible" : "Private"}
                       </p>
                     )}
@@ -385,7 +381,7 @@ export default function EssayDetail({
                       ))}
                     {fileURL && (
                       <a href={fileURL}>
-                        <p className={`archivo ${styles.fileURL}`}>
+                        <p className={`sfProDisplay ${styles.fileURL}`}>
                           Download
                         </p>
                       </a>
@@ -393,32 +389,29 @@ export default function EssayDetail({
                   </>
                 )}
               </ModalBody>
-              <ModalFooter>
-                <div className={`${styles.deleteContainer}`}>
-                  {deleteDialog && (
-                    <div
-                      className={`archivo ${styles.deleteDialog}`}
-                    >
+              {deleteDialog && (
+                <ModalFooter>
+                  <div className={`${styles.deleteContainer}`}>
+                    <div className={`archivo ${styles.deleteDialog}`}>
                       <div className={styles.deleteButtons}>
                         <div className={styles.cancel} onClick={toggleDelete}>
                           Cancel
                         </div>
-                        <div
+                        <Button
+                          size="sm"
                           className={styles.deleteButton}
                           onClick={() => {
                             handleDelete(id);
                             onClose();
                           }}
                         >
-                          <p className={`archivo ${styles.save}`}>
-                            Delete
-                          </p>
-                        </div>
+                          <p className={`archivo ${styles.save}`}>Delete</p>
+                        </Button>
                       </div>
                     </div>
-                  )}
-                </div>
-              </ModalFooter>
+                  </div>
+                </ModalFooter>
+              )}
             </>
           )}
         </ModalContent>

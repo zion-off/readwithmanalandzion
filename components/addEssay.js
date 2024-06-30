@@ -85,7 +85,8 @@ export default function AddEssay({ onRefresh }) {
       `/api/metadata?url=${encodeURIComponent(link)}`
     );
     const data = await response.json();
-    if (data.ogTitle === "" || data.ogAuthor === "" || data.favicon === "") return;
+    if (data.ogTitle === "" || data.ogAuthor === "" || data.favicon === "")
+      return;
     if (data.ogTitle === "Not found") {
       setTitle("");
     } else {
@@ -101,11 +102,9 @@ export default function AddEssay({ onRefresh }) {
     } else {
       if (data.favicon === "jstor") {
         setFavicon("/jstor.png");
-      }
-      else {
+      } else {
         setFavicon(data.favicon);
       }
-     
     }
   };
 
@@ -207,11 +206,13 @@ export default function AddEssay({ onRefresh }) {
 
   return (
     <>
+    {/*button in search bar*/}
       <Button
-      size="sm"
+        size="sm"
         isIconOnly
         onPress={onOpen}
-        className="place-self-center rounded-full bg-zinc-900 focus:outline-none active:scale-95 transition duration-200 sm:hover:rotate-90 hover:duration-500 hover:ease">
+        className="place-self-center rounded-full bg-zinc-900 focus:outline-none active:scale-95 transition duration-200 sm:hover:rotate-90 hover:duration-500 hover:ease"
+      >
         <Image
           src={"./add.svg"}
           width={0}
@@ -222,9 +223,9 @@ export default function AddEssay({ onRefresh }) {
             padding: "10%",
           }}
           alt="Add"
-          
         />
       </Button>
+      {/* actual modal */}
       <Modal
         className="backdrop-blur-lg bg-white/90"
         backdrop="transparent"
@@ -248,14 +249,14 @@ export default function AddEssay({ onRefresh }) {
             style={{ width: "10%", height: "auto", rotate: "45deg" }}
             alt="Add"
           />
-        }>
-        <ModalContent className="px-2 py-5 rounded-2xl">
+        }
+      >
+        <ModalContent className="px-2 py-3 rounded-2xl">
           {(onClose) => (
             <>
               <ModalHeader>
                 <div>
-                  <h1
-                    className={`sfProDisplay ${styles.heading}`}>
+                  <h1 className={`sfProDisplay ${styles.heading}`}>
                     Add essay
                   </h1>
                 </div>
@@ -270,14 +271,23 @@ export default function AddEssay({ onRefresh }) {
                     required
                     onChange={(e) => setTitle(e.target.value)}
                     classNames={{
-                      label: `bg-transparent shadow-none  `,
-                      input:
-                        `bg-transparent shadow-none group-data-[focus=true]:bg-transparent sfProDisplay ${styles.input}`,
+                      
+                      label: `px-0 bg-transparent shadow-none  `,
+                      input: ` bg-transparent shadow-none group-data-[focus=true]:bg-transparent sfProDisplay ${styles.input}`,
                       innerWrapper: "bg-transparent shadow-none",
                       inputWrapper:
-                        "bg-transparent shadow-none group-data-[hover=true]:bg-transparent group-data-[focus=true]:bg-transparent group-data-[focus=true]:shadow-none",
+                        "px-0 bg-transparent shadow-none group-data-[hover=true]:bg-transparent group-data-[focus=true]:bg-transparent group-data-[focus=true]:shadow-none",
                     }}
-                    endContent={ favicon !== "" ? <Image src={favicon} width={20} height={20} alt="favicon" /> : null}
+                    endContent={
+                      favicon !== "" ? (
+                        <Image
+                          src={favicon}
+                          width={20}
+                          height={20}
+                          alt="favicon"
+                        />
+                      ) : null
+                    }
                   />
                   <Input
                     type="text"
@@ -288,11 +298,10 @@ export default function AddEssay({ onRefresh }) {
                     onChange={(e) => setAuthor(e.target.value)}
                     classNames={{
                       label: `bg-transparent shadow-none`,
-                      input:
-                        `bg-transparent shadow-none group-data-[focus=true]:bg-transparent  sfProDisplay ${styles.input}`,
+                      input: `bg-transparent shadow-none group-data-[focus=true]:bg-transparent  sfProDisplay ${styles.input}`,
                       innerWrapper: "bg-transparent shadow-none",
                       inputWrapper:
-                        "bg-transparent shadow-none group-data-[hover=true]:bg-transparent group-data-[focus=true]:bg-transparent group-data-[focus=true]:shadow-none",
+                        "px-0 bg-transparent shadow-none group-data-[hover=true]:bg-transparent group-data-[focus=true]:bg-transparent group-data-[focus=true]:shadow-none",
                     }}
                   />
                   <Input
@@ -302,11 +311,10 @@ export default function AddEssay({ onRefresh }) {
                     onChange={(e) => setNotes(e.target.value)}
                     classNames={{
                       label: `bg-transparent shadow-none`,
-                      input:
-                        `bg-transparent shadow-none group-data-[focus=true]:bg-transparent sfProDisplay ${styles.input}`,
+                      input: `bg-transparent shadow-none group-data-[focus=true]:bg-transparent sfProDisplay ${styles.input}`,
                       innerWrapper: "bg-transparent shadow-none",
                       inputWrapper:
-                        "bg-transparent shadow-none group-data-[hover=true]:bg-transparent group-data-[focus=true]:bg-transparent group-data-[focus=true]:shadow-none",
+                        "px-0 bg-transparent shadow-none group-data-[hover=true]:bg-transparent group-data-[focus=true]:bg-transparent group-data-[focus=true]:shadow-none",
                     }}
                   />
                   <Input
@@ -316,23 +324,34 @@ export default function AddEssay({ onRefresh }) {
                     onChange={(e) => setLink(e.target.value)}
                     classNames={{
                       label: `bg-transparent shadow-none`,
-                      input:
-                        `bg-transparent shadow-none group-data-[focus=true]:bg-transparent  sfProDisplay ${styles.input}`,
+                      input: `bg-transparent shadow-none group-data-[focus=true]:bg-transparent  sfProDisplay ${styles.input}`,
                       innerWrapper: "bg-transparent shadow-none",
                       inputWrapper:
-                        "bg-transparent shadow-none group-data-[hover=true]:bg-transparent group-data-[focus=true]:bg-transparent group-data-[focus=true]:shadow-none",
+                        "px-0 bg-transparent shadow-none group-data-[hover=true]:bg-transparent group-data-[focus=true]:bg-transparent group-data-[focus=true]:shadow-none",
                     }}
                     endContent={
-                      link ? (generatePDFClicked ? null : <Button onPress={generatePDFLinkClicked} size="sm" color="primary" className="px-5" variant="ghost">
-                        Save PDF
-                      </Button>  ) : null
+                      link ? (
+                        generatePDFClicked ? null : (
+                          <Button
+                            onPress={generatePDFLinkClicked}
+                            size="sm"
+                            color="primary"
+                            className="px-5"
+                            variant="ghost"
+                          >
+                            Save PDF
+                          </Button>
+                        )
+                      ) : null
                     }
                   />
                   <Checkbox
                     defaultSelected
                     color="default"
                     isSelected={checked}
-                    onValueChange={setChecked}>
+                    onValueChange={setChecked}
+                    className="sfProDisplay"
+                  >
                     Visible to others
                   </Checkbox>
                   <FilePicker
@@ -355,10 +374,12 @@ export default function AddEssay({ onRefresh }) {
                   />
                   <ModalFooter className="w-full px-0 py-0">
                     <div className={styles.buttonContainer}>
-                      <button
+                      <Button
+                      color="primary"
                         type="submit"
-                        className={`archivo ${styles.button}`}
-                        disabled={loading}>
+                        className={`sfProDisplay ${styles.button}`}
+                        disabled={loading}
+                      >
                         {loading ? (
                           <Loader
                             circleStyle={{
@@ -370,7 +391,7 @@ export default function AddEssay({ onRefresh }) {
                         ) : (
                           "Add to shelf"
                         )}
-                      </button>
+                      </Button>
                     </div>
                   </ModalFooter>
                 </form>

@@ -123,24 +123,24 @@ export default function FilePicker({
         />
 
         <div
-          className={`${styles.button} ${
+          className={`sfProDisplay ${styles.button} ${
             progress == 100 ? styles.green : styles.normal
           } ${isGenerating ? styles.generatingButton : ""} `}
           type="button"
           onClick={handlePickClick}>
           {progress > 0 ? (
             uploadComplete ? (
-              <div className={`archivo ${styles.buttonText}`}>
+              <div className={`sfProDisplay`}>
                 {pickedFile ? pickedFile.name : <p>Upload complete</p>}
               </div>
             ) : (
-              <div className={`archivo ${styles.buttonText}`}>
+              <div className={`sfProDisplay`}>
                 {progress === 100 ? "Processing..." : `Uploading ${Math.round(progress)}%`}
               </div>
             )
           ) : (
             <p
-              className={`archivo ${styles.buttonText} ${
+              className={`sfProDisplay${
                 isGenerating ? styles.generatingText : ""
               } `}>
               {filePickerText ? filePickerText : "Upload a PDF or an EPUB"}
