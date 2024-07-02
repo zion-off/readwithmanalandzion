@@ -11,6 +11,7 @@ import {
   useDisclosure,
   Checkbox,
   Input,
+  Textarea,
 } from "@nextui-org/react";
 // firebase imports
 import { useSession } from "next-auth/react";
@@ -206,7 +207,7 @@ export default function AddEssay({ onRefresh }) {
 
   return (
     <>
-    {/*button in search bar*/}
+      {/*button in search bar*/}
       <Button
         size="sm"
         isIconOnly
@@ -271,7 +272,6 @@ export default function AddEssay({ onRefresh }) {
                     required
                     onChange={(e) => setTitle(e.target.value)}
                     classNames={{
-                      
                       label: `px-0 bg-transparent shadow-none  `,
                       input: ` bg-transparent shadow-none group-data-[focus=true]:bg-transparent sfProDisplay ${styles.input}`,
                       innerWrapper: "bg-transparent shadow-none",
@@ -306,19 +306,6 @@ export default function AddEssay({ onRefresh }) {
                   />
                   <Input
                     type="text"
-                    name="notes"
-                    placeholder="Notes"
-                    onChange={(e) => setNotes(e.target.value)}
-                    classNames={{
-                      label: `bg-transparent shadow-none`,
-                      input: `bg-transparent shadow-none group-data-[focus=true]:bg-transparent sfProDisplay ${styles.input}`,
-                      innerWrapper: "bg-transparent shadow-none",
-                      inputWrapper:
-                        "px-0 bg-transparent shadow-none group-data-[hover=true]:bg-transparent group-data-[focus=true]:bg-transparent group-data-[focus=true]:shadow-none",
-                    }}
-                  />
-                  <Input
-                    type="text"
                     name="links"
                     placeholder="Link"
                     onChange={(e) => setLink(e.target.value)}
@@ -345,6 +332,20 @@ export default function AddEssay({ onRefresh }) {
                       ) : null
                     }
                   />
+                  <Textarea
+                    type="text"
+                    name="notes"
+                    placeholder="Notes"
+                    onChange={(e) => setNotes(e.target.value)}
+                    classNames={{
+                      label: `bg-transparent shadow-none`,
+                      input: `bg-transparent shadow-none group-data-[focus=true]:bg-transparent sfProDisplay ${styles.input}`,
+                      innerWrapper: "bg-transparent shadow-none",
+                      inputWrapper:
+                        "px-0 bg-transparent shadow-none group-data-[hover=true]:bg-transparent group-data-[focus=true]:bg-transparent group-data-[focus=true]:shadow-none",
+                    }}
+                  />
+
                   <Checkbox
                     defaultSelected
                     color="default"
@@ -375,7 +376,7 @@ export default function AddEssay({ onRefresh }) {
                   <ModalFooter className="w-full px-0 py-0">
                     <div className={styles.buttonContainer}>
                       <Button
-                      color="primary"
+                        color="primary"
                         type="submit"
                         className={`sfProDisplay ${styles.button}`}
                         disabled={loading}

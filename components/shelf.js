@@ -211,7 +211,8 @@ export default function Shelf() {
           (essay) =>
             essay.title.toLowerCase().includes(lowerCaseQuery) ||
             essay.author.toLowerCase().includes(lowerCaseQuery) ||
-            essay.notes.toLowerCase().includes(lowerCaseQuery)
+            essay.notes.toLowerCase().includes(lowerCaseQuery) ||
+            essay.link?.toLowerCase().includes(lowerCaseQuery)
         )
       );
     }
@@ -365,7 +366,6 @@ export default function Shelf() {
           threshold={250}
         >
           <div className={styles.main}>
-            
             {filteredEssays.map((essay) => (
               <Essay
                 key={essay.id}
