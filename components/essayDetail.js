@@ -9,6 +9,7 @@ import {
   Button,
   Input,
   Link,
+  Textarea,
 } from "@nextui-org/react";
 import { Checkbox } from "@nextui-org/react";
 import { useEffect, useState } from "react";
@@ -282,7 +283,7 @@ export default function EssayDetail({
                             "px-0 bg-transparent shadow-none group-data-[hover=true]:bg-transparent group-data-[focus=true]:bg-transparent group-data-[focus=true]:shadow-none",
                         }}
                       />
-                      <Input
+                      <Textarea
                         type="text"
                         name="notes"
                         placeholder={notes || "Notes"}
