@@ -1,4 +1,4 @@
-# Essays
+# Shelf
 
 Kind of like Goodreads, but for essays/articles from the web that are not available as books. A personal app I made for me and my friend so we can organize the stuff we read  :  )
 
