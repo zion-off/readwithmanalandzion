@@ -50,7 +50,7 @@ const fetchMetadata = async (link) => {
   try {
     const baseUrl = process.env.VERCEL_URL
       ? "https://" + process.env.VERCEL_URL
-      : "http://localhost:3000";
+      : "https://readwithmanaland.zzzzion.com";
     const response = await fetch(
       `${baseUrl}/api/metadata?url=${encodeURIComponent(link)}`
     );
