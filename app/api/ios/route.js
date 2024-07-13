@@ -132,8 +132,8 @@ export async function GET(request) {
 
   return new NextResponse(
     JSON.stringify({
-      title: metadata.title,
-      author: metadata.author,
+      title: receivedTitle,
+      author: receivedAuthor,
       userEmail: userEmail,
     }),
     {
