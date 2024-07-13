@@ -48,11 +48,10 @@ const getRandomCover = async () => {
 
 const fetchMetadata = async (link) => {
   try {
-    const baseUrl = process.env.VERCEL_URL
-      ? "https://" + process.env.VERCEL_URL
-      : "https://readwithmanaland.zzzzion.com";
     const response = await fetch(
-      `${baseUrl}/api/metadata?url=${encodeURIComponent(link)}`
+      `https://readwithmanaland.zzzzion.com/api/metadata?url=${encodeURIComponent(
+        link
+      )}`
     );
     const data = await response.json();
     const essayData = {
@@ -78,6 +77,8 @@ export async function GET(request) {
   const { searchParams } = new URL(request.url);
   const url = searchParams.get("url");
   const key = searchParams.get("key");
+  const receivedTitle = searchParams.get("title");
+  const receivedAuthor = searchParams.get("author");
 
   console.log("url", url);
   console.log("key", key);
@@ -107,11 +108,11 @@ export async function GET(request) {
   const metadata = await fetchMetadata(url);
 
   try {
-    console.log(`Adding essay: ${metadata.title} by ${metadata.author}`);
+    console.log(`Adding essay: ${receivedTitle} by ${receivedAuthor}`);
     await addDoc(collection(db, "essays"), {
       cover: metadata.cover,
-      title: metadata.title,
-      author: metadata.author,
+      title: receivedTitle,
+      author: receivedAuthor,
       notes: "",
       link: url,
       favicon: metadata.favicon,
