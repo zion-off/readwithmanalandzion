@@ -48,18 +48,20 @@ const getRandomCover = async () => {
 
 const fetchMetadata = async (link) => {
   try {
+    console.log("Fetching metadata for link:", link);
     const response = await fetch(
-      `https://readwithmanaland.zzzzion.com/api/metadata?url=${encodeURIComponent(
-        link
-      )}`
+      `https://readwithmanaland.zzzzion.com/api/metadata?url=${link}`
     );
     const data = await response.json();
     const essayData = {
-      title: data.ogTitle || "Not found",
-      author: data.ogAuthor || "Not found",
+      title: data?.ogTitle,
+      author: data.ogAuthor,
       favicon: data.favicon || "",
       cover: `url(${await getRandomCover()})`,
     };
+    if (!essayData.title) {
+      essayData.title = "Not found";
+    }
     return essayData;
   } catch (error) {
     console.error("Error fetching metadata:", error);
@@ -77,8 +79,8 @@ export async function GET(request) {
   const { searchParams } = new URL(request.url);
   const url = searchParams.get("url");
   const key = searchParams.get("key");
-  const receivedTitle = searchParams.get("title");
-  const receivedAuthor = searchParams.get("author");
+  // const receivedTitle = searchParams.get("title");
+  // const receivedAuthor = searchParams.get("author");
 
   console.log("url", url);
   console.log("key", key);
@@ -108,11 +110,11 @@ export async function GET(request) {
   const metadata = await fetchMetadata(url);
 
   try {
-    console.log(`Adding essay: ${receivedTitle} by ${receivedAuthor}`);
+    // console.log(`Adding essay: ${receivedTitle} by ${receivedAuthor}`);
     await addDoc(collection(db, "essays"), {
       cover: metadata.cover,
-      title: receivedTitle,
-      author: receivedAuthor,
+      title: metadata.title || "Not found",
+      author: metadata.author,
       notes: "",
       link: url,
       favicon: metadata.favicon,
@@ -132,8 +134,8 @@ export async function GET(request) {
 
   return new NextResponse(
     JSON.stringify({
-      title: receivedTitle,
-      author: receivedAuthor,
+      title: metadata.title,
+      author: metadata.author,
       userEmail: userEmail,
     }),
     {
