@@ -9,12 +9,11 @@
   gap: 3rem;
   justify-content: center;
   overflow: auto;
-  padding-top: 1rem
 }
 
 @media (max-width: 768px) {
   .container {
-    padding: 5vh 8vw;
+    padding: 0vh 8vw;
   }
   .main {
     flex-direction: column;

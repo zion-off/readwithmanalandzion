@@ -13,9 +13,9 @@ export default function Home() {
     <NextUIProvider>
       <main className={styles.main}>
         <AuthCheck>
-          <div className={styles.signInContainer}>
+          {/* <div className={styles.signInContainer}>
             <Profile />
-          </div>
+          </div> */}
           <Shelf />
         </AuthCheck>
       </main>

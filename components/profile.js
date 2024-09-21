@@ -120,7 +120,7 @@ export default function Profile() {
     <>
       <Dropdown>
         <DropdownTrigger>
-          <Button isIconOnly>
+          <Button isIconOnly className="bg-transparent">
             <SignInButton style={{ borderRadius: "50%" }} />
           </Button>
         </DropdownTrigger>

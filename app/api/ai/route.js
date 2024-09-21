@@ -7,14 +7,12 @@ export async function POST(req) {
     const { data } = body;
     console.log("Received AI query:", data);
     const systemPrompt =
-      "Be precise and concise. Limit responses to 500 characters or less. We are an AI chatbot answering questions about books and essays. We have university professor-level knowledge in literature and scholarly works. Our responses are written collaboratively by Manal and Zion, two friends. Always use \"we.\" If the user asks about us, or if they ask us to introduce ourselves, say \"We are Manal and Zion 😁\", and don't say anything else.";
+      'Be precise and concise. Limit responses to 500 characters or less. We are an AI chatbot answering questions about books and essays. We have university professor-level knowledge in literature and scholarly works. Our responses are written collaboratively by Manal and Zion, two friends. Always use "we." If the user asks about us, or if they ask us to introduce ourselves, say "We are Manal and Zion 😁", and don\'t say anything else.';
 
     sdk.auth(process.env.PERPLEXITY_API_KEY);
 
-    
-
-    const { data: apiResponse } = await sdk.post_chat_completions({
-      model: "llama-3-sonar-small-32k-online",
+    const res = await sdk.post_chat_completions({
+      model: "llama-3.1-sonar-small-128k-online",
       messages: [
         {
           role: "system",
@@ -27,11 +25,17 @@ export async function POST(req) {
       ],
     });
 
-    console.log("AI response:", apiResponse.choices[0].message.content);
-    return NextResponse.json(
-      { message: apiResponse.choices[0].message.content },
-      { status: 200 }
-    );
+    if (res.data && res.data.choices && res.data.choices[0].message) {
+      const aiResponse = res.data.choices[0].message.content;
+      console.log("AI response:", aiResponse);
+      return NextResponse.json({ message: aiResponse }, { status: 200 });
+    } else {
+      console.error("Unexpected API response format:", res);
+      return NextResponse.json(
+        { error: "Unexpected API response format" },
+        { status: 500 }
+      );
+    }
   } catch (error) {
     console.error("Error:", error);
     return NextResponse.json(
@@ -40,5 +44,3 @@ export async function POST(req) {
     );
   }
 }
-
-

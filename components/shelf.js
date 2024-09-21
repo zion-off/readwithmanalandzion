@@ -19,6 +19,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Markdown from "react-markdown";
 
 // import components
+import Profile from "@/components/profile";
 import Loader from "./loader";
 import Essay from "./essay";
 import EssayDetail from "./essayDetail";
@@ -230,122 +231,137 @@ export default function Shelf() {
       className={styles.container}
       //  ref={scrollParentRef}
     >
-      <div className="flex flex-col items-center w-full">
-        <div className="gap-1 px-5 z-10 sm:w-3/4 w-full flex justify-center backdrop-blur-xl bg-white/30 p-2 rounded-2xl">
-          <Input
-            value={searchQuery}
-            onKeyDown={keyDown}
-            type="text"
-            placeholder="Search or type /ai to ask AI"
-            classNames={{
-              base: "sfProDisplay bg-transparent shadow-none group-data-[focus=true]:bg-transparent group-data-[focus=true]:shadow-none",
-              label: "bg-transparent shadow-none",
-              inputWrapper:
-                "place-self-center px-0 bg-transparent shadow-none group-data-[hover=true]:bg-transparent group-data-[focus=true]:bg-transparent group-data-[focus=true]:shadow-none",
-            }}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            startContent={
-              <AnimatePresence>
-                {usingAI && (
-                  <motion.div
-                    initial={{ x: -200, opacity: 0 }}
-                    animate={{ x: 0, opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                  >
-                    <Chip color={chipColor}>ask manal and zion</Chip>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            }
-            endContent={
-              usingAI ? (
-                <Button
-                  size="sm"
-                  isIconOnly
-                  onPress={askAI}
-                  className="place-self-center rounded-full bg-zinc-900 focus:outline-none active:scale-95 transition duration-200 sm:hover:rotate-90 hover:duration-500 hover:ease"
-                >
-                  <Image
-                    src={"./arrow.svg"}
-                    width={0}
-                    height={0}
-                    style={{
-                      width: "90%",
-                      height: "90%",
-                      padding: "10%",
-                    }}
-                    alt="Arrow"
-                  />
-                </Button>
-              ) : (
-                <div className="flex flex-row gap-2">
-                  <Dropdown>
-                    <DropdownTrigger>
-                      <Button
-                        isIconOnly
-                        size="sm"
-                        className="place-self-center bg-zinc-900 col text-gray-100 p-1"
-                      >
-                        <Image
-                          src={"./sort.svg"}
-                          width={0}
-                          height={0}
-                          style={{
-                            width: "90%",
-                            height: "90%",
-                            padding: "10%",
-                          }}
-                          alt="Arrow"
-                        />
-                      </Button>
-                    </DropdownTrigger>
-                    <DropdownMenu
-                      variant="flat"
-                      disallowEmptySelection
-                      selectionMode="single"
-                      selectedKeys={selectedKeys}
-                      onSelectionChange={setSelectedKeys}
+      <div
+        className="flex flex-col items-center w-full sticky z-10 gap-2 align-middle"
+        style={{ top: "10px" }}
+      >
+        <div
+          className="flex flex-row w-full items-center gap-5"
+          style={{ position: "sticky", top: "5px" }}
+        >
+          <div className="gap-1 px-5 w-full flex justify-center backdrop-blur-xl bg-white/30 p-2 rounded-2xl align-middle">
+            <Input
+              value={searchQuery}
+              onKeyDown={keyDown}
+              type="text"
+              placeholder="Search or type /ai to ask AI"
+              classNames={{
+                base: "sfProDisplay bg-transparent shadow-none group-data-[focus=true]:bg-transparent group-data-[focus=true]:shadow-none",
+                label: "bg-transparent shadow-none",
+                inputWrapper:
+                  "place-self-center px-0 bg-transparent shadow-none group-data-[hover=true]:bg-transparent group-data-[focus=true]:bg-transparent group-data-[focus=true]:shadow-none",
+              }}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              startContent={
+                <AnimatePresence>
+                  {usingAI && (
+                    <motion.div
+                      initial={{ x: -200, opacity: 0 }}
+                      animate={{ x: 0, opacity: 1 }}
+                      exit={{ opacity: 0 }}
                     >
-                      <DropdownItem key="title">Title</DropdownItem>
-                      <DropdownItem key="author">Author</DropdownItem>
-                      <DropdownItem key="newest">Newest</DropdownItem>
-                      <DropdownItem key="oldest">Oldest</DropdownItem>
-                    </DropdownMenu>
-                  </Dropdown>
-                  <AddEssay onRefresh={handleRefresh} />
-                </div>
-              )
-            }
-          />
+                      <Chip color={chipColor}>ask manal and zion</Chip>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              }
+              endContent={
+                usingAI ? (
+                  <Button
+                    size="sm"
+                    isIconOnly
+                    onPress={askAI}
+                    className="place-self-center rounded-full bg-zinc-900 focus:outline-none active:scale-95 transition duration-200 sm:hover:rotate-90 hover:duration-500 hover:ease"
+                  >
+                    <Image
+                      src={"./arrow.svg"}
+                      width={0}
+                      height={0}
+                      style={{
+                        width: "90%",
+                        height: "90%",
+                        padding: "10%",
+                      }}
+                      alt="Arrow"
+                    />
+                  </Button>
+                ) : (
+                  <div className="flex flex-row gap-2">
+                    <Dropdown>
+                      <DropdownTrigger>
+                        <Button
+                          isIconOnly
+                          size="sm"
+                          className="place-self-center bg-zinc-900 col text-gray-100 p-1"
+                        >
+                          <Image
+                            src={"./sort.svg"}
+                            width={0}
+                            height={0}
+                            style={{
+                              width: "90%",
+                              height: "90%",
+                              padding: "10%",
+                            }}
+                            alt="Arrow"
+                          />
+                        </Button>
+                      </DropdownTrigger>
+                      <DropdownMenu
+                        variant="flat"
+                        disallowEmptySelection
+                        selectionMode="single"
+                        selectedKeys={selectedKeys}
+                        onSelectionChange={setSelectedKeys}
+                      >
+                        <DropdownItem key="title">Title</DropdownItem>
+                        <DropdownItem key="author">Author</DropdownItem>
+                        <DropdownItem key="newest">Newest</DropdownItem>
+                        <DropdownItem key="oldest">Oldest</DropdownItem>
+                      </DropdownMenu>
+                    </Dropdown>
+                    <AddEssay onRefresh={handleRefresh} />
+                  </div>
+                )
+              }
+            />
+          </div>
+          {/*  */}
+
+          <div className="sticky top-5">
+            <Profile />
+          </div>
         </div>
-        {(aiResponseGenerating || response) && (
-          <AnimatePresence>
-            <motion.div
-              initial={{ y: -10, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="sfProDisplay shadow-2xl z-10 sm:w-3/4 w-full flex justify-center backdrop-blur-xl bg-white/90 p-10 mt-5 rounded-2xl"
-            >
-              {aiResponseGenerating ? (
-                <Loader
-                  circleStyle={{
-                    maxHeight: "10px",
-                    maxWidth: "10px",
-                  }}
-                />
-              ) : (
-                <Markdown className="flex flex-col">
-                  {response.toLocaleLowerCase()}
-                </Markdown>
-              )}
-            </motion.div>
-          </AnimatePresence>
-        )}
+        <div className="w-full">
+          {(aiResponseGenerating || response) && (
+            <AnimatePresence>
+              <motion.div
+                initial={{ y: -10, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="sfProDisplay shadow-2xl z-10 w-full flex justify-center backdrop-blur-xl bg-white/90 p-10 mt-5 rounded-2xl"
+              >
+                {aiResponseGenerating ? (
+                  <Loader
+                    circleStyle={{
+                      maxHeight: "10px",
+                      maxWidth: "10px",
+                    }}
+                  />
+                ) : (
+                  <Markdown className="flex flex-col">
+                    {response.toLocaleLowerCase()}
+                  </Markdown>
+                )}
+              </motion.div>
+            </AnimatePresence>
+          )}
+        </div>
       </div>
 
       <div
         ref={scrollParentRef}
-        className="absolute h-screen overflow-auto left-1/2 transform -translate-x-1/2 bottom-0 w-full sm:pt-[30vh] pt-[40vh] pb-10 px-[6vw]"
+        className="absolute h-screen overflow-auto left-1/2 transform -translate-x-1/2 bottom-0 w-full pb-10 px-[6vw] md:pt-36 pt-44"
       >
         <InfiniteScroll
           pageStart={0}
