@@ -44,6 +44,7 @@ const SignIn = () => {
                   width={20}
                   height={20}
                   alt={provider.name}
+                  unoptimized
                 />
                 Sign in with {provider.name}
               </button>
