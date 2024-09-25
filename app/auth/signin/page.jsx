@@ -40,7 +40,7 @@ const SignIn = () => {
                 onClick={() => signIn(provider.id, { callbackUrl: "/" })}
               >
                 <img
-                  src={`/Google.png`}
+                  src="/google.png"
                   width={20}
                   height={20}
                   alt={provider.name}
