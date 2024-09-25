@@ -1,6 +1,7 @@
 // import components
 import { useState, useEffect } from "react";
 import { SignInButton } from "./buttons";
+import { Typewriter } from 'react-simple-typewriter'
 
 // import styling
 import styles from "./login.module.css";
@@ -26,11 +27,19 @@ export default function LoginPage() {
   return (
     <div className={styles.container}>
       <div className={styles.text}>
-        <h1 className={`sfProDisplay ${styles.heading}`}>
-          manal and zion, good {greeting}
-        </h1>
         <h1 className={`sfProDisplay ${styles.subheading}`}>
-          everyone else {greeting.slice(0, -1)} 😒
+          Welcome to your Shelf.
+        </h1>
+        <h1 className={`sfProDisplay ${styles.heading}`}>
+        Organize your <Typewriter
+            words={['essays.', 'articles.', 'blogs.', 'journals.']}
+            loop={0}
+            cursor
+            cursorStyle='_'
+            typeSpeed={70}
+            deleteSpeed={50}
+            delaySpeed={1000}
+          />
         </h1>
       </div>
       <div className={styles.button}>
