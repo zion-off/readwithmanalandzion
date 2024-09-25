@@ -39,8 +39,8 @@ const SignIn = () => {
                 className="bg-slate-100 text-gray-900 gap-2 items-center py-3 px-5 rounded sfProDisplay flex shadow-lg"
                 onClick={() => signIn(provider.id, { callbackUrl: "/" })}
               >
-                <Image
-                  src={`/${provider.name}.png`}
+                <img
+                  src={`/Google.png`}
                   width={20}
                   height={20}
                   alt={provider.name}
